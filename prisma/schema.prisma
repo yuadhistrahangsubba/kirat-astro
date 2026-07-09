@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// Mirrors a Supabase `auth.users` row via `supabaseId`. Supabase owns
+// credentials/session state; this table owns app-domain profile + billing data.
+model User {
+  id        String   @id @default(cuid())
+  supabaseId String  @unique
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+
+  birthProfiles BirthProfile[]
+
+  @@map("users")
+}
+
+// A saved chart subject (self, family member, client). Coordinates + timezone
+// are stored resolved (not just place name) since the calc engine needs them.
+model BirthProfile {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  label     String
+  birthDate DateTime
+  birthTime String? // "HH:mm", nullable — unknown birth time is common and must degrade gracefully
+  timezone  String // IANA tz, e.g. "Asia/Thimphu"
+  placeName String
+  latitude  Float
+  longitude Float
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("birth_profiles")
+}

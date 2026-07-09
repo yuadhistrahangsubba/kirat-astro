@@ -1,0 +1,149 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ── Semantic token mappings ──────────────────────────── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ── Typography ───────────────────────────────────────── */
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
+  --font-mono: var(--font-geist-mono);
+
+  /* ── Radius scale ─────────────────────────────────────── */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* ── Himalayan celestial accents (always available) ────── */
+  /* Use as: bg-himalaya-gold, text-himalaya-indigo, border-himalaya-gold/20 */
+  --color-himalaya-indigo:      oklch(0.32 0.09 275);  /* deep cosmic indigo ~ #2B2560 */
+  --color-himalaya-indigo-glow: oklch(0.62 0.16 275);  /* bright violet-indigo ~ #7C6CD6 */
+  --color-himalaya-gold:        oklch(0.68 0.13 75);   /* saffron gold ~ #C99A3E */
+  --color-himalaya-gold-bright: oklch(0.78 0.14 75);   /* prayer-flag gold ~ #E0B24F */
+  --color-himalaya-crimson:     oklch(0.45 0.18 25);   /* prayer-flag red ~ #A5342A */
+  --color-himalaya-forest:      oklch(0.45 0.10 155);  /* rhododendron leaf ~ #3E6B4C */
+  --color-himalaya-sky:         oklch(0.55 0.12 230);  /* high-altitude sky ~ #4A7FA8 */
+  --color-himalaya-parchment:   oklch(0.97 0.01 85);   /* thangka parchment ~ #FAF6EC */
+}
+
+/* ── Light Mode: Thangka Parchment ────────────────────────── */
+:root {
+  --radius: 0.75rem;
+
+  --background:            oklch(0.97 0.01 85);
+  --foreground:            oklch(0.18 0.04 265);
+  --card:                  oklch(0.99 0.008 85);
+  --card-foreground:       oklch(0.18 0.04 265);
+  --popover:               oklch(0.99 0.008 85);
+  --popover-foreground:    oklch(0.18 0.04 265);
+  --primary:               oklch(0.32 0.09 275);     /* deep cosmic indigo */
+  --primary-foreground:    oklch(0.97 0.01 85);
+  --secondary:             oklch(0.93 0.02 85);      /* light cream */
+  --secondary-foreground:  oklch(0.25 0.05 270);
+  --muted:                 oklch(0.92 0.015 85);
+  --muted-foreground:      oklch(0.48 0.03 270);
+  --accent:                oklch(0.68 0.13 75);       /* saffron gold */
+  --accent-foreground:     oklch(0.18 0.04 265);
+  --destructive:           oklch(0.577 0.245 27.325);
+  --border:                oklch(0.85 0.02 85);
+  --input:                 oklch(0.85 0.02 85);
+  --ring:                  oklch(0.32 0.09 275);
+
+  --chart-1:               oklch(0.32 0.09 275);      /* indigo */
+  --chart-2:               oklch(0.68 0.13 75);       /* gold */
+  --chart-3:               oklch(0.45 0.18 25);       /* crimson */
+  --chart-4:               oklch(0.45 0.10 155);      /* forest */
+  --chart-5:               oklch(0.55 0.12 230);      /* sky */
+
+  --sidebar:               oklch(0.94 0.015 85);
+  --sidebar-foreground:    oklch(0.18 0.04 265);
+  --sidebar-primary:       oklch(0.32 0.09 275);
+  --sidebar-primary-foreground: oklch(0.97 0.01 85);
+  --sidebar-accent:        oklch(0.92 0.015 85);
+  --sidebar-accent-foreground: oklch(0.18 0.04 265);
+  --sidebar-border:        oklch(0.85 0.02 85);
+  --sidebar-ring:          oklch(0.32 0.09 275);
+}
+
+/* ── Dark Mode: Himalayan Night Sky ───────────────────────── */
+.dark {
+  --background:            oklch(0.14 0.03 270);
+  --foreground:            oklch(0.94 0.02 85);
+  --card:                  oklch(0.18 0.035 270);
+  --card-foreground:       oklch(0.94 0.02 85);
+  --popover:               oklch(0.18 0.035 270);
+  --popover-foreground:    oklch(0.94 0.02 85);
+  --primary:               oklch(0.62 0.16 275);      /* bright cosmic violet */
+  --primary-foreground:    oklch(0.14 0.03 270);
+  --secondary:             oklch(0.22 0.035 270);
+  --secondary-foreground:  oklch(0.88 0.02 85);
+  --muted:                 oklch(0.20 0.03 270);
+  --muted-foreground:      oklch(0.62 0.03 85);
+  --accent:                oklch(0.78 0.14 75);        /* starlight gold */
+  --accent-foreground:     oklch(0.14 0.03 270);
+  --destructive:           oklch(0.704 0.191 22.216);
+  --border:                oklch(0.94 0.02 85 / 12%);
+  --input:                 oklch(0.94 0.02 85 / 15%);
+  --ring:                  oklch(0.62 0.16 275);
+
+  --chart-1:               oklch(0.62 0.16 275);
+  --chart-2:               oklch(0.78 0.14 75);
+  --chart-3:               oklch(0.58 0.20 25);
+  --chart-4:               oklch(0.55 0.10 155);
+  --chart-5:               oklch(0.65 0.12 230);
+
+  --sidebar:               oklch(0.16 0.03 270);
+  --sidebar-foreground:    oklch(0.94 0.02 85);
+  --sidebar-primary:       oklch(0.62 0.16 275);
+  --sidebar-primary-foreground: oklch(0.14 0.03 270);
+  --sidebar-accent:        oklch(0.22 0.035 270);
+  --sidebar-accent-foreground: oklch(0.88 0.02 85);
+  --sidebar-border:        oklch(0.94 0.02 85 / 10%);
+  --sidebar-ring:          oklch(0.62 0.16 275);
+}
+
+/* ── Base layer ───────────────────────────────────────────── */
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
