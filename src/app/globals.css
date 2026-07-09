@@ -28,113 +28,83 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
 
   /* ── Typography ───────────────────────────────────────── */
-  --font-sans: var(--font-inter);
-  --font-serif: var(--font-cormorant);
-  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-instrument-mono);
 
-  /* ── Radius scale ─────────────────────────────────────── */
+  /* ── Radius scale — crisp, architectural, not bubbly ───── */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
 
-  /* ── Himalayan celestial accents (always available) ────── */
-  /* Use as: bg-himalaya-gold, text-himalaya-indigo, border-himalaya-gold/20 */
-  --color-himalaya-indigo:      oklch(0.32 0.09 275);  /* deep cosmic indigo ~ #2B2560 */
-  --color-himalaya-indigo-glow: oklch(0.62 0.16 275);  /* bright violet-indigo ~ #7C6CD6 */
-  --color-himalaya-gold:        oklch(0.68 0.13 75);   /* saffron gold ~ #C99A3E */
-  --color-himalaya-gold-bright: oklch(0.78 0.14 75);   /* prayer-flag gold ~ #E0B24F */
-  --color-himalaya-crimson:     oklch(0.45 0.18 25);   /* prayer-flag red ~ #A5342A */
-  --color-himalaya-forest:      oklch(0.45 0.10 155);  /* rhododendron leaf ~ #3E6B4C */
-  --color-himalaya-sky:         oklch(0.55 0.12 230);  /* high-altitude sky ~ #4A7FA8 */
-  --color-himalaya-parchment:   oklch(0.97 0.01 85);   /* thangka parchment ~ #FAF6EC */
+  /* ── Signature palette (always available) ──────────────── */
+  --color-gold:        oklch(0.74 0.12 75);   /* antique brass, the one accent */
+  --color-gold-bright: oklch(0.82 0.13 80);   /* hover / glow state */
+  --color-gold-dim:    oklch(0.42 0.09 75);   /* legible gold-on-light */
+  --color-ink:         oklch(0.10 0.014 275); /* the void */
+  --color-parchment:   oklch(0.96 0.008 85);  /* warm paper */
+  --color-crimson:     oklch(0.5 0.16 25);    /* rare accent, used once or twice */
 }
 
-/* ── Light Mode: Thangka Parchment ────────────────────────── */
+/* ── Dark: Observatory at Midnight (default identity) ─────── */
 :root {
-  --radius: 0.75rem;
+  --radius: 0.5rem;
 
-  --background:            oklch(0.97 0.01 85);
-  --foreground:            oklch(0.18 0.04 265);
-  --card:                  oklch(0.99 0.008 85);
-  --card-foreground:       oklch(0.18 0.04 265);
-  --popover:               oklch(0.99 0.008 85);
-  --popover-foreground:    oklch(0.18 0.04 265);
-  --primary:               oklch(0.32 0.09 275);     /* deep cosmic indigo */
-  --primary-foreground:    oklch(0.97 0.01 85);
-  --secondary:             oklch(0.93 0.02 85);      /* light cream */
-  --secondary-foreground:  oklch(0.25 0.05 270);
-  --muted:                 oklch(0.92 0.015 85);
-  --muted-foreground:      oklch(0.48 0.03 270);
-  --accent:                oklch(0.68 0.13 75);       /* saffron gold */
-  --accent-foreground:     oklch(0.18 0.04 265);
-  --destructive:           oklch(0.577 0.245 27.325);
-  --border:                oklch(0.85 0.02 85);
-  --input:                 oklch(0.85 0.02 85);
-  --ring:                  oklch(0.32 0.09 275);
+  --background:            oklch(0.10 0.014 275);
+  --foreground:            oklch(0.94 0.008 85);
+  --card:                  oklch(0.13 0.016 275);
+  --card-foreground:       oklch(0.94 0.008 85);
+  --popover:               oklch(0.13 0.016 275);
+  --popover-foreground:    oklch(0.94 0.008 85);
+  --primary:               oklch(0.74 0.12 75);      /* antique gold */
+  --primary-foreground:    oklch(0.12 0.02 275);
+  --secondary:             oklch(0.17 0.018 275);
+  --secondary-foreground:  oklch(0.90 0.01 85);
+  --muted:                 oklch(0.16 0.016 275);
+  --muted-foreground:      oklch(0.62 0.018 90);
+  --accent:                oklch(0.74 0.12 75);
+  --accent-foreground:     oklch(0.12 0.02 275);
+  --destructive:           oklch(0.6 0.19 25);
+  --border:                oklch(0.94 0.008 85 / 10%);
+  --input:                 oklch(0.94 0.008 85 / 14%);
+  --ring:                  oklch(0.74 0.12 75 / 60%);
 
-  --chart-1:               oklch(0.32 0.09 275);      /* indigo */
-  --chart-2:               oklch(0.68 0.13 75);       /* gold */
-  --chart-3:               oklch(0.45 0.18 25);       /* crimson */
-  --chart-4:               oklch(0.45 0.10 155);      /* forest */
-  --chart-5:               oklch(0.55 0.12 230);      /* sky */
-
-  --sidebar:               oklch(0.94 0.015 85);
-  --sidebar-foreground:    oklch(0.18 0.04 265);
-  --sidebar-primary:       oklch(0.32 0.09 275);
-  --sidebar-primary-foreground: oklch(0.97 0.01 85);
-  --sidebar-accent:        oklch(0.92 0.015 85);
-  --sidebar-accent-foreground: oklch(0.18 0.04 265);
-  --sidebar-border:        oklch(0.85 0.02 85);
-  --sidebar-ring:          oklch(0.32 0.09 275);
+  --chart-1:               oklch(0.74 0.12 75);
+  --chart-2:               oklch(0.55 0.12 230);
+  --chart-3:               oklch(0.5 0.16 25);
+  --chart-4:               oklch(0.5 0.09 155);
+  --chart-5:               oklch(0.62 0.16 275);
 }
 
-/* ── Dark Mode: Himalayan Night Sky ───────────────────────── */
-.dark {
-  --background:            oklch(0.14 0.03 270);
-  --foreground:            oklch(0.94 0.02 85);
-  --card:                  oklch(0.18 0.035 270);
-  --card-foreground:       oklch(0.94 0.02 85);
-  --popover:               oklch(0.18 0.035 270);
-  --popover-foreground:    oklch(0.94 0.02 85);
-  --primary:               oklch(0.62 0.16 275);      /* bright cosmic violet */
-  --primary-foreground:    oklch(0.14 0.03 270);
-  --secondary:             oklch(0.22 0.035 270);
-  --secondary-foreground:  oklch(0.88 0.02 85);
-  --muted:                 oklch(0.20 0.03 270);
-  --muted-foreground:      oklch(0.62 0.03 85);
-  --accent:                oklch(0.78 0.14 75);        /* starlight gold */
-  --accent-foreground:     oklch(0.14 0.03 270);
-  --destructive:           oklch(0.704 0.191 22.216);
-  --border:                oklch(0.94 0.02 85 / 12%);
-  --input:                 oklch(0.94 0.02 85 / 15%);
-  --ring:                  oklch(0.62 0.16 275);
+/* ── Light: Vellum & Bronze (secondary identity) ──────────── */
+.light {
+  --background:            oklch(0.97 0.008 85);
+  --foreground:            oklch(0.16 0.02 275);
+  --card:                  oklch(0.99 0.005 85);
+  --card-foreground:       oklch(0.16 0.02 275);
+  --popover:               oklch(0.99 0.005 85);
+  --popover-foreground:    oklch(0.16 0.02 275);
+  --primary:               oklch(0.42 0.09 75);       /* deep bronze, legible on paper */
+  --primary-foreground:    oklch(0.98 0.005 85);
+  --secondary:             oklch(0.93 0.012 85);
+  --secondary-foreground:  oklch(0.22 0.02 275);
+  --muted:                 oklch(0.92 0.01 85);
+  --muted-foreground:      oklch(0.45 0.02 275);
+  --accent:                oklch(0.42 0.09 75);
+  --accent-foreground:     oklch(0.98 0.005 85);
+  --destructive:           oklch(0.55 0.19 25);
+  --border:                oklch(0.16 0.02 275 / 10%);
+  --input:                 oklch(0.16 0.02 275 / 12%);
+  --ring:                  oklch(0.42 0.09 75 / 50%);
 
-  --chart-1:               oklch(0.62 0.16 275);
-  --chart-2:               oklch(0.78 0.14 75);
-  --chart-3:               oklch(0.58 0.20 25);
-  --chart-4:               oklch(0.55 0.10 155);
-  --chart-5:               oklch(0.65 0.12 230);
-
-  --sidebar:               oklch(0.16 0.03 270);
-  --sidebar-foreground:    oklch(0.94 0.02 85);
-  --sidebar-primary:       oklch(0.62 0.16 275);
-  --sidebar-primary-foreground: oklch(0.14 0.03 270);
-  --sidebar-accent:        oklch(0.22 0.035 270);
-  --sidebar-accent-foreground: oklch(0.88 0.02 85);
-  --sidebar-border:        oklch(0.94 0.02 85 / 10%);
-  --sidebar-ring:          oklch(0.62 0.16 275);
+  --chart-1:               oklch(0.42 0.09 75);
+  --chart-2:               oklch(0.45 0.11 230);
+  --chart-3:               oklch(0.5 0.16 25);
+  --chart-4:               oklch(0.4 0.08 155);
+  --chart-5:               oklch(0.45 0.13 275);
 }
 
 /* ── Base layer ───────────────────────────────────────────── */
@@ -142,8 +112,77 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    color-scheme: dark;
+  }
+  .light {
+    color-scheme: light;
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* ── Signature details: selection, scrollbar, focus ───────── */
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-gold-dim) transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in oklch, var(--color-gold) 45%, transparent);
+  border-radius: 999px;
+  border: 2px solid transparent;
+}
+
+/* ── Ambient motion: slow, meditative — never flashy ──────── */
+@keyframes orbit-cw {
+  to { transform: rotate(360deg); }
+}
+@keyframes orbit-ccw {
+  to { transform: rotate(-360deg); }
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.04); }
+}
+
+.animate-orbit-slow {
+  animation: orbit-cw 90s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.animate-orbit-slower {
+  animation: orbit-ccw 140s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.animate-orbit-slowest {
+  animation: orbit-cw 220s linear infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.animate-breathe {
+  animation: breathe 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-orbit-slow,
+  .animate-orbit-slower,
+  .animate-orbit-slowest,
+  .animate-breathe {
+    animation: none;
   }
 }

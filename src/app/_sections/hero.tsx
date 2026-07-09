@@ -2,59 +2,75 @@
 
 import { motion } from "motion/react";
 
-import { Button } from "@/components/ui/button";
+import { MagneticButton } from "@/components/marketing/magnetic-button";
+import { OrbitalEmblem } from "@/components/marketing/orbital-emblem";
 import { SITE } from "@/constants/site";
+
+const container = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+
+const rise = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden border-b border-border/60">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 -left-24 size-96 rounded-full bg-himalaya-indigo-glow/20 blur-3xl" />
-        <div className="absolute -top-32 right-0 size-96 rounded-full bg-himalaya-gold/15 blur-3xl" />
+    <section className="relative overflow-hidden">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70"
+      >
+        <OrbitalEmblem size="lg" />
       </div>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute top-1/2 left-1/2 size-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gold/10 blur-3xl animate-breathe"
+      />
 
-      <div className="relative mx-auto flex max-w-6xl flex-col items-center px-6 py-24 text-center sm:py-32">
+      <motion.div
+        variants={container}
+        initial="hidden"
+        animate="visible"
+        className="relative mx-auto flex max-w-3xl flex-col items-center px-6 pt-40 pb-28 text-center sm:pt-48 sm:pb-36"
+      >
         <motion.span
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="rounded-full border border-accent/30 bg-accent/10 px-4 py-1 text-xs font-medium tracking-wide text-accent uppercase"
+          variants={rise}
+          className="rounded-full border border-gold/25 px-4 py-1 font-mono text-[11px] tracking-[0.2em] text-gold uppercase"
         >
           {SITE.regions.join(" · ")}
         </motion.span>
 
         <motion.h1
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="mt-6 max-w-3xl font-serif text-4xl font-semibold tracking-tight sm:text-6xl"
+          variants={rise}
+          className="mt-8 font-serif text-5xl leading-[1.05] tracking-tight sm:text-7xl"
         >
-          {SITE.tagline}
+          The sky kept time
+          <br />
+          <em className="text-gold italic">before we did.</em>
         </motion.h1>
 
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mt-6 max-w-xl text-lg text-muted-foreground"
-        >
-          {SITE.description}
+        <motion.p variants={rise} className="mt-7 max-w-xl text-lg text-muted-foreground">
+          Sidereal Vedic astrology for {SITE.regions.slice(0, 3).join(", ")}, and the
+          diaspora — birth charts and planetary timing calculated with
+          observatory-grade precision.
         </motion.p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-10 flex flex-col gap-3 sm:flex-row"
-        >
-          <Button size="lg" asChild>
-            <a href="#demo-heading">Get your chart</a>
-          </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a href="#features-heading">See what&apos;s included</a>
-          </Button>
+        <motion.div variants={rise} className="mt-10 flex flex-col gap-3 sm:flex-row">
+          <MagneticButton size="lg" asChild>
+            <a href="#demo">Calculate your chart</a>
+          </MagneticButton>
+          <MagneticButton size="lg" variant="outline" asChild>
+            <a href="#features">How it works</a>
+          </MagneticButton>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }

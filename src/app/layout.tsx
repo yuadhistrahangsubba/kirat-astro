@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, Geist_Mono, Inter } from "next/font/google";
+import { IBM_Plex_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
+import { GrainOverlay } from "@/components/marketing/grain-overlay";
+import { Navbar } from "@/components/marketing/navbar";
+import { Footer } from "@/components/marketing/footer";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
 
-const inter = Inter({
-  variable: "--font-inter",
+const display = Instrument_Serif({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+});
+
+const body = Instrument_Sans({
+  variable: "--font-body",
   subsets: ["latin"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const mono = IBM_Plex_Mono({
+  variable: "--font-instrument-mono",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -29,11 +34,11 @@ export const metadata: Metadata = {
     template: "%s | Astro Himalaya",
   },
   description:
-    "Precision Vedic birth charts, dashas, and matchmaking rooted in Himalayan astrological tradition — for Bhutan, Nepal, India, and the diaspora.",
+    "Sidereal Vedic astrology for Bhutan, Nepal, India, and the diaspora — birth charts and planetary timing calculated with observatory-grade precision.",
   openGraph: {
     title: "Astro Himalaya",
     description:
-      "Precision Vedic birth charts, dashas, and matchmaking rooted in Himalayan astrological tradition.",
+      "Sidereal Vedic astrology for Bhutan, Nepal, India, and the diaspora — calculated with observatory-grade precision.",
     url: siteUrl,
     siteName: "Astro Himalaya",
     type: "website",
@@ -46,10 +51,15 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${cormorant.variable} ${geistMono.variable} font-sans antialiased`}
+        className={`${display.variable} ${body.variable} ${mono.variable} font-sans antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <GrainOverlay />
+            <Navbar />
+            {children}
+            <Footer />
+          </QueryProvider>
         </ThemeProvider>
       </body>
     </html>
