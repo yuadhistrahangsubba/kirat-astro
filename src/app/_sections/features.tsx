@@ -1,20 +1,23 @@
 "use client";
 
+import { CalendarHeart, Compass, Users } from "lucide-react";
 import { motion } from "motion/react";
+
+import { GlassCard } from "@/components/marketing/glass-card";
 
 const ENTRIES = [
   {
-    index: "01",
+    icon: Compass,
     title: "Sidereal precision",
     body: "Lahiri ayanamsa, calculated for Himalayan latitudes — not a tropical approximation borrowed from the West.",
   },
   {
-    index: "02",
+    icon: CalendarHeart,
     title: "Dasha timelines",
     body: "See exactly which planetary period governs your life right now, and precisely what comes next.",
   },
   {
-    index: "03",
+    icon: Users,
     title: "Matchmaking, done properly",
     body: "Traditional Guna Milan compatibility scoring, the way Himalayan families have always practiced it.",
   },
@@ -22,32 +25,31 @@ const ENTRIES = [
 
 export function Features() {
   return (
-    <section id="features" className="mx-auto max-w-3xl px-6 py-28 sm:py-36">
+    <section id="features" className="relative mx-auto max-w-6xl px-6 py-28 sm:py-36">
       <motion.h2
-        initial={{ opacity: 0, y: 12 }}
+        initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="font-serif text-3xl italic sm:text-4xl"
+        transition={{ type: "spring", stiffness: 110, damping: 16 }}
+        className="text-center font-serif text-3xl italic sm:text-4xl"
       >
         How it works
       </motion.h2>
 
-      <div className="mt-14 divide-y divide-border/60 border-t border-border/60">
+      <div className="mt-16 grid gap-8 sm:grid-cols-3">
         {ENTRIES.map((entry, i) => (
           <motion.div
-            key={entry.index}
-            initial={{ opacity: 0, y: 16 }}
+            key={entry.title}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, delay: i * 0.08 }}
-            className="grid grid-cols-[3rem_1fr] gap-6 py-9 sm:grid-cols-[4rem_1fr]"
+            transition={{ type: "spring", stiffness: 90, damping: 16, delay: i * 0.12 }}
           >
-            <span className="font-mono text-sm text-gold/70">{entry.index}</span>
-            <div>
-              <h3 className="font-serif text-xl">{entry.title}</h3>
-              <p className="mt-2 max-w-md text-muted-foreground">{entry.body}</p>
-            </div>
+            <GlassCard floatDelay={i * 0.6}>
+              <entry.icon className="size-6 text-gold" aria-hidden="true" />
+              <h3 className="mt-4 font-serif text-xl">{entry.title}</h3>
+              <p className="mt-2 text-sm text-muted-foreground">{entry.body}</p>
+            </GlassCard>
           </motion.div>
         ))}
       </div>

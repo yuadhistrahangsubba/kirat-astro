@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { OrbitalEmblem } from "@/components/marketing/orbital-emblem";
+import { ChartWheel } from "@/components/marketing/chart-wheel";
 import { Button } from "@/components/ui/button";
 
 const LINKS = [
@@ -10,10 +10,10 @@ const LINKS = [
 
 export function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/60 bg-background/70 backdrop-blur-md">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-background/60 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2.5">
-          <OrbitalEmblem size="sm" />
+          <ChartWheel size="sm" />
           <span className="font-serif text-lg italic tracking-tight">Astro Himalaya</span>
         </Link>
 

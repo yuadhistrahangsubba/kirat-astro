@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
-import { GrainOverlay } from "@/components/marketing/grain-overlay";
+import { Inter, Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { CosmicBackground } from "@/components/marketing/cosmic-background";
 import { Navbar } from "@/components/marketing/navbar";
 import { Footer } from "@/components/marketing/footer";
 import { QueryProvider } from "@/providers/query-provider";
@@ -14,15 +14,14 @@ const display = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
-const body = Instrument_Sans({
+const body = Plus_Jakarta_Sans({
   variable: "--font-body",
   subsets: ["latin"],
 });
 
-const mono = IBM_Plex_Mono({
-  variable: "--font-instrument-mono",
+const denseUi = Inter({
+  variable: "--font-dense-ui",
   subsets: ["latin"],
-  weight: ["400", "500"],
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
@@ -51,11 +50,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${display.variable} ${body.variable} ${mono.variable} font-sans antialiased`}
+        className={`${display.variable} ${body.variable} ${denseUi.variable} font-sans antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <QueryProvider>
-            <GrainOverlay />
+            <CosmicBackground />
             <Navbar />
             {children}
             <Footer />

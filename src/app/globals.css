@@ -29,82 +29,84 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  /* ── Typography ───────────────────────────────────────── */
-  --font-serif: var(--font-display);
-  --font-sans: var(--font-body);
-  --font-mono: var(--font-instrument-mono);
+  /* ── Typography — three fonts, three jobs ──────────────── */
+  --font-serif: var(--font-display);  /* Instrument Serif — headings */
+  --font-sans: var(--font-body);      /* Plus Jakarta Sans — UI & body */
+  --font-dense: var(--font-dense-ui); /* Inter — small/dense text */
 
-  /* ── Radius scale — crisp, architectural, not bubbly ───── */
+  /* ── Radius scale ─────────────────────────────────────── */
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --radius-2xl: calc(var(--radius) + 12px);
 
   /* ── Signature palette (always available) ──────────────── */
-  --color-gold:        oklch(0.74 0.12 75);   /* antique brass, the one accent */
-  --color-gold-bright: oklch(0.82 0.13 80);   /* hover / glow state */
-  --color-gold-dim:    oklch(0.42 0.09 75);   /* legible gold-on-light */
-  --color-ink:         oklch(0.10 0.014 275); /* the void */
-  --color-parchment:   oklch(0.96 0.008 85);  /* warm paper */
-  --color-crimson:     oklch(0.5 0.16 25);    /* rare accent, used once or twice */
+  --color-gold:           oklch(0.78 0.14 80);
+  --color-gold-bright:    oklch(0.85 0.14 82);
+  --color-gold-dim:       oklch(0.42 0.09 75);
+  --color-aurora-violet:  oklch(0.55 0.21 300);
+  --color-aurora-cyan:    oklch(0.72 0.15 195);
+  --color-aurora-magenta: oklch(0.62 0.20 340);
+  --color-ink:            oklch(0.08 0.025 285);
 }
 
-/* ── Dark: Observatory at Midnight (default identity) ─────── */
+/* ── Dark: default identity — the cosmos ──────────────────── */
 :root {
-  --radius: 0.5rem;
+  --radius: 0.875rem;
 
-  --background:            oklch(0.10 0.014 275);
-  --foreground:            oklch(0.94 0.008 85);
-  --card:                  oklch(0.13 0.016 275);
-  --card-foreground:       oklch(0.94 0.008 85);
-  --popover:               oklch(0.13 0.016 275);
-  --popover-foreground:    oklch(0.94 0.008 85);
-  --primary:               oklch(0.74 0.12 75);      /* antique gold */
-  --primary-foreground:    oklch(0.12 0.02 275);
-  --secondary:             oklch(0.17 0.018 275);
-  --secondary-foreground:  oklch(0.90 0.01 85);
-  --muted:                 oklch(0.16 0.016 275);
-  --muted-foreground:      oklch(0.62 0.018 90);
-  --accent:                oklch(0.74 0.12 75);
-  --accent-foreground:     oklch(0.12 0.02 275);
-  --destructive:           oklch(0.6 0.19 25);
-  --border:                oklch(0.94 0.008 85 / 10%);
-  --input:                 oklch(0.94 0.008 85 / 14%);
-  --ring:                  oklch(0.74 0.12 75 / 60%);
+  --background:            oklch(0.08 0.025 285);
+  --foreground:            oklch(0.95 0.01 90);
+  --card:                  oklch(0.15 0.03 285);
+  --card-foreground:       oklch(0.95 0.01 90);
+  --popover:               oklch(0.15 0.03 285);
+  --popover-foreground:    oklch(0.95 0.01 90);
+  --primary:               oklch(0.78 0.14 80);
+  --primary-foreground:    oklch(0.12 0.02 285);
+  --secondary:             oklch(0.19 0.03 285);
+  --secondary-foreground:  oklch(0.9 0.01 90);
+  --muted:                 oklch(0.17 0.028 285);
+  --muted-foreground:      oklch(0.65 0.02 90);
+  --accent:                oklch(0.78 0.14 80);
+  --accent-foreground:     oklch(0.12 0.02 285);
+  --destructive:           oklch(0.62 0.2 25);
+  --border:                oklch(0.95 0.01 90 / 10%);
+  --input:                 oklch(0.95 0.01 90 / 14%);
+  --ring:                  oklch(0.78 0.14 80 / 55%);
 
-  --chart-1:               oklch(0.74 0.12 75);
-  --chart-2:               oklch(0.55 0.12 230);
-  --chart-3:               oklch(0.5 0.16 25);
-  --chart-4:               oklch(0.5 0.09 155);
-  --chart-5:               oklch(0.62 0.16 275);
+  --chart-1:               oklch(0.78 0.14 80);
+  --chart-2:               oklch(0.65 0.19 300);
+  --chart-3:               oklch(0.75 0.15 200);
+  --chart-4:               oklch(0.68 0.20 340);
+  --chart-5:               oklch(0.55 0.12 230);
 }
 
-/* ── Light: Vellum & Bronze (secondary identity) ──────────── */
+/* ── Light: secondary identity — bronze on vellum ─────────── */
 .light {
   --background:            oklch(0.97 0.008 85);
-  --foreground:            oklch(0.16 0.02 275);
+  --foreground:            oklch(0.16 0.02 285);
   --card:                  oklch(0.99 0.005 85);
-  --card-foreground:       oklch(0.16 0.02 275);
+  --card-foreground:       oklch(0.16 0.02 285);
   --popover:               oklch(0.99 0.005 85);
-  --popover-foreground:    oklch(0.16 0.02 275);
-  --primary:               oklch(0.42 0.09 75);       /* deep bronze, legible on paper */
+  --popover-foreground:    oklch(0.16 0.02 285);
+  --primary:               oklch(0.42 0.09 75);
   --primary-foreground:    oklch(0.98 0.005 85);
   --secondary:             oklch(0.93 0.012 85);
-  --secondary-foreground:  oklch(0.22 0.02 275);
+  --secondary-foreground:  oklch(0.22 0.02 285);
   --muted:                 oklch(0.92 0.01 85);
-  --muted-foreground:      oklch(0.45 0.02 275);
+  --muted-foreground:      oklch(0.45 0.02 285);
   --accent:                oklch(0.42 0.09 75);
   --accent-foreground:     oklch(0.98 0.005 85);
   --destructive:           oklch(0.55 0.19 25);
-  --border:                oklch(0.16 0.02 275 / 10%);
-  --input:                 oklch(0.16 0.02 275 / 12%);
+  --border:                oklch(0.16 0.02 285 / 10%);
+  --input:                 oklch(0.16 0.02 285 / 12%);
   --ring:                  oklch(0.42 0.09 75 / 50%);
 
   --chart-1:               oklch(0.42 0.09 75);
-  --chart-2:               oklch(0.45 0.11 230);
-  --chart-3:               oklch(0.5 0.16 25);
-  --chart-4:               oklch(0.4 0.08 155);
-  --chart-5:               oklch(0.45 0.13 275);
+  --chart-2:               oklch(0.45 0.15 300);
+  --chart-3:               oklch(0.45 0.11 200);
+  --chart-4:               oklch(0.5 0.16 340);
+  --chart-5:               oklch(0.45 0.13 230);
 }
 
 /* ── Base layer ───────────────────────────────────────────── */
@@ -124,7 +126,7 @@
   }
 }
 
-/* ── Signature details: selection, scrollbar, focus ───────── */
+/* ── Signature details: selection, scrollbar ──────────────── */
 ::selection {
   background: var(--color-gold);
   color: var(--color-ink);
@@ -147,42 +149,16 @@
   border: 2px solid transparent;
 }
 
-/* ── Ambient motion: slow, meditative — never flashy ──────── */
-@keyframes orbit-cw {
-  to { transform: rotate(360deg); }
-}
-@keyframes orbit-ccw {
-  to { transform: rotate(-360deg); }
-}
-@keyframes breathe {
-  0%, 100% { opacity: 0.55; transform: scale(1); }
-  50%      { opacity: 1; transform: scale(1.04); }
-}
-
-.animate-orbit-slow {
-  animation: orbit-cw 90s linear infinite;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.animate-orbit-slower {
-  animation: orbit-ccw 140s linear infinite;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.animate-orbit-slowest {
-  animation: orbit-cw 220s linear infinite;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.animate-breathe {
-  animation: breathe 6s ease-in-out infinite;
-}
+/* All motion is authored in Motion (Framer Motion) with spring physics —
+   intentionally no @keyframes / CSS animation here. Ambient decorative
+   layers (aurora, stars, particles) and interactive states (hover, press,
+   reveal) all go through the same physics system so the whole product
+   feels like one coherent, living surface rather than mixed timing curves. */
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-orbit-slow,
-  .animate-orbit-slower,
-  .animate-orbit-slowest,
-  .animate-breathe {
-    animation: none;
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }
