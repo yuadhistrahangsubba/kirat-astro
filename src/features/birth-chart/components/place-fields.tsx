@@ -84,7 +84,7 @@ export function PlaceFields() {
           aria-controls={listId}
           aria-autocomplete="list"
           autoComplete="off"
-          placeholder="Start typing — e.g. Tsirang, Kathmandu, Darjeeling"
+          placeholder="Start typing — e.g. Thimphu, Paro, Punakha"
           {...placeRegistration}
           onChange={(event) => {
             placeRegistration.onChange(event);
@@ -165,13 +165,13 @@ export function PlaceFields() {
             <Label htmlFor="latitude" className="text-xs text-muted-foreground">
               Latitude
             </Label>
-            <Input id="latitude" type="number" step="any" placeholder="27.02" {...register("latitude")} />
+            <Input id="latitude" type="number" step="any" placeholder="27.47" {...register("latitude")} />
           </div>
           <div className="grid gap-1.5">
             <Label htmlFor="longitude" className="text-xs text-muted-foreground">
               Longitude
             </Label>
-            <Input id="longitude" type="number" step="any" placeholder="90.12" {...register("longitude")} />
+            <Input id="longitude" type="number" step="any" placeholder="89.64" {...register("longitude")} />
           </div>
           <div className="col-span-2 grid gap-1.5">
             <Label htmlFor="timezone" className="text-xs text-muted-foreground">

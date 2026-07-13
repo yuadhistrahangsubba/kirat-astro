@@ -16,7 +16,7 @@ export function Navbar() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2.5">
           <ChartWheel size="sm" />
-          <span className="font-serif text-lg italic tracking-tight">Astro Himalaya</span>
+          <span className="font-serif text-lg italic tracking-tight">Kirat Astro</span>
         </Link>
 
         <nav aria-label="Primary" className="hidden items-center gap-8 sm:flex">

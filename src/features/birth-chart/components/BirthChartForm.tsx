@@ -5,6 +5,7 @@ import { AlertCircle, Loader2, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
+import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import { Button } from "@/components/ui/button";
 import { computeChart, type ChartResult } from "@/services/astrology";
 
@@ -37,7 +38,13 @@ export function BirthChartForm() {
 
   return (
     <div>
-      <h3 className="font-serif text-xl">Get your Kundli</h3>
+      <PrayerFlagAccent className="mb-4" />
+      <div className="flex items-baseline justify-between gap-3">
+        <h3 className="font-serif text-xl">Get your Kundli</h3>
+        <span lang="dz" className="font-dzongkha text-sm text-gold/80">
+          སྐར་རྩིས
+        </span>
+      </div>
       <p className="mt-1.5 text-sm text-muted-foreground">
         Enter your birth details — place and time as precisely as you know them.
       </p>

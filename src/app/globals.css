@@ -33,6 +33,7 @@
   --font-serif: var(--font-display);  /* Instrument Serif — headings */
   --font-sans: var(--font-body);      /* Plus Jakarta Sans — UI & body */
   --font-dense: var(--font-dense-ui); /* Inter — small/dense text */
+  --font-dzongkha: var(--font-tibetan); /* Noto Serif Tibetan — Dzongkha labels */
 
   /* ── Radius scale ─────────────────────────────────────── */
   --radius-sm: calc(var(--radius) - 4px);

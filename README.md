@@ -1,4 +1,4 @@
-# Astro Himalaya
+# Kirat Astro
 
 Vedic astrology platform for Bhutan, Nepal, India, and the Himalayan diaspora. Standalone project — its own git history, its own deploy, nothing shared with any other project in this workspace.
 
