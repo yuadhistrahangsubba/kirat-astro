@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 
 import { ChartWheel } from "@/components/marketing/chart-wheel";
-import { GlassCard } from "@/components/marketing/glass-card";
 import { BirthChartForm } from "@/features/birth-chart/components/BirthChartForm";
 
 export function AstroPageContent() {
@@ -16,7 +15,7 @@ export function AstroPageContent() {
           transition={{ type: "spring", stiffness: 100, damping: 16 }}
         >
           <p className="font-dense text-xs tracking-[0.2em] text-gold uppercase">Birth chart calculator</p>
-          <h1 className="mt-4 font-serif text-3xl italic sm:text-4xl">Calculate your astrology</h1>
+          <h1 className="mt-4 font-sans text-3xl font-bold tracking-wide sm:text-4xl">Calculate your astrology</h1>
           <p className="mt-4 max-w-sm text-muted-foreground">
             Sun, Moon, and Ascendant are calculated for real — sidereal positions, nakshatra, and planetary
             periods included. Mercury through Pluto aren&apos;t wired up yet.
@@ -26,16 +25,9 @@ export function AstroPageContent() {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", stiffness: 100, damping: 16, delay: 0.1 }}
-          className="justify-self-center"
-        >
-          <GlassCard className="w-full max-w-md">
-            <BirthChartForm />
-          </GlassCard>
-        </motion.div>
+        <div className="justify-self-center">
+          <BirthChartForm />
+        </div>
       </div>
     </main>
   );

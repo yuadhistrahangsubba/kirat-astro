@@ -1,9 +1,7 @@
 "use client";
 
-import { Clock } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -13,32 +11,14 @@ import { FieldError } from "./field-error";
 export function BirthDateTimeFields() {
   const {
     register,
-    setValue,
     watch,
     formState: { errors },
   } = useFormContext<BirthChartFormValues>();
   const timeUnknown = watch("birthTimeUnknown");
 
-  function fillNow() {
-    const now = new Date();
-    setValue("day", now.getDate(), { shouldValidate: true });
-    setValue("month", now.getMonth() + 1, { shouldValidate: true });
-    setValue("year", now.getFullYear(), { shouldValidate: true });
-    setValue("birthTimeUnknown", false);
-    setValue("hour", now.getHours(), { shouldValidate: true });
-    setValue("minute", now.getMinutes(), { shouldValidate: true });
-    setValue("second", now.getSeconds(), { shouldValidate: true });
-  }
-
   return (
     <fieldset className="grid gap-3">
-      <div className="flex items-center justify-between">
-        <legend className="text-sm leading-none font-medium select-none">Birth date & time</legend>
-        <Button type="button" variant="ghost" size="sm" onClick={fillNow} className="h-7 gap-1.5 text-xs">
-          <Clock className="size-3.5" aria-hidden="true" />
-          Now
-        </Button>
-      </div>
+      <legend className="sr-only">Birth date and time</legend>
 
       <div className="grid grid-cols-3 gap-3">
         <div className="grid gap-1.5">

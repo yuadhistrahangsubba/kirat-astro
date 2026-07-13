@@ -119,7 +119,7 @@ export function PlaceFields() {
           <ul
             id={listId}
             role="listbox"
-            className="absolute top-full right-0 left-0 z-20 mt-1 overflow-hidden rounded-md border border-input bg-popover shadow-xl shadow-black/40"
+            className="absolute top-full right-0 left-0 z-20 mt-1.5 overflow-hidden rounded-lg border border-border/70 bg-popover/95 shadow-xl shadow-black/30 backdrop-blur-xl"
           >
             {suggestions.map((place, i) => (
               <li key={`${place.name}-${place.region}`} role="option" aria-selected={i === highlighted}>
@@ -130,8 +130,8 @@ export function PlaceFields() {
                     if (blurTimeout.current) clearTimeout(blurTimeout.current);
                     selectPlace(place);
                   }}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-sm ${
-                    i === highlighted ? "bg-accent/15 text-foreground" : "text-foreground/85"
+                  className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-sm transition-colors ${
+                    i === highlighted ? "bg-gold/15 text-foreground" : "text-foreground/85 hover:bg-gold/5"
                   }`}
                 >
                   <span>{place.name}</span>

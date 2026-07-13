@@ -1,7 +1,8 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AlertCircle, Loader2, Sparkles } from "lucide-react";
+import { AlertCircle, Clock, Loader2, ShieldCheck, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -12,8 +13,19 @@ import { computeChart, type ChartResult } from "@/services/astrology";
 import { birthChartSchema, toBirthInput, type BirthChartFormValues } from "../schema";
 import { useBirthChartWizard } from "../store";
 import { BirthDateTimeFields } from "./birth-datetime-fields";
+import { FormChapter } from "./form-chapter";
 import { IdentityFields } from "./identity-fields";
 import { PlaceFields } from "./place-fields";
+
+const STAGGER = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.09, delayChildren: 0.05 } },
+};
+
+const RISE = {
+  hidden: { opacity: 0, y: 14 },
+  visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 140, damping: 18 } },
+};
 
 export function BirthChartForm() {
   const setDraft = useBirthChartWizard((s) => s.setDraft);
@@ -24,6 +36,36 @@ export function BirthChartForm() {
     resolver: zodResolver(birthChartSchema),
     defaultValues: { birthTimeUnknown: false, second: 0 },
   });
+  const { setValue, watch, formState } = form;
+
+  const name = watch("name");
+  const gender = watch("gender");
+  const day = watch("day");
+  const month = watch("month");
+  const year = watch("year");
+  const birthTimeUnknown = watch("birthTimeUnknown");
+  const hour = watch("hour");
+  const minute = watch("minute");
+  const placeName = watch("placeName");
+  const latitude = watch("latitude");
+  const longitude = watch("longitude");
+  const timezone = watch("timezone");
+
+  const identityDone = Boolean(name?.toString().trim()) && Boolean(gender);
+  const momentDone =
+    Boolean(day) && Boolean(month) && Boolean(year) && (birthTimeUnknown || (Boolean(hour) && minute !== undefined));
+  const placeDone = Boolean(placeName?.toString().trim()) && latitude !== undefined && longitude !== undefined && Boolean(timezone);
+
+  function fillNow() {
+    const now = new Date();
+    setValue("day", now.getDate(), { shouldValidate: true });
+    setValue("month", now.getMonth() + 1, { shouldValidate: true });
+    setValue("year", now.getFullYear(), { shouldValidate: true });
+    setValue("birthTimeUnknown", false);
+    setValue("hour", now.getHours(), { shouldValidate: true });
+    setValue("minute", now.getMinutes(), { shouldValidate: true });
+    setValue("second", now.getSeconds(), { shouldValidate: true });
+  }
 
   function onSubmit(values: BirthChartFormValues) {
     setDraft(values);
@@ -37,66 +79,146 @@ export function BirthChartForm() {
   }
 
   return (
-    <div>
-      <PrayerFlagAccent className="mb-4" />
-      <div className="flex items-baseline justify-between gap-3">
-        <h3 className="font-serif text-xl">Get your Kundli</h3>
-        <span lang="dz" className="font-dzongkha text-sm text-gold/80">
-          སྐར་རྩིས
-        </span>
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 90, damping: 18 }}
+      className="relative w-full max-w-md"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute -inset-px rounded-[calc(var(--radius-2xl)+1px)] bg-gradient-to-br from-gold/50 via-gold/10 to-transparent"
+      />
+      <div className="relative rounded-2xl border border-border/60 bg-card/90 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,.35)] backdrop-blur-xl sm:p-8">
+        <div className="flex items-center justify-between">
+          <span className="font-dense text-[11px] tracking-[0.25em] text-gold uppercase">Vedic Birth Chart</span>
+          <span lang="dz" className="font-dzongkha text-sm text-gold/70">
+            སྐར་རྩིས
+          </span>
+        </div>
+        <h3 className="mt-2 font-sans text-2xl font-bold tracking-wide">Get your Kundli</h3>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          Enter your birth details — place and time as precisely as you know them.
+        </p>
+        <PrayerFlagAccent className="mt-5 mb-7 opacity-70" />
+
+        <FormProvider {...form}>
+          <motion.form
+            onSubmit={form.handleSubmit(onSubmit)}
+            initial="hidden"
+            animate="visible"
+            variants={STAGGER}
+            className="grid gap-1"
+          >
+            <motion.div variants={RISE}>
+              <FormChapter numeral="01" title="Who you are" complete={identityDone}>
+                <IdentityFields />
+              </FormChapter>
+            </motion.div>
+
+            <motion.div variants={RISE}>
+              <FormChapter
+                numeral="02"
+                title="Your birth moment"
+                complete={momentDone}
+                action={
+                  <Button type="button" variant="ghost" size="sm" onClick={fillNow} className="h-7 gap-1.5 text-xs">
+                    <Clock className="size-3.5" aria-hidden="true" />
+                    Now
+                  </Button>
+                }
+              >
+                <BirthDateTimeFields />
+              </FormChapter>
+            </motion.div>
+
+            <motion.div variants={RISE}>
+              <FormChapter numeral="03" title="Where you were born" complete={placeDone} isLast>
+                <PlaceFields />
+              </FormChapter>
+            </motion.div>
+
+            {engineMessage && (
+              <motion.div
+                variants={RISE}
+                className="flex items-start gap-2 rounded-md border border-accent/30 bg-accent/10 p-3 text-sm text-foreground"
+              >
+                <AlertCircle className="mt-0.5 size-4 shrink-0 text-accent" />
+                <span>{engineMessage}</span>
+              </motion.div>
+            )}
+
+            {result && <ChartSummary result={result} />}
+
+            <motion.div variants={RISE} className="mt-5">
+              <Button type="submit" disabled={formState.isSubmitting} breathing className="w-full">
+                {formState.isSubmitting ? <Loader2 className="animate-spin" /> : <Sparkles />}
+                Show Kundli
+              </Button>
+              <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[11px] text-muted-foreground/80">
+                <ShieldCheck className="size-3.5 text-gold" aria-hidden="true" />
+                Calculated privately — your birth details are never shared.
+              </p>
+            </motion.div>
+          </motion.form>
+        </FormProvider>
       </div>
-      <p className="mt-1.5 text-sm text-muted-foreground">
-        Enter your birth details — place and time as precisely as you know them.
-      </p>
-
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="mt-6 grid gap-5">
-          <IdentityFields />
-          <BirthDateTimeFields />
-          <PlaceFields />
-
-          {engineMessage && (
-            <div className="flex items-start gap-2 rounded-md border border-accent/30 bg-accent/10 p-3 text-sm text-foreground">
-              <AlertCircle className="mt-0.5 size-4 shrink-0 text-accent" />
-              <span>{engineMessage}</span>
-            </div>
-          )}
-
-          {result && <ChartSummary result={result} />}
-
-          <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-            {form.formState.isSubmitting ? <Loader2 className="animate-spin" /> : <Sparkles />}
-            Show Kundli
-          </Button>
-        </form>
-      </FormProvider>
-    </div>
+    </motion.div>
   );
 }
 
+const SEALS = (result: ChartResult) =>
+  [
+    { glyph: "☉", label: "Sun", sign: result.sun.rashi.signName, sub: result.sun.nakshatra.name },
+    { glyph: "☽", label: "Moon", sign: result.moon.rashi.signName, sub: result.moon.nakshatra.name },
+    result.ascendant ? { glyph: "↑", label: "Ascendant", sign: result.ascendant.rashi.signName, sub: null } : null,
+  ].filter((seal): seal is { glyph: string; label: string; sign: string; sub: string | null } => seal !== null);
+
 function ChartSummary({ result }: { result: ChartResult }) {
+  const seals = SEALS(result);
+
   return (
-    <div className="grid gap-1.5 rounded-md border border-border bg-secondary/40 p-3 text-sm">
-      <p>
-        <span className="text-muted-foreground">Sun:</span> {result.sun.rashi.signName} ·{" "}
-        {result.sun.nakshatra.name}
-      </p>
-      <p>
-        <span className="text-muted-foreground">Moon:</span> {result.moon.rashi.signName} ·{" "}
-        {result.moon.nakshatra.name}
-      </p>
-      {result.ascendant ? (
-        <p>
-          <span className="text-muted-foreground">Ascendant:</span> {result.ascendant.rashi.signName}
-        </p>
-      ) : (
-        <p className="text-xs text-muted-foreground">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 120, damping: 18 }}
+      className="relative mt-2 overflow-hidden rounded-xl border border-gold/25 bg-gradient-to-b from-gold/10 to-transparent p-5"
+    >
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_50%_at_50%_0%,color-mix(in_oklch,var(--color-gold)_18%,transparent),transparent)]"
+      />
+      <p className="text-center font-dense text-[11px] tracking-[0.25em] text-gold uppercase">Your Kundli</p>
+
+      <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-4">
+        {seals.map((seal, i) => (
+          <motion.div
+            key={seal.label}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.15 + i * 0.12, type: "spring", stiffness: 210, damping: 16 }}
+            className="flex flex-col items-center text-center"
+          >
+            <div className="flex size-12 items-center justify-center rounded-full border-2 border-gold/40 bg-background text-xl text-primary shadow-[0_0_20px_-6px_var(--color-gold)]">
+              {seal.glyph}
+            </div>
+            <p className="mt-2 text-[10px] font-bold tracking-widest text-muted-foreground uppercase">
+              {seal.label}
+            </p>
+            <p className="text-sm font-bold">{seal.sign}</p>
+            {seal.sub && <p className="text-[11px] text-muted-foreground">{seal.sub}</p>}
+          </motion.div>
+        ))}
+      </div>
+
+      {!result.ascendant && (
+        <p className="mt-4 text-center text-xs text-muted-foreground">
           Ascendant needs an exact birth time — add one above to see it.
         </p>
       )}
-      <p className="text-xs text-muted-foreground">
+      <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
         Mercury through Pluto aren&apos;t placed yet — this engine only has verified Sun/Moon positions so far.
       </p>
-    </div>
+    </motion.div>
   );
 }

@@ -256,8 +256,8 @@
     padding:18px;
     font-size:21px;
     font-weight:700;
-    font-family:var(--font-serif), serif;
-    letter-spacing:.01em;
+    font-family:var(--font-sans), sans-serif;
+    letter-spacing:.02em;
 }
 
 .weekdays{
@@ -582,8 +582,9 @@
 .pageContentInner h2{
     margin-bottom:16px;
     color:var(--primary);
-    font-family:var(--font-serif), serif;
-    font-style:italic;
+    font-family:var(--font-sans), sans-serif;
+    font-weight:700;
+    letter-spacing:.02em;
     font-size:24px;
 }
 
@@ -634,8 +635,9 @@
 
 .yearViewHeader h2{
     color:var(--primary);
-    font-family:var(--font-serif), serif;
-    font-style:italic;
+    font-family:var(--font-sans), sans-serif;
+    font-weight:700;
+    letter-spacing:.02em;
     font-size:22px;
     min-width:70px;
     text-align:center;
@@ -676,7 +678,8 @@
     text-align:center;
     font-weight:700;
     color:var(--primary);
-    font-family:var(--font-serif), serif;
+    font-family:var(--font-sans), sans-serif;
+    letter-spacing:.01em;
     font-size:17px;
     margin-bottom:6px;
     line-height:1.3;

@@ -26,7 +26,7 @@ export function ContactPageContent() {
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ type: "spring", stiffness: 110, damping: 16, delay: 0.05 }}
-        className="mt-4 text-center font-serif text-3xl italic sm:text-4xl"
+        className="mt-4 text-center font-sans text-3xl font-bold tracking-wide sm:text-4xl"
       >
         Talk to an astrologer
       </motion.h1>
@@ -55,7 +55,7 @@ export function ContactPageContent() {
               <User className="size-9 text-gold" aria-hidden="true" />
             </motion.div>
 
-            <h2 className="font-serif text-xl italic">{ASTROLOGER.name}</h2>
+            <h2 className="font-sans text-xl font-bold tracking-wide">{ASTROLOGER.name}</h2>
 
             <div className="flex flex-col gap-2 text-sm text-muted-foreground">
               <a

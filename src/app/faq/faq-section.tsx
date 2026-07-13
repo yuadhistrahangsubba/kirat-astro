@@ -54,7 +54,7 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
         onClick={() => setIsOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-4 text-left"
       >
-        <span className="font-serif text-lg">{question}</span>
+        <span className="font-sans text-lg font-semibold tracking-wide">{question}</span>
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 22 }}
@@ -84,7 +84,7 @@ export function Faq() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
         transition={{ type: "spring", stiffness: 110, damping: 16 }}
-        className="text-center font-serif text-3xl italic sm:text-4xl"
+        className="text-center font-sans text-3xl font-bold tracking-wide sm:text-4xl"
       >
         Questions, answered
       </motion.h2>

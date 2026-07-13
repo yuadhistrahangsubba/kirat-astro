@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import { CalendarThemedShell } from "@/features/kirat-calendar/components/CalendarThemedShell";
 import { ContactPageContent } from "./contact-page-content";
 
 export const metadata: Metadata = {
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
-  return <ContactPageContent />;
+  return (
+    <CalendarThemedShell>
+      <ContactPageContent />
+    </CalendarThemedShell>
+  );
 }
