@@ -78,3 +78,73 @@ export function calculateVimshottariDasha(
 export function findMahadashaAt(periods: MahadashaPeriod[], at: Date): MahadashaPeriod | undefined {
   return periods.find((period) => at >= period.startDate && at < period.endDate);
 }
+
+export interface AntardashaPeriod {
+  planet: DashaPlanet;
+  startDate: Date;
+  endDate: Date;
+  durationYears: number;
+}
+
+/**
+ * Each Mahadasha's true, un-truncated theoretical span — unlike
+ * `calculateVimshottariDasha`, whose first period is deliberately
+ * clipped to only the remaining balance at birth (right for display —
+ * "here's what's left of the Ketu period"), Antardasha proportions and
+ * absolute dates are always fractions of a Mahadasha's *full* nominal
+ * length, so the first entry here legitimately starts before birth.
+ * `calculateAntardasha` is built on this, not on the truncated periods.
+ */
+export function calculateMahadashaTheoreticalSpans(
+  moonSiderealLongitude: number,
+  birthUtc: Date,
+  periodsToInclude = 9,
+): MahadashaPeriod[] {
+  const nakshatra = nakshatraFromSiderealLongitude(moonSiderealLongitude);
+  const lordIndex = nakshatra.index % 9;
+  const elapsedFraction = nakshatra.degreesInNakshatra / NAKSHATRA_SPAN;
+
+  const firstPlanet = DASHA_SEQUENCE[lordIndex] as DashaPlanet;
+  const firstFullYears = DASHA_YEARS[firstPlanet];
+  const firstTheoreticalStart = new Date(
+    birthUtc.getTime() - elapsedFraction * firstFullYears * DAYS_PER_YEAR * MS_PER_DAY,
+  );
+
+  const periods: MahadashaPeriod[] = [];
+  let cursor = firstTheoreticalStart;
+
+  for (let i = 0; i < periodsToInclude; i++) {
+    const planet = DASHA_SEQUENCE[(lordIndex + i) % 9] as DashaPlanet;
+    const durationYears = DASHA_YEARS[planet];
+    const endDate = new Date(cursor.getTime() + durationYears * DAYS_PER_YEAR * MS_PER_DAY);
+
+    periods.push({ planet, startDate: cursor, endDate, durationYears });
+    cursor = endDate;
+  }
+
+  return periods;
+}
+
+/**
+ * The 9 Antardasha sub-periods within one Mahadasha, cycling the same
+ * 9-planet sequence starting from the Mahadasha's own lord, each
+ * proportional to `DASHA_YEARS[subLord]/120` of the Mahadasha's *full*
+ * length — pass a theoretical (un-truncated) span from
+ * `calculateMahadashaTheoreticalSpans`, not a birth-clipped display period.
+ */
+export function calculateAntardasha(mahadasha: Pick<MahadashaPeriod, "planet" | "startDate" | "durationYears">): AntardashaPeriod[] {
+  const lordIndex = DASHA_SEQUENCE.indexOf(mahadasha.planet);
+  const periods: AntardashaPeriod[] = [];
+  let cursor = mahadasha.startDate;
+
+  for (let i = 0; i < 9; i++) {
+    const planet = DASHA_SEQUENCE[(lordIndex + i) % 9] as DashaPlanet;
+    const durationYears = (DASHA_YEARS[planet] / 120) * mahadasha.durationYears;
+    const endDate = new Date(cursor.getTime() + durationYears * DAYS_PER_YEAR * MS_PER_DAY);
+
+    periods.push({ planet, startDate: cursor, endDate, durationYears });
+    cursor = endDate;
+  }
+
+  return periods;
+}

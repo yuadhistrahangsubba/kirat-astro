@@ -42,12 +42,47 @@ describe("computeChart", () => {
     expect(chart.vimshottariDasha.length).toBeGreaterThan(0);
   });
 
-  it("lists every planet beyond Sun/Moon as unavailable rather than fabricating a position", () => {
+  it("places every classical graha plus the outer planets", () => {
     const chart = computeChart(withTime);
-    expect(chart.unavailableBodies).toEqual(
-      expect.arrayContaining(["mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"]),
-    );
-    expect(chart.unavailableBodies).toHaveLength(8);
+    for (const body of ["mars", "mercury", "jupiter", "venus", "saturn", "rahu", "ketu"] as const) {
+      expect(chart[body].rashi.signName).toBeTruthy();
+      expect(chart[body].house).toBeGreaterThanOrEqual(1);
+      expect(chart[body].house).toBeLessThanOrEqual(12);
+    }
+    for (const body of ["uranus", "neptune", "pluto"] as const) {
+      expect(chart[body].rashi.signName).toBeTruthy();
+    }
+  });
+
+  it("Ketu sits exactly opposite Rahu", () => {
+    const chart = computeChart(withTime);
+    const diff = Math.abs(chart.rahu.siderealLongitude - chart.ketu.siderealLongitude);
+    expect(Math.min(diff, 360 - diff)).toBeCloseTo(180, 5);
+  });
+
+  it("computes a Navamsa sign for every graha, the outer planets, and the ascendant", () => {
+    const chart = computeChart(withTime);
+    expect(chart.navamsa.sun.signName).toBeTruthy();
+    expect(chart.navamsa.ketu.signName).toBeTruthy();
+    expect(chart.navamsa.uranus.signName).toBeTruthy();
+    expect(chart.navamsa.neptune.signName).toBeTruthy();
+    expect(chart.navamsa.pluto.signName).toBeTruthy();
+    expect(chart.navamsa.ascendant?.signName).toBeTruthy();
+  });
+
+  it("builds Antardasha sub-periods inside every Mahadasha, and a birth Dasha balance", () => {
+    const chart = computeChart(withTime);
+    expect(chart.vimshottariDasha).toHaveLength(9);
+    for (const mahadasha of chart.vimshottariDasha) {
+      expect(mahadasha.antardasha).toHaveLength(9);
+    }
+    expect(chart.dashaBalanceAtBirth.years).toBeGreaterThanOrEqual(0);
+  });
+
+  it("computes sunrise/sunset for the birth date and location even without an exact time", () => {
+    const chart = computeChart({ ...withTime, birthTime: undefined });
+    expect(chart.sunrise).toBeInstanceOf(Date);
+    expect(chart.sunset).toBeInstanceOf(Date);
   });
 
   it("produces a sensible Julian day and ayanamsa for a known date", () => {

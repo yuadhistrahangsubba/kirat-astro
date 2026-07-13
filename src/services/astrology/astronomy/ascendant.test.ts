@@ -3,13 +3,14 @@ import { describe, expect, it } from "vitest";
 import { calculateAscendant } from "./ascendant";
 
 describe("calculateAscendant", () => {
-  it("at the equator with zero obliquity, reduces to RAMC - 90 (the degenerate case that pins the sign)", () => {
-    // With no axial tilt, ecliptic = celestial equator, so the rising
-    // point is exactly 90 degrees behind the meridian in RA — this is
-    // independently derivable from the direction of sky rotation, not
-    // just re-deriving the formula, which is what makes it a real check.
+  it("at the equator with zero obliquity, reduces to RAMC + 90 (the degenerate case that pins the sign)", () => {
+    // With no axial tilt, ecliptic = celestial equator, and a rising
+    // point has hour angle H = -90 (6h before meridian transit), i.e.
+    // RA = RAMC + 90 — this is independently derivable from the
+    // direction of sky rotation, not just re-deriving the formula,
+    // which is what makes it a real check.
     for (const ramc of [0, 45, 90, 135, 200, 300, 359]) {
-      const expected = ((ramc - 90) % 360 + 360) % 360;
+      const expected = ((ramc + 90) % 360 + 360) % 360;
       expect(calculateAscendant(ramc, 0, 0)).toBeCloseTo(expected, 6);
     }
   });

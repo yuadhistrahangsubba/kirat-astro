@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 
-import { PlanetNotSupportedError } from "../errors";
 import { MeeusEphemerisProvider } from "./provider";
 
 describe("MeeusEphemerisProvider", () => {
@@ -12,10 +11,16 @@ describe("MeeusEphemerisProvider", () => {
     expect(provider.getPosition("moon", jd).longitudeDegrees).toBeGreaterThanOrEqual(0);
   });
 
-  it("throws PlanetNotSupportedError for every other body rather than guessing", () => {
+  it("delegates every other body to astronomy-engine with a valid normalized longitude", () => {
     const others = ["mercury", "venus", "mars", "jupiter", "saturn", "uranus", "neptune", "pluto"] as const;
     for (const body of others) {
-      expect(() => provider.getPosition(body, 2451545.0)).toThrow(PlanetNotSupportedError);
+      const position = provider.getPosition(body, 2451545.0);
+      expect(position.longitudeDegrees).toBeGreaterThanOrEqual(0);
+      expect(position.longitudeDegrees).toBeLessThan(360);
     }
+  });
+
+  it("still throws for a genuinely unknown body", () => {
+    expect(() => provider.getPosition("rahu" as never, 2451545.0)).toThrow();
   });
 });

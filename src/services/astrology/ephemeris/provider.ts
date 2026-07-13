@@ -1,13 +1,16 @@
-import { PlanetNotSupportedError } from "../errors";
 import { moonPosition } from "./moon";
+import { outerPlanetPosition } from "./outer-planets";
 import { sunPosition } from "./sun";
 import type { CelestialBody, EclipticPosition, EphemerisProvider } from "./types";
 
 /**
  * The only concrete EphemerisProvider in this package right now. Every
  * calculator depends on the `EphemerisProvider` interface, not on this
- * class or on sun.ts/moon.ts directly — swapping this for a Swiss
- * Ephemeris-backed implementation later is a one-file change.
+ * class, sun.ts/moon.ts, or outer-planets.ts directly. Sun and Moon keep
+ * their original hand-written low-precision series (tested, already
+ * accepted); every other body is delegated to the astronomy-engine
+ * library rather than hand-derived, since getting a planet's position
+ * subtly wrong is a real correctness bug for an astrology product.
  */
 export class MeeusEphemerisProvider implements EphemerisProvider {
   getPosition(body: CelestialBody, julianDay: number): EclipticPosition {
@@ -17,7 +20,7 @@ export class MeeusEphemerisProvider implements EphemerisProvider {
       case "moon":
         return moonPosition(julianDay);
       default:
-        throw new PlanetNotSupportedError(body);
+        return outerPlanetPosition(body, julianDay);
     }
   }
 }

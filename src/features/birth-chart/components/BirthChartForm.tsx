@@ -15,6 +15,7 @@ import { useBirthChartWizard } from "../store";
 import { BirthDateTimeFields } from "./birth-datetime-fields";
 import { FormChapter } from "./form-chapter";
 import { IdentityFields } from "./identity-fields";
+import type { KundliSubject } from "./kundli-report/kundli-report";
 import { PlaceFields } from "./place-fields";
 
 const STAGGER = {
@@ -27,7 +28,12 @@ const RISE = {
   visible: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 140, damping: 18 } },
 };
 
-export function BirthChartForm() {
+interface BirthChartFormProps {
+  /** Bubbles the computed chart (and the subject info the full report needs) up to the page, which renders the full-width Kundli report below this card. */
+  onResult?: (payload: { result: ChartResult; subject: KundliSubject } | null) => void;
+}
+
+export function BirthChartForm({ onResult }: BirthChartFormProps) {
   const setDraft = useBirthChartWizard((s) => s.setDraft);
   const [engineMessage, setEngineMessage] = useState<string | null>(null);
   const [result, setResult] = useState<ChartResult | null>(null);
@@ -71,8 +77,21 @@ export function BirthChartForm() {
     setDraft(values);
     setEngineMessage(null);
     setResult(null);
+    onResult?.(null);
     try {
-      setResult(computeChart(toBirthInput(values)));
+      const computed = computeChart(toBirthInput(values));
+      setResult(computed);
+      onResult?.({
+        result: computed,
+        subject: {
+          name: values.name,
+          gender: values.gender,
+          placeName: values.placeName,
+          timezone: values.timezone!,
+          latitude: values.latitude!,
+          longitude: values.longitude!,
+        },
+      });
     } catch (err) {
       setEngineMessage(err instanceof Error ? err.message : "Something went wrong.");
     }
@@ -217,7 +236,7 @@ function ChartSummary({ result }: { result: ChartResult }) {
         </p>
       )}
       <p className="mt-3 text-center text-[11px] text-muted-foreground/70">
-        Mercury through Pluto aren&apos;t placed yet — this engine only has verified Sun/Moon positions so far.
+        Scroll down for your full report — traditional table, Lagna &amp; Navamsa charts, and Vimshottari Dasha.
       </p>
     </motion.div>
   );
