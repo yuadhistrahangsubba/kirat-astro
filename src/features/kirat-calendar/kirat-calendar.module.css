@@ -40,12 +40,13 @@
 .container{
     width:95%;
     max-width:820px;
-    margin:96px auto 32px auto;
+    /* 156px clears the fixed header (~67px) + the calendar-only PageTopicHeader banner beneath it (~76px), plus a small gap. */
+    margin:156px auto 32px auto;
 }
 
 .todayInfo{
     position:sticky;
-    top:96px;
+    top:156px;
     z-index:9999;
     background:color-mix(in oklch, var(--card) 68%, transparent);
     backdrop-filter:blur(16px);
@@ -349,11 +350,11 @@
 
     .container{
         width:95%;
-        margin:100px auto 24px auto;
+        margin:150px auto 24px auto;
     }
 
     .todayInfo{
-        top:86px;
+        top:150px;
     }
 
     .day,
@@ -435,7 +436,7 @@
 .pageContent{
     width:95%;
     max-width:820px;
-    margin:112px auto 32px auto;
+    margin:156px auto 32px auto;
 }
 
 .pageContentInner{
@@ -483,7 +484,7 @@
 .yearView{
     width:92%;
     max-width:1320px;
-    margin:112px auto 32px auto;
+    margin:156px auto 32px auto;
 }
 
 .yearViewHeader{

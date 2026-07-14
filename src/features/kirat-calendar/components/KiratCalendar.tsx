@@ -16,6 +16,7 @@ import { CalendarHeader } from "./CalendarHeader";
 import { DayDetailsPanel } from "./DayDetailsPanel";
 import { InfoPage } from "./InfoPage";
 import { MonthYearControls } from "./MonthYearControls";
+import { PageTopicHeader } from "./PageTopicHeader";
 import { TodayInfoBar } from "./TodayInfoBar";
 import { YearView } from "./YearView";
 
@@ -150,6 +151,7 @@ export function KiratCalendar() {
       {theme === "day" ? <SunlitBackground /> : <CosmicBackground />}
 
       <CalendarHeader onSelectHome={() => setViewMode("calendar")} onSelectInfoPage={handleSelectInfoPage} />
+      <PageTopicHeader />
 
       <AnimatePresence mode="wait">
         {viewMode === "calendar" && (
