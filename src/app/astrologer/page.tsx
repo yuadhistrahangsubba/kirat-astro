@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 
 import { CalendarThemedShell } from "@/features/kirat-calendar/components/CalendarThemedShell";
-import { ContactPageContent } from "./contact-page-content";
+import { AstrologerPageContent } from "./astrologer-page-content";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Astrologer",
 };
 
-export default function ContactPage() {
+export default function AstrologerPage() {
   return (
     <CalendarThemedShell>
-      <ContactPageContent />
+      <AstrologerPageContent />
     </CalendarThemedShell>
   );
 }
