@@ -8,9 +8,12 @@ import type { ChartResult } from "@/services/astrology";
 import { interpretAllDomains } from "@/services/astrology/interpretation";
 
 import { lagnaPlacements, navamsaPlacements } from "./chart-geometry";
+import { Doshas } from "./doshas";
 import { KundliPdfButton } from "./kundli-pdf";
 import { LifePredictions } from "./life-predictions";
 import { NorthIndianChart } from "./north-indian-chart";
+import { SadesatiTimeline } from "./sadesati-timeline";
+import { ShadbalaTable } from "./shadbala-table";
 import { TraditionalTable } from "./traditional-table";
 import { VimshottariDashaTable } from "./vimshottari-dasha-table";
 
@@ -92,6 +95,21 @@ export function KundliReport({ result, name, gender, placeName, timezone, latitu
       <motion.div variants={FADE_UP} className="mt-10">
         <SectionLabel>Vimshottari Dasha</SectionLabel>
         <VimshottariDashaTable periods={result.vimshottariDasha} />
+      </motion.div>
+
+      <motion.div variants={FADE_UP} className="mt-10">
+        <SectionLabel>Doshas</SectionLabel>
+        <Doshas manglik={result.manglikDosha} kalsarpa={result.kalsarpaDosha} />
+      </motion.div>
+
+      <motion.div variants={FADE_UP} className="mt-10">
+        <SectionLabel>Sadesati Timeline</SectionLabel>
+        <SadesatiTimeline periods={result.sadesatiPeriods} />
+      </motion.div>
+
+      <motion.div variants={FADE_UP} className="mt-10">
+        <SectionLabel>Planetary Strength</SectionLabel>
+        <ShadbalaTable basicShadbala={result.basicShadbala} />
       </motion.div>
 
       <motion.div variants={FADE_UP} className="mt-10">

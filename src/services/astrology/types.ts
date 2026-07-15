@@ -4,12 +4,17 @@
 
 import type { WesternSignPlacement } from "./western/zodiac-sign";
 import type { ZodiacPlacement } from "./constants";
+import type { BoundaryConfidenceResult } from "./confidence";
 import type { HouseCusps } from "./astronomy/houses";
 import type { AntardashaPeriod, MahadashaPeriod } from "./vedic/dasha";
+import type { ClassicalGraha } from "./vedic/dignity";
+import type { KalsarpaResult, ManglikResult } from "./vedic/doshas";
 import type { MoonPhaseResult } from "./moon-phase";
 import type { NakshatraPlacement } from "./vedic/nakshatra";
 import type { PanchangResult } from "./vedic/panchang";
 import type { RashiPlacement } from "./vedic/rashi";
+import type { SadesatiPeriod } from "./vedic/sadesati";
+import type { BasicShadbalaResult } from "./vedic/shadbala";
 
 export interface BirthInput {
   birthDate: string; // ISO date, e.g. "1998-04-12"
@@ -105,7 +110,15 @@ export interface ChartResult {
   vimshottariDasha: MahadashaWithAntardasha[];
   /** Remaining balance of the birth (first) Mahadasha, as it's conventionally reported — Y/M/D. */
   dashaBalanceAtBirth: DashaBalance;
+  /** How close the Moon sits to a nakshatra-pada boundary — see confidence.ts's doc comment for why this specifically is flagged. */
+  dashaConfidence: BoundaryConfidenceResult;
   moonPhase: MoonPhaseResult;
   sunrise?: Date;
   sunset?: Date;
+  manglikDosha: ManglikResult;
+  kalsarpaDosha: KalsarpaResult;
+  /** The birth-anchored Saturn transit timeline, ~100 years forward from birth. */
+  sadesatiPeriods: SadesatiPeriod[];
+  /** A deliberately partial (3-of-6) Shadbala per classical graha — see shadbala.ts's doc comment for scope. */
+  basicShadbala: Record<ClassicalGraha, BasicShadbalaResult>;
 }

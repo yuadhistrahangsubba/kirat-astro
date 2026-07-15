@@ -30,8 +30,8 @@ export const NAKSHATRAS = [
   "Revati",
 ] as const;
 
-const NAKSHATRA_SPAN = 360 / 27; // 13°20'
-const PADA_SPAN = NAKSHATRA_SPAN / 4; // 3°20'
+export const NAKSHATRA_SPAN = 360 / 27; // 13°20'
+export const PADA_SPAN = NAKSHATRA_SPAN / 4; // 3°20'
 
 export interface NakshatraPlacement {
   index: number; // 0-26

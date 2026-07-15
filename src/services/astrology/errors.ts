@@ -1,18 +1,21 @@
 /**
- * Thrown by the ephemeris provider for any body it doesn't have a real
- * position formula for. Sun and Moon use documented series (see
- * ephemeris/sun.ts, ephemeris/moon.ts); Mercury through Pluto need
- * either full VSOP87 term tables or a Swiss Ephemeris binding, neither
- * of which is wired up — this error exists so callers get a clear
- * signal instead of a silently wrong position.
+ * Thrown for any body the ephemeris layer genuinely doesn't have a
+ * position source for. In practice every `CelestialBody` this package
+ * knows about today is covered — Sun via a documented Meeus series
+ * (ephemeris/sun.ts), everything else including the Moon via
+ * astronomy-engine (ephemeris/engine-bodies.ts) — so this is a guard
+ * for a future new body added to the `CelestialBody` type without a
+ * matching case in `engine-bodies.ts`'s `BODY_MAP`, not a currently
+ * reachable state. Kept so that future gap gets a clear signal instead
+ * of a silently wrong position.
  */
 export class PlanetNotSupportedError extends Error {
   constructor(body: string) {
     super(
-      `No ephemeris implementation for "${body}" yet. Sun and Moon are ` +
-        "implemented via documented low-precision series (Meeus). Every " +
-        "other body needs VSOP87 term tables or a Swiss Ephemeris " +
-        "binding — decide which before adding it here.",
+      `No ephemeris implementation for "${body}" yet. Sun is implemented ` +
+        "via a documented low-precision series (Meeus); every other body " +
+        "is expected to go through astronomy-engine — add it to " +
+        "engine-bodies.ts's BODY_MAP.",
     );
     this.name = "PlanetNotSupportedError";
   }

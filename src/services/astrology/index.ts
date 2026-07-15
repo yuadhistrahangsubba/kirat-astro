@@ -8,12 +8,16 @@ import { localSiderealTime } from "./astronomy/sidereal-time";
 import { calculateSunriseSunset } from "./astronomy/sunrise-sunset";
 import { localToUtc } from "./astronomy/timezone";
 import { lahiriAyanamsa } from "./ayanamsa/lahiri";
+import { assessBoundaryConfidence } from "./confidence";
 import { meanLunarNodeLongitude, meanLunarSouthNodeLongitude } from "./ephemeris/lunar-node";
 import { MeeusEphemerisProvider } from "./ephemeris/provider";
 import type { CelestialBody } from "./ephemeris/types";
 import { calculateMoonPhase } from "./moon-phase";
+import { CLASSICAL_GRAHAS, type ClassicalGraha } from "./vedic/dignity";
+import { checkKalsarpaDosha, checkManglikDosha } from "./vedic/doshas";
 import { navamsaFromSiderealLongitude } from "./vedic/navamsa";
 import { placeBody } from "./placements";
+import { calculateBasicShadbala } from "./vedic/shadbala";
 import type { BirthInput, ChartResult, Grahas } from "./types";
 import {
   calculateAntardasha,
@@ -22,10 +26,12 @@ import {
 } from "./vedic/dasha";
 import { calculatePanchang } from "./vedic/panchang";
 import { rashiFromSiderealLongitude } from "./vedic/rashi";
-import { nakshatraFromSiderealLongitude } from "./vedic/nakshatra";
+import { nakshatraFromSiderealLongitude, PADA_SPAN } from "./vedic/nakshatra";
+import { findSadesatiPeriods } from "./vedic/sadesati";
 import { tropicalZodiacSign } from "./western/zodiac-sign";
 
 export { PlanetNotSupportedError, CalculationNotImplementedError } from "./errors";
+export { ZODIAC_SIGNS } from "./constants";
 export { ascLord, nakshatraLord, rasiLord, starLord } from "./vedic/lords";
 export type * from "./types";
 
@@ -33,6 +39,7 @@ const AYANAMSA_NAME = "Lahiri (Chitrapaksha)";
 
 const GRAHA_BODIES: readonly CelestialBody[] = ["mars", "mercury", "jupiter", "venus", "saturn"];
 const OUTER_ONLY_BODIES: readonly CelestialBody[] = ["uranus", "neptune", "pluto"];
+const SADESATI_YEARS_AHEAD = 100;
 
 const ephemeris = new MeeusEphemerisProvider();
 
@@ -123,6 +130,41 @@ export function computeChart(input: BirthInput): ChartResult {
   const moonPhase = calculateMoonPhase(moon.tropicalLongitude, sun.tropicalLongitude);
   const { sunrise, sunset } = calculateSunriseSunset(input.birthDate, input.timezone, input.latitude, input.longitude);
 
+  const manglikDosha = checkManglikDosha(mars.rashi.signIndex, moon.rashi.signIndex, siderealAscendant !== undefined ? rashiFromSiderealLongitude(siderealAscendant).signIndex : undefined);
+
+  const classicalGrahaLongitudes: Record<ClassicalGraha, number> = {
+    Sun: sun.siderealLongitude,
+    Moon: moon.siderealLongitude,
+    Mars: mars.siderealLongitude,
+    Mercury: mercury.siderealLongitude,
+    Jupiter: jupiter.siderealLongitude,
+    Venus: venus.siderealLongitude,
+    Saturn: saturn.siderealLongitude,
+  };
+  const kalsarpaDosha = checkKalsarpaDosha(classicalGrahaLongitudes, rahu.siderealLongitude, ketu.siderealLongitude, rahu.house);
+
+  const sadesatiPeriods = findSadesatiPeriods(moon.rashi.signIndex, birthUtc, SADESATI_YEARS_AHEAD);
+
+  const grahaHouses: Record<ClassicalGraha, number | undefined> = {
+    Sun: sun.house, Moon: moon.house, Mars: mars.house, Mercury: mercury.house,
+    Jupiter: jupiter.house, Venus: venus.house, Saturn: saturn.house,
+  };
+  const basicShadbala = Object.fromEntries(
+    CLASSICAL_GRAHAS.map((planet) => [
+      planet,
+      calculateBasicShadbala(planet, classicalGrahaLongitudes[planet], grahaHouses[planet]),
+    ]),
+  ) as Record<ClassicalGraha, ReturnType<typeof calculateBasicShadbala>>;
+
+  // The Moon's nakshatra pada decides the starting Vimshottari Dasha lord
+  // and balance — the single most consequential number in the chart — so
+  // this flags births landing close enough to a pada boundary (3°20')
+  // that the reduced-precision pieces still in this engine (the linear
+  // Lahiri ayanamsa model; see ayanamsa/lahiri.ts) could plausibly tip it
+  // onto the wrong side, rather than reporting every chart with the same
+  // unearned confidence.
+  const dashaConfidence = assessBoundaryConfidence(moon.nakshatra.degreesInNakshatra % PADA_SPAN, PADA_SPAN);
+
   const result: ChartResult = {
     julianDayUtc,
     ayanamsaDegrees,
@@ -138,9 +180,14 @@ export function computeChart(input: BirthInput): ChartResult {
     panchang,
     vimshottariDasha,
     dashaBalanceAtBirth,
+    dashaConfidence,
     moonPhase,
     sunrise,
     sunset,
+    manglikDosha,
+    kalsarpaDosha,
+    sadesatiPeriods,
+    basicShadbala,
   };
 
   if (tropicalAscendant !== undefined && siderealAscendant !== undefined) {

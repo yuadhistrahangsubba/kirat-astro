@@ -1,6 +1,6 @@
 import { normalizeDegrees } from "../astronomy/angles";
 import { toJulianDay } from "../astronomy/julian-date";
-import { moonPosition } from "../ephemeris/moon";
+import { engineBodyPosition } from "../ephemeris/engine-bodies";
 import { sunPosition } from "../ephemeris/sun";
 
 const TARGETS = [
@@ -25,7 +25,8 @@ const HOUR_MS = 60 * 60 * 1000;
 
 function elongationAt(date: Date): number {
   const jd = toJulianDay(date);
-  return normalizeDegrees(moonPosition(jd).longitudeDegrees - sunPosition(jd).longitudeDegrees);
+  const moonLongitude = engineBodyPosition("moon", jd).longitudeDegrees;
+  return normalizeDegrees(moonLongitude - sunPosition(jd).longitudeDegrees);
 }
 
 /**
@@ -34,10 +35,9 @@ function elongationAt(date: Date): number {
  *
  * Elongation grows monotonically at ~0.5°/hour, so an hourly scan with
  * linear interpolation at each target crossing pins the time to within
- * a couple of minutes of what this Moon series supports. Absolute
- * accuracy is bounded by the reduced-precision Moon (see
- * ephemeris/moon.ts): typically well under an hour, worst case ~2h —
- * fine for "Full Moon · Jul 29", not for eclipse timing.
+ * a couple of minutes. The Moon position now comes from astronomy-engine
+ * (arc-second accurate), so the hourly-scan discretization — not the
+ * ephemeris — is the dominant source of error here.
  */
 export function findUpcomingLunarEvents(from: Date, daysAhead = 40): LunarPhaseEvent[] {
   const events: LunarPhaseEvent[] = [];
