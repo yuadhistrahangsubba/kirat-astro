@@ -16,7 +16,7 @@ interface VimshottariDashaTableProps {
 export function VimshottariDashaTable({ periods }: VimshottariDashaTableProps) {
   const now = new Date();
   const currentIndex = periods.findIndex((p) => p.startDate <= now && now < p.endDate);
-  const [openIndex, setOpenIndex] = useState(currentIndex >= 0 ? currentIndex : 0);
+  const [openIndex, setOpenIndex] = useState(-1);
 
   return (
     <div className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
