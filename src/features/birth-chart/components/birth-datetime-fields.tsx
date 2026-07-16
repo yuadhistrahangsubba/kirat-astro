@@ -25,21 +25,29 @@ export function BirthDateTimeFields() {
           <Label htmlFor="day" className="text-xs text-muted-foreground">
             Day
           </Label>
-          <Input id="day" type="number" inputMode="numeric" placeholder="15" {...register("day")} />
+          <Input id="day" type="number" inputMode="numeric" min={1} max={31} placeholder="15" {...register("day")} />
           <FieldError message={errors.day?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="month" className="text-xs text-muted-foreground">
             Month
           </Label>
-          <Input id="month" type="number" inputMode="numeric" placeholder="8" {...register("month")} />
+          <Input id="month" type="number" inputMode="numeric" min={1} max={12} placeholder="8" {...register("month")} />
           <FieldError message={errors.month?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="year" className="text-xs text-muted-foreground">
             Year
           </Label>
-          <Input id="year" type="number" inputMode="numeric" placeholder="1995" {...register("year")} />
+          <Input
+            id="year"
+            type="number"
+            inputMode="numeric"
+            min={1800}
+            max={new Date().getFullYear()}
+            placeholder="1995"
+            {...register("year")}
+          />
           <FieldError message={errors.year?.message} />
         </div>
       </div>
@@ -49,21 +57,48 @@ export function BirthDateTimeFields() {
           <Label htmlFor="hour" className="text-xs text-muted-foreground">
             Hrs (0–23)
           </Label>
-          <Input id="hour" type="number" inputMode="numeric" placeholder="08" disabled={timeUnknown} {...register("hour")} />
+          <Input
+            id="hour"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={23}
+            placeholder="08"
+            disabled={timeUnknown}
+            {...register("hour")}
+          />
           <FieldError message={errors.hour?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="minute" className="text-xs text-muted-foreground">
             Min
           </Label>
-          <Input id="minute" type="number" inputMode="numeric" placeholder="30" disabled={timeUnknown} {...register("minute")} />
+          <Input
+            id="minute"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={59}
+            placeholder="30"
+            disabled={timeUnknown}
+            {...register("minute")}
+          />
           <FieldError message={errors.minute?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="second" className="text-xs text-muted-foreground">
             Sec
           </Label>
-          <Input id="second" type="number" inputMode="numeric" placeholder="00" disabled={timeUnknown} {...register("second")} />
+          <Input
+            id="second"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            max={59}
+            placeholder="00"
+            disabled={timeUnknown}
+            {...register("second")}
+          />
           <FieldError message={errors.second?.message} />
         </div>
       </div>

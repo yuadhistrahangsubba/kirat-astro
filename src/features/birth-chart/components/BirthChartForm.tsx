@@ -41,8 +41,14 @@ export function BirthChartForm({ onResult }: BirthChartFormProps) {
   const form = useForm<BirthChartFormValues>({
     resolver: zodResolver(birthChartSchema),
     defaultValues: { birthTimeUnknown: false, second: 0 },
+    // Validate on blur (not just on submit) so an out-of-range value —
+    // a negative day, an hour of 25 — is flagged as soon as the user
+    // leaves the field, rather than only after they hit "Show Kundli".
+    mode: "onBlur",
+    reValidateMode: "onChange",
   });
   const { setValue, watch, formState } = form;
+  const { errors } = formState;
 
   const name = watch("name");
   const gender = watch("gender");
@@ -57,10 +63,23 @@ export function BirthChartForm({ onResult }: BirthChartFormProps) {
   const longitude = watch("longitude");
   const timezone = watch("timezone");
 
-  const identityDone = Boolean(name?.toString().trim()) && Boolean(gender);
+  // "Done" means present AND valid — a value like day=-2 is truthy but
+  // still invalid, and shouldn't light up the chapter's checkmark.
+  const identityDone = Boolean(name?.toString().trim()) && !errors.name && Boolean(gender) && !errors.gender;
   const momentDone =
-    Boolean(day) && Boolean(month) && Boolean(year) && (birthTimeUnknown || (Boolean(hour) && minute !== undefined));
-  const placeDone = Boolean(placeName?.toString().trim()) && latitude !== undefined && longitude !== undefined && Boolean(timezone);
+    Boolean(day) &&
+    !errors.day &&
+    Boolean(month) &&
+    !errors.month &&
+    Boolean(year) &&
+    !errors.year &&
+    (birthTimeUnknown || (Boolean(hour) && !errors.hour && minute !== undefined && !errors.minute));
+  const placeDone =
+    Boolean(placeName?.toString().trim()) &&
+    !errors.placeName &&
+    latitude !== undefined &&
+    longitude !== undefined &&
+    Boolean(timezone);
 
   function fillNow() {
     const now = new Date();
