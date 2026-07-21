@@ -10,6 +10,7 @@ import { interpretAllDomains } from "@/services/astrology/interpretation";
 import { lagnaPlacements, navamsaPlacements } from "./chart-geometry";
 import { Doshas } from "./doshas";
 import { KundliPdfButton } from "./kundli-pdf";
+import { KundliSeals } from "./kundli-seals";
 import { LifePredictions } from "./life-predictions";
 import { NorthIndianChart } from "./north-indian-chart";
 import { SadesatiTimeline } from "./sadesati-timeline";
@@ -63,6 +64,10 @@ export function KundliReport({ result, name, gender, placeName, timezone, latitu
             longitude={longitude}
           />
         </div>
+      </motion.div>
+
+      <motion.div variants={FADE_UP} className="mt-8">
+        <KundliSeals result={result} />
       </motion.div>
 
       <motion.div variants={FADE_UP} className="mt-10">
