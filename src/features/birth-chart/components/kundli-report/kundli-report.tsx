@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import type { ChartResult } from "@/services/astrology";
-import { interpretAllDomains } from "@/services/astrology/interpretation";
+import { computeAnnualForecast, interpretAllDomains } from "@/services/astrology/interpretation";
 
 import { lagnaPlacements, navamsaPlacements } from "./chart-geometry";
 import { Doshas } from "./doshas";
@@ -17,6 +17,7 @@ import { SadesatiTimeline } from "./sadesati-timeline";
 import { ShadbalaTable } from "./shadbala-table";
 import { TraditionalTable } from "./traditional-table";
 import { VimshottariDashaTable } from "./vimshottari-dasha-table";
+import { YearAhead } from "./year-ahead";
 
 export interface KundliSubject {
   name: string;
@@ -39,6 +40,7 @@ const FADE_UP = {
 export function KundliReport({ result, name, gender, placeName, timezone, latitude, longitude }: KundliReportProps) {
   const birthUtc = result.vimshottariDasha[0]?.startDate ?? new Date();
   const domains = interpretAllDomains(result);
+  const annualForecast = computeAnnualForecast(result, new Date());
 
   return (
     <motion.section
@@ -55,6 +57,7 @@ export function KundliReport({ result, name, gender, placeName, timezone, latitu
           <KundliPdfButton
             result={result}
             domains={domains}
+            annualForecast={annualForecast}
             name={name}
             gender={gender}
             placeName={placeName}
@@ -116,6 +119,13 @@ export function KundliReport({ result, name, gender, placeName, timezone, latitu
         <SectionLabel>Planetary Strength</SectionLabel>
         <ShadbalaTable basicShadbala={result.basicShadbala} />
       </motion.div>
+
+      {annualForecast && (
+        <motion.div variants={FADE_UP} className="mt-10">
+          <SectionLabel>Annual Forecast</SectionLabel>
+          <YearAhead forecast={annualForecast} />
+        </motion.div>
+      )}
 
       <motion.div variants={FADE_UP} className="mt-10">
         <SectionLabel>Life Predictions</SectionLabel>

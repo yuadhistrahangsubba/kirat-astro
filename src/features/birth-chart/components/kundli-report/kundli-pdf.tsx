@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import type { ChartResult } from "@/services/astrology";
-import type { DomainInterpretation } from "@/services/astrology/interpretation";
+import type { AnnualForecast, DomainInterpretation } from "@/services/astrology/interpretation";
 
 import { lagnaPlacements, navamsaPlacements } from "./chart-geometry";
 import type { KundliSubject } from "./kundli-report";
@@ -13,10 +13,11 @@ import type { KundliSubject } from "./kundli-report";
 interface KundliPdfButtonProps extends KundliSubject {
   result: ChartResult;
   domains: readonly DomainInterpretation[];
+  annualForecast: AnnualForecast | null;
   birthUtc: Date;
 }
 
-export function KundliPdfButton({ result, domains, birthUtc, ...subject }: KundliPdfButtonProps) {
+export function KundliPdfButton({ result, domains, annualForecast, birthUtc, ...subject }: KundliPdfButtonProps) {
   const [status, setStatus] = useState<"idle" | "generating" | "error">("idle");
 
   async function handleDownload() {
@@ -31,6 +32,7 @@ export function KundliPdfButton({ result, domains, birthUtc, ...subject }: Kundl
         <KundliPdfDocument
           result={result}
           domains={domains}
+          annualForecast={annualForecast}
           birthUtc={birthUtc}
           lagnaPlacements={lagnaPlacements(result)}
           navamsaPlacements={navamsaPlacements(result)}
