@@ -32,8 +32,8 @@ export function CalendarHeader({ onSelectHome, onSelectInfoPage }: CalendarHeade
         className="relative z-[10000] bg-primary/80 py-4 backdrop-blur-xl"
       >
         <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16">
-          <span className="font-sans text-lg font-bold tracking-[0.03em] text-primary-foreground sm:text-xl md:text-2xl">
-            Kirat Astro
+          <span className="font-sans text-base font-bold tracking-[0.03em] text-primary-foreground sm:text-lg md:text-xl">
+            Kirat Khaik Mundhum Paturo
           </span>
 
           <motion.button

@@ -12,7 +12,6 @@ import { CalendarGrid } from "./CalendarGrid";
 import { CalendarHeader } from "./CalendarHeader";
 import { InfoPage } from "./InfoPage";
 import { MonthYearControls } from "./MonthYearControls";
-import { PageTopicHeader } from "./PageTopicHeader";
 import { TodayInfoBar } from "./TodayInfoBar";
 import { YearView } from "./YearView";
 import { YenlonDetails } from "./YenlonDetails";
@@ -105,7 +104,6 @@ export function KiratCalendar() {
       <SunlitBackground />
 
       <CalendarHeader onSelectHome={() => setViewMode("calendar")} onSelectInfoPage={handleSelectInfoPage} />
-      <PageTopicHeader />
 
       <AnimatePresence mode="wait">
         {viewMode === "calendar" && (

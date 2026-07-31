@@ -67,7 +67,7 @@ export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage }:
 
             <div className="relative flex items-start justify-between gap-3 px-6 pt-7 pb-5">
               <div className="min-w-0">
-                <span className="font-sans text-xl font-bold tracking-wide">Kirat Astro</span>
+                <span className="font-sans text-lg font-bold tracking-wide">Kirat Khaik Mundhum Paturo</span>
                 <p className="mt-1 text-xs text-muted-foreground">Vedic Astrology &amp; Kirat Calendar</p>
                 <PrayerFlagAccent className="mt-3 max-w-[140px] opacity-70" />
               </div>
