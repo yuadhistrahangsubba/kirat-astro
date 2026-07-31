@@ -6,17 +6,35 @@ import { useEffect, useRef, useState } from "react";
 
 import { SunlitBackground } from "@/components/marketing/sunlit-background";
 import styles from "../kirat-calendar.module.css";
-import type { InfoPageKey, ViewMode } from "../types";
+import type { InfoPageKey, ToolPageKey, ViewMode } from "../types";
 import { ActionBar } from "./ActionBar";
 import { CalendarGrid } from "./CalendarGrid";
 import { CalendarHeader } from "./CalendarHeader";
 import { InfoPage } from "./InfoPage";
 import { MonthYearControls } from "./MonthYearControls";
 import { TodayInfoBar } from "./TodayInfoBar";
+import { AyanamshaPage } from "./tools/AyanamshaPage";
+import { EphemerisPage } from "./tools/EphemerisPage";
+import { KhesemukPage } from "./tools/KhesemukPage";
+import { PlanetsPage } from "./tools/PlanetsPage";
+import { SenlendatPage } from "./tools/SenlendatPage";
+import { SinglabamukPage } from "./tools/SinglabamukPage";
+import { YeleConverterPage } from "./tools/YeleConverterPage";
+import { YenyemdatPage } from "./tools/YenyemdatPage";
 import { YearView } from "./YearView";
 import { YenlonDetails } from "./YenlonDetails";
 
-const INFO_PAGE_KEYS: InfoPageKey[] = ["about", "yamdhangsang", "festivals", "planets"];
+const INFO_PAGE_KEYS: InfoPageKey[] = ["about", "yamdhangsang", "festivals"];
+const TOOL_PAGE_KEYS: ToolPageKey[] = [
+  "senlendat",
+  "yenyemdat",
+  "khesemuk",
+  "singlabamuk",
+  "planets",
+  "ephemeris",
+  "ayanamsha",
+  "yeleconverter",
+];
 
 export function KiratCalendar() {
   const searchParams = useSearchParams();
@@ -40,9 +58,11 @@ export function KiratCalendar() {
       setSelectedDate(now);
       setMounted(true);
 
-      // Deep link from another page's menu, e.g. /?panel=planets.
+      // Deep link from another page's menu, e.g. /?panel=senlendat.
       const panel = searchParams.get("panel");
-      if (INFO_PAGE_KEYS.includes(panel as InfoPageKey)) {
+      if (TOOL_PAGE_KEYS.includes(panel as ToolPageKey)) {
+        setViewMode(panel as ToolPageKey);
+      } else if (INFO_PAGE_KEYS.includes(panel as InfoPageKey)) {
         setViewMode(panel as InfoPageKey);
       }
     }
@@ -103,7 +123,11 @@ export function KiratCalendar() {
     <div className={rootClassName}>
       <SunlitBackground />
 
-      <CalendarHeader onSelectHome={() => setViewMode("calendar")} onSelectInfoPage={handleSelectInfoPage} />
+      <CalendarHeader
+        onSelectHome={() => setViewMode("calendar")}
+        onSelectInfoPage={handleSelectInfoPage}
+        onSelectTool={(key) => setViewMode(key)}
+      />
 
       <AnimatePresence mode="wait">
         {viewMode === "calendar" && (
@@ -180,10 +204,48 @@ export function KiratCalendar() {
           </motion.div>
         )}
 
-        {(viewMode === "about" ||
-          viewMode === "yamdhangsang" ||
-          viewMode === "festivals" ||
-          viewMode === "planets") && (
+        {viewMode === "senlendat" && (
+          <motion.div key="senlendat" {...viewTransition}>
+            <SenlendatPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "yenyemdat" && (
+          <motion.div key="yenyemdat" {...viewTransition}>
+            <YenyemdatPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "khesemuk" && (
+          <motion.div key="khesemuk" {...viewTransition}>
+            <KhesemukPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "singlabamuk" && (
+          <motion.div key="singlabamuk" {...viewTransition}>
+            <SinglabamukPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "planets" && (
+          <motion.div key="planets" {...viewTransition}>
+            <PlanetsPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "ephemeris" && (
+          <motion.div key="ephemeris" {...viewTransition}>
+            <EphemerisPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "ayanamsha" && (
+          <motion.div key="ayanamsha" {...viewTransition}>
+            <AyanamshaPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+        {viewMode === "yeleconverter" && (
+          <motion.div key="yeleconverter" {...viewTransition}>
+            <YeleConverterPage onBack={() => setViewMode("calendar")} />
+          </motion.div>
+        )}
+
+        {(viewMode === "about" || viewMode === "yamdhangsang" || viewMode === "festivals") && (
           <motion.div key={viewMode} {...viewTransition}>
             <InfoPage pageKey={viewMode} onBack={() => setViewMode("calendar")} />
           </motion.div>

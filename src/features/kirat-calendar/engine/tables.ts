@@ -139,6 +139,75 @@ export function mapKarana(karanaNumber: number): KaranaResult {
 	return { ...entry, karanaNumber, khokIndex };
 }
 
+/**
+ * Khesemuk (Tarabala) — inclusive cyclic count (1-27) from a Birth Mangyuk
+ * to the Current Mangyuk, reduced mod 9 (0 → 9), maps to a named Khese.
+ */
+export const KHESE_MAP: Record<number, { name: string; result: string }> = {
+	1: { name: "Sawan", result: "Not Good" },
+	2: { name: "Kundhe", result: "Best" },
+	3: { name: "Tukkhe", result: "Bad" },
+	4: { name: "Sukkhe", result: "Good" },
+	5: { name: "Podhak", result: "Not Good" },
+	6: { name: "Ipsingwaba", result: "Best" },
+	7: { name: "Keseppa", result: "Very Bad" },
+	8: { name: "Chum", result: "Good" },
+	9: { name: "Panuchhum", result: "Good" },
+};
+
+/** Inclusive cyclic count from rowMangyukIdx (1-27) to currentMangyukIdx (1-27). */
+export function khesemukInclusiveCount(rowMangyukIdx: number, currentMangyukIdx: number): number {
+	return (((currentMangyukIdx - rowMangyukIdx + 27) % 27) + 1);
+}
+
+export function khesemukIndexFromCount(count: number): number {
+	let idx = count % 9;
+	if (idx === 0) idx = 9;
+	return idx;
+}
+
+/**
+ * Singlabamuk — inclusive count (1-12) from a Birth Titlum to the Current
+ * Titlum maps to a result.
+ */
+export const SINGLABAMUK_RESULT_MAP: Record<number, string> = {
+	1: "Auspicious",
+	2: "Sewa Needed",
+	3: "Auspicious",
+	4: "Inauspicious",
+	5: "Sewa Needed",
+	6: "Auspicious",
+	7: "Auspicious",
+	8: "Inauspicious",
+	9: "Sewa Needed",
+	10: "Auspicious",
+	11: "Auspicious",
+	12: "Inauspicious",
+};
+
+/** Inclusive cyclic count from rowTitlumIdx (1-12) to currentTitlumIdx (1-12). */
+export function singlabamukCount(rowTitlumIdx: number, currentTitlumIdx: number): number {
+	return (((currentTitlumIdx - rowTitlumIdx + 12) % 12) + 1);
+}
+
+/**
+ * Maps a sidereal longitude to its Mangyuk (13°20′ span) and Pada (quarter
+ * within it, 3°20′, 1-4) at that instant.
+ */
+export function siderealToMangyukPada(lonDeg: number): {
+	mangyukName: string;
+	mangyukSerial: number;
+	pada: number;
+} {
+	const span = 360 / 27;
+	const lon = normalize360(lonDeg);
+	const mangyukIdx = Math.floor(lon / span);
+	const withinMangyuk = lon - mangyukIdx * span;
+	const pada = Math.floor(withinMangyuk / (10 / 3)) + 1;
+	const entry = pick(MANGYUK, mangyukIdx);
+	return { mangyukName: entry.name, mangyukSerial: entry.n, pada };
+}
+
 /** Kirat Titlum (zodiac sign) names — same 12 signs/order as ZODIAC below. */
 export const KIRAT_TITLUM_NAMES = [
 	"Anam",

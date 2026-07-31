@@ -177,3 +177,43 @@ export function addOneDay(y: number, mo: number, d: number): { y: number; mo: nu
 	const dt = new Date(Date.UTC(y, mo - 1, d + 1));
 	return { y: dt.getUTCFullYear(), mo: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
 }
+
+/** Julian Day for an exact local date+time at `place` (not just sunrise). */
+export function jdFromLocalDateTime(
+	y: number,
+	mo: number,
+	d: number,
+	hh: number,
+	mm: number,
+	ss: number,
+	place: Place,
+): number {
+	const refDate = new Date(Date.UTC(y, mo - 1, d, 12, 0, 0));
+	const tz = utcOffsetHours(place.timezone, refDate);
+	const jd0 = julianDayUT0(y, mo, d);
+	const fracOfDay = (hh + mm / 60 + ss / 3600) / 24;
+	return jd0 + fracOfDay - tz / 24;
+}
+
+/** Julian Day at 00:00 Universal Time on a calendar date. */
+export function jdAtUtMidnight(y: number, mo: number, d: number): number {
+	return julianDayUT0(y, mo, d);
+}
+
+/**
+ * The current real-world time expressed as "hours since baseYMD's midnight"
+ * in the place's local civil time — the same 24+ domain slot start/end
+ * hours use, so current-slot checks are direct comparisons.
+ */
+export function getNowInPlaceHours(baseYMD: { y: number; mo: number; d: number }, timezone: string): number {
+	const nowUTC = new Date();
+	const tzOffsetHours = utcOffsetHours(timezone, nowUTC);
+	const nowPlace = new Date(nowUTC.getTime() + tzOffsetHours * 3600000);
+	const dayDiff = Math.round(
+		(Date.UTC(nowPlace.getUTCFullYear(), nowPlace.getUTCMonth(), nowPlace.getUTCDate()) -
+			Date.UTC(baseYMD.y, baseYMD.mo - 1, baseYMD.d)) /
+			86400000,
+	);
+	const hourOfDay = nowPlace.getUTCHours() + nowPlace.getUTCMinutes() / 60 + nowPlace.getUTCSeconds() / 3600;
+	return dayDiff * 24 + hourOfDay;
+}

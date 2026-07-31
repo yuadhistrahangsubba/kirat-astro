@@ -8,15 +8,16 @@ import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import type { InfoPageKey } from "../types";
+import type { InfoPageKey, ToolPageKey } from "../types";
 import { NAV_SECTIONS, type NavItem } from "./nav-items";
 
 interface HamburgerMenuProps {
   open: boolean;
   onClose: () => void;
-  /** Omit on pages outside the calendar — Home/info items then navigate via real links instead of switching local view state. */
+  /** Omit on pages outside the calendar — Home/info/tool items then navigate via real links instead of switching local view state. */
   onSelectHome?: () => void;
   onSelectInfoPage?: (key: InfoPageKey) => void;
+  onSelectTool?: (key: ToolPageKey) => void;
 }
 
 const LIST_STAGGER = {
@@ -29,7 +30,7 @@ const ITEM_RISE = {
   visible: { opacity: 1, x: 0, transition: { type: "spring" as const, stiffness: 280, damping: 26 } },
 };
 
-export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage }: HamburgerMenuProps) {
+export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, onSelectTool }: HamburgerMenuProps) {
   return (
     <AnimatePresence>
       {open && (
@@ -101,6 +102,7 @@ export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage }:
                         onClose={onClose}
                         onSelectHome={onSelectHome}
                         onSelectInfoPage={onSelectInfoPage}
+                        onSelectTool={onSelectTool}
                       />
                     ))}
                   </div>
@@ -128,11 +130,13 @@ function NavRow({
   onClose,
   onSelectHome,
   onSelectInfoPage,
+  onSelectTool,
 }: {
   item: NavItem;
   onClose: () => void;
   onSelectHome?: () => void;
   onSelectInfoPage?: (key: InfoPageKey) => void;
+  onSelectTool?: (key: ToolPageKey) => void;
 }) {
   const Icon = item.icon;
   const rowClassName =
@@ -181,6 +185,29 @@ function NavRow({
             className={cn(rowClassName, "w-full")}
             onClick={() => {
               onSelectInfoPage(item.key);
+              onClose();
+            }}
+          >
+            {content}
+          </button>
+        ) : (
+          <Link href={`/?panel=${item.key}`} className={rowClassName} onClick={onClose}>
+            {content}
+          </Link>
+        )}
+      </motion.div>
+    );
+  }
+
+  if (item.kind === "tool") {
+    return (
+      <motion.div variants={ITEM_RISE}>
+        {onSelectTool ? (
+          <button
+            type="button"
+            className={cn(rowClassName, "w-full")}
+            onClick={() => {
+              onSelectTool(item.key);
               onClose();
             }}
           >

@@ -11,6 +11,17 @@ export interface PanchangaDay {
 
 export type InfoPageKey = "about" | "yamdhangsang" | "festivals" | "planets";
 
-export type ViewMode = "calendar" | "year" | InfoPageKey;
+/** Tool sections ported from the reference Kirat Calendar app. */
+export type ToolPageKey =
+	| "senlendat"
+	| "yenyemdat"
+	| "khesemuk"
+	| "singlabamuk"
+	| "planets"
+	| "ephemeris"
+	| "ayanamsha"
+	| "yeleconverter";
+
+export type ViewMode = "calendar" | "year" | InfoPageKey | ToolPageKey;
 
 export type CalendarTheme = "day" | "night";

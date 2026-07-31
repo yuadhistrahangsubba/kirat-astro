@@ -106,3 +106,30 @@ export function formatDMSPlain(deg: number): string {
 	const s = totalSec % 60;
 	return `${d}° ${pad2(m)}′ ${pad2(s)}″`;
 }
+
+const ZODIAC_SYMBOLS = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"];
+
+/** Sidereal longitude (0–360°) → zodiac position "03° ♌ 27′ 24″". */
+export function formatSiderealLon(lonDeg: number): string {
+	let signIdx = Math.floor(lonDeg / 30) % 12;
+	if (signIdx < 0) signIdx += 12;
+	const degInSign = lonDeg - signIdx * 30;
+	const totalSec = Math.round(degInSign * 3600);
+	let deg = Math.floor(totalSec / 3600);
+	const min = Math.floor((totalSec % 3600) / 60);
+	const sec = totalSec % 60;
+	if (deg >= 30) {
+		deg -= 30;
+		signIdx = (signIdx + 1) % 12;
+	}
+	return `${pad2(deg)}° ${ZODIAC_SYMBOLS[signIdx]} ${pad2(min)}′ ${pad2(sec)}″`;
+}
+
+/** Right Ascension in degrees → "hh:mm:ss". */
+export function formatRA(raDeg: number): string {
+	const totalSec = Math.round((raDeg / 15) * 3600);
+	const h = Math.floor(totalSec / 3600) % 24;
+	const m = Math.floor((totalSec % 3600) / 60);
+	const s = totalSec % 60;
+	return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
+}

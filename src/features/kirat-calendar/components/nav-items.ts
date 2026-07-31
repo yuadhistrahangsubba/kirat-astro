@@ -1,7 +1,24 @@
 import type { LucideIcon } from "lucide-react";
-import { Clock, Code, Compass, HelpCircle, Home, Orbit, PartyPopper, Phone, User } from "lucide-react";
+import {
+	ArrowLeftRight,
+	Clock,
+	Clock3,
+	Code,
+	Compass,
+	Globe,
+	HelpCircle,
+	Home,
+	Hourglass,
+	Moon,
+	Orbit,
+	PartyPopper,
+	Phone,
+	Star,
+	Telescope,
+	User,
+} from "lucide-react";
 
-import type { InfoPageKey } from "../types";
+import type { InfoPageKey, ToolPageKey } from "../types";
 
 interface HomeNavItem {
   kind: "home";
@@ -16,6 +33,13 @@ interface InfoNavItem {
   icon: LucideIcon;
 }
 
+interface ToolNavItem {
+  kind: "tool";
+  key: ToolPageKey;
+  label: string;
+  icon: LucideIcon;
+}
+
 interface RouteNavItem {
   kind: "route";
   href: string;
@@ -23,7 +47,7 @@ interface RouteNavItem {
   icon: LucideIcon;
 }
 
-export type NavItem = HomeNavItem | InfoNavItem | RouteNavItem;
+export type NavItem = HomeNavItem | InfoNavItem | ToolNavItem | RouteNavItem;
 
 export interface NavSection {
   label: string | null;
@@ -31,14 +55,24 @@ export interface NavSection {
 }
 
 /**
- * The drawer's full nav, grouped for scannability. `home`/`info` items
- * switch local view state when the calendar's own callbacks are given
+ * The drawer's full nav, grouped for scannability. `home`/`info`/`tool`
+ * items switch local view state when the calendar's own callbacks are given
  * (see HamburgerMenu); everywhere else they fall back to real routes.
  */
 export const NAV_SECTIONS: NavSection[] = [
   {
     label: null,
-    items: [{ kind: "home", label: "Home", icon: Home }],
+    items: [
+      { kind: "home", label: "Home", icon: Home },
+      { kind: "tool", key: "senlendat", label: "Senlendat", icon: Clock3 },
+      { kind: "tool", key: "yenyemdat", label: "Yenyemdat", icon: Hourglass },
+      { kind: "tool", key: "khesemuk", label: "Khesemuk", icon: Star },
+      { kind: "tool", key: "singlabamuk", label: "Singlabamuk", icon: Moon },
+      { kind: "tool", key: "planets", label: "Planets", icon: Orbit },
+      { kind: "tool", key: "ephemeris", label: "Ephemeris", icon: Telescope },
+      { kind: "tool", key: "ayanamsha", label: "Ayanamsha", icon: Globe },
+      { kind: "tool", key: "yeleconverter", label: "Yele Converter", icon: ArrowLeftRight },
+    ],
   },
   {
     label: "Explore",
@@ -55,7 +89,6 @@ export const NAV_SECTIONS: NavSection[] = [
       { kind: "info", key: "about", label: "About Us", icon: User },
       { kind: "info", key: "yamdhangsang", label: "Yamdhangsang", icon: Clock },
       { kind: "info", key: "festivals", label: "Festivals", icon: PartyPopper },
-      { kind: "info", key: "planets", label: "Planets", icon: Orbit },
     ],
   },
 ];

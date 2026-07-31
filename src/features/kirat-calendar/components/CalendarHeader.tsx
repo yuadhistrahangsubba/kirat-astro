@@ -3,12 +3,13 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
-import type { InfoPageKey } from "../types";
+import type { InfoPageKey, ToolPageKey } from "../types";
 import { HamburgerMenu } from "./HamburgerMenu";
 
 interface CalendarHeaderProps {
   onSelectHome?: () => void;
   onSelectInfoPage?: (key: InfoPageKey) => void;
+  onSelectTool?: (key: ToolPageKey) => void;
 }
 
 /**
@@ -20,7 +21,7 @@ interface CalendarHeaderProps {
  * bar. Edge-anchoring is the standard navbar read: the eye rests on both
  * ends, so the open center is spaciousness, not emptiness.
  */
-export function CalendarHeader({ onSelectHome, onSelectInfoPage }: CalendarHeaderProps) {
+export function CalendarHeader({ onSelectHome, onSelectInfoPage, onSelectTool }: CalendarHeaderProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
@@ -68,6 +69,7 @@ export function CalendarHeader({ onSelectHome, onSelectInfoPage }: CalendarHeade
         onClose={() => setMenuOpen(false)}
         onSelectHome={onSelectHome}
         onSelectInfoPage={onSelectInfoPage}
+        onSelectTool={onSelectTool}
       />
     </>
   );

@@ -4,7 +4,30 @@ import { computePanchangaDay } from "./panchanga";
 import { DEFAULT_PLACE } from "./sunrise";
 import { YELE_MAX_AD_YEAR, YELE_MIN_AD_YEAR } from "./yele";
 
-export { formatClock12, formatDMSPlain, formatDurationHM, formatEndingTime, type TimeFormatMode } from "./format";
+export { AYANAMSHA_SYSTEMS, ayanamshaSystem, type AyanamshaKey, type AyanamshaSystem } from "./ayanamsha";
+export { computeBodyPositions, type BodyPosition } from "./bodies";
+export {
+	formatClock12,
+	formatDMSPlain,
+	formatDurationHM,
+	formatEndingTime,
+	formatRA,
+	formatSiderealLon,
+	type TimeFormatMode,
+} from "./format";
+export { computeSenlendatSlots, computeYenyemSlots, type DayNightSlots, type Slot } from "./slots";
+export {
+	KHESE_MAP,
+	khesemukInclusiveCount,
+	khesemukIndexFromCount,
+	KIRAT_TITLUM_NAMES,
+	MANGYUK,
+	siderealToMangyukPada,
+	SINGLABAMUK_RESULT_MAP,
+	singlabamukCount,
+	ZODIAC,
+	ZODIAC_SYMBOLS,
+} from "./tables";
 export {
 	computeDayCellInfo,
 	computeYenlonDetail,
@@ -14,7 +37,14 @@ export {
 	type SignDetail,
 	type YenlonDetail,
 } from "./panchanga";
-export { DEFAULT_PLACE } from "./sunrise";
+export {
+	DEFAULT_PLACE,
+	getDayInfo,
+	getNowInPlaceHours,
+	jdAtUtMidnight,
+	jdFromLocalDateTime,
+	type Place,
+} from "./sunrise";
 export {
 	getKiratDayNumber,
 	getKiratMonthHeaderText,

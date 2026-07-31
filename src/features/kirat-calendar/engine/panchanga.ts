@@ -1,6 +1,7 @@
 import type { PanchangaDay } from "../types";
 import { calcMoonPadas, computeMoonZonePeriod, computeTong, type MoonPada, type TongResult, type ZonePeriod } from "./periods";
 import { computePositions, type Positions } from "./positions";
+import { computeSenlendatSlots, computeYenyemSlots } from "./slots";
 import { addOneDay, getDayInfo, type DayInfo, type Place } from "./sunrise";
 import {
 	chrangDirection,
@@ -18,13 +19,9 @@ import {
 	pick,
 	RESIDENCE_RESULT,
 	SAMYUK,
-	SENLENDAT_CYCLE,
-	SENLENDAT_RESULTS,
 	singlabaDirection,
 	YAMAGANDA_KALA_PARTS,
 	YEM_PHAKMURA_PARTS,
-	YENYEM_CYCLE,
-	YENYEM_INFO,
 	ZODIAC,
 	ZODIAC_SYMBOLS,
 } from "./tables";
@@ -512,56 +509,35 @@ export function computePanchangaDay(y: number, mo: number, d: number, place: Pla
 		: singlaba.currentName;
 
 	// Senlendat — 12 Day + 12 Night slots; run starts at cycle index (weekday*3)%7
-	const senlendatStart = (weekdayIdx * 3) % 7;
-	if (isFinite(dayDurationHours) && dayDurationHours > 0) {
-		const dayLen = dayDurationHours / 12;
-		for (let i = 0; i < 12; i++) {
-			const name = pick(SENLENDAT_CYCLE, (senlendatStart + i) % 7);
-			out[`daySenlen${i + 1}`] = name;
-			out[`daySenlendatStart${i + 1}`] = fmt24Plus(refHours + i * dayLen);
-			out[`daySenlendatEnd${i + 1}`] = fmt24Plus(refHours + (i + 1) * dayLen);
-			out[`daySenlenT${i + 1}`] = fmtRange(refHours + i * dayLen, refHours + (i + 1) * dayLen);
-			out[`daySenlenResult${i + 1}`] = SENLENDAT_RESULTS[name];
-		}
+	const senlendat = computeSenlendatSlots(weekdayIdx, refHours, dayDurationHours, nightDurationHours);
+	for (const s of senlendat.dayEntries) {
+		out[`daySenlen${s.no}`] = s.name;
+		out[`daySenlendatStart${s.no}`] = fmt24Plus(s.startHours);
+		out[`daySenlendatEnd${s.no}`] = fmt24Plus(s.endHours);
+		out[`daySenlenT${s.no}`] = fmtRange(s.startHours, s.endHours);
+		out[`daySenlenResult${s.no}`] = s.result;
 	}
-	if (isFinite(nightDurationHours) && nightDurationHours > 0) {
-		const nightLen = nightDurationHours / 12;
-		const nightBase = refHours + (isFinite(dayDurationHours) ? dayDurationHours : 0);
-		for (let i = 0; i < 12; i++) {
-			const name = pick(SENLENDAT_CYCLE, (senlendatStart + 12 + i) % 7);
-			out[`nightSenlen${i + 1}`] = name;
-			out[`nightSenlendatStart${i + 1}`] = fmt24Plus(nightBase + i * nightLen);
-			out[`nightSenlendatEnd${i + 1}`] = fmt24Plus(nightBase + (i + 1) * nightLen);
-			out[`nightSenlenT${i + 1}`] = fmtRange(nightBase + i * nightLen, nightBase + (i + 1) * nightLen);
-			out[`nightSenlenResult${i + 1}`] = SENLENDAT_RESULTS[name];
-		}
+	for (const s of senlendat.nightEntries) {
+		out[`nightSenlen${s.no}`] = s.name;
+		out[`nightSenlendatStart${s.no}`] = fmt24Plus(s.startHours);
+		out[`nightSenlendatEnd${s.no}`] = fmt24Plus(s.endHours);
+		out[`nightSenlenT${s.no}`] = fmtRange(s.startHours, s.endHours);
+		out[`nightSenlenResult${s.no}`] = s.result;
 	}
 
 	// Yenyem — 8 Day (+1 step) + 8 Night (+5 step) slots
-	const yenyemDayStart = (weekdayIdx * 3) % 7;
-	const yenyemNightStart = (yenyemDayStart + 5) % 7;
-	if (isFinite(dayDurationHours) && dayDurationHours > 0) {
-		const dayLen = dayDurationHours / 8;
-		for (let i = 0; i < 8; i++) {
-			const name = pick(YENYEM_CYCLE, (yenyemDayStart + i) % 7);
-			const info = YENYEM_INFO[name] ?? { meaning: "", result: "" };
-			out[`dayYemY${i + 1}`] = name;
-			out[`dayYemyEng${i + 1}`] = `(${info.meaning})`;
-			out[`dayYemYT${i + 1}`] = fmtRange(refHours + i * dayLen, refHours + (i + 1) * dayLen);
-			out[`dayYemyResult${i + 1}`] = info.result;
-		}
+	const yenyem = computeYenyemSlots(weekdayIdx, refHours, dayDurationHours, nightDurationHours);
+	for (const s of yenyem.dayEntries) {
+		out[`dayYemY${s.no}`] = s.name;
+		out[`dayYemyEng${s.no}`] = `(${s.meaning})`;
+		out[`dayYemYT${s.no}`] = fmtRange(s.startHours, s.endHours);
+		out[`dayYemyResult${s.no}`] = s.result;
 	}
-	if (isFinite(nightDurationHours) && nightDurationHours > 0) {
-		const nightLen = nightDurationHours / 8;
-		const nightBase = refHours + (isFinite(dayDurationHours) ? dayDurationHours : 0);
-		for (let i = 0; i < 8; i++) {
-			const name = pick(YENYEM_CYCLE, (yenyemNightStart + 5 * i) % 7);
-			const info = YENYEM_INFO[name] ?? { meaning: "", result: "" };
-			out[`nightYemY${i + 1}`] = name;
-			out[`nightYemyEng${i + 1}`] = `(${info.meaning})`;
-			out[`nightYemYT${i + 1}`] = fmtRange(nightBase + i * nightLen, nightBase + (i + 1) * nightLen);
-			out[`nightYemyResult${i + 1}`] = info.result;
-		}
+	for (const s of yenyem.nightEntries) {
+		out[`nightYemY${s.no}`] = s.name;
+		out[`nightYemyEng${s.no}`] = `(${s.meaning})`;
+		out[`nightYemYT${s.no}`] = fmtRange(s.startHours, s.endHours);
+		out[`nightYemyResult${s.no}`] = s.result;
 	}
 
 	return out;
