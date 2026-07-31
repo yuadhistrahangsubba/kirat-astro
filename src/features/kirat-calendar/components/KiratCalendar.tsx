@@ -192,7 +192,7 @@ export function KiratCalendar() {
         )}
       </AnimatePresence>
 
-      <footer className={styles.footer}>Kirat Calendar © {today.getFullYear()}</footer>
+      <footer className={styles.footer}>Kirat Khaik Mundhum Paturo © {today.getFullYear()}</footer>
     </div>
   );
 }

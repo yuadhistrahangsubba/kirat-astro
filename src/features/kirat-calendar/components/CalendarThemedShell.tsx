@@ -19,7 +19,7 @@ export function CalendarThemedShell({ children }: { children: ReactNode }) {
       <SunlitBackground />
       <CalendarHeader />
       {children}
-      <footer className={styles.footer}>Kirat Calendar © {new Date().getFullYear()}</footer>
+      <footer className={styles.footer}>Kirat Khaik Mundhum Paturo © {new Date().getFullYear()}</footer>
     </div>
   );
 }
