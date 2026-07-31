@@ -9,7 +9,7 @@ export interface PanchangaDay {
   [key: string]: string | undefined;
 }
 
-export type InfoPageKey = "about" | "yamdhangsang" | "festivals" | "planets";
+export type InfoPageKey = "about";
 
 /** Tool sections ported from the reference Kirat Calendar app. */
 export type ToolPageKey =

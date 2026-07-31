@@ -24,7 +24,7 @@ import { YenyemdatPage } from "./tools/YenyemdatPage";
 import { YearView } from "./YearView";
 import { YenlonDetails } from "./YenlonDetails";
 
-const INFO_PAGE_KEYS: InfoPageKey[] = ["about", "yamdhangsang", "festivals"];
+const INFO_PAGE_KEYS: InfoPageKey[] = ["about"];
 const TOOL_PAGE_KEYS: ToolPageKey[] = [
   "senlendat",
   "yenyemdat",
@@ -245,7 +245,7 @@ export function KiratCalendar() {
           </motion.div>
         )}
 
-        {(viewMode === "about" || viewMode === "yamdhangsang" || viewMode === "festivals") && (
+        {viewMode === "about" && (
           <motion.div key={viewMode} {...viewTransition}>
             <InfoPage pageKey={viewMode} onBack={() => setViewMode("calendar")} />
           </motion.div>

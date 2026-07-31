@@ -3,7 +3,6 @@
 import { motion } from "motion/react";
 
 import { PAGE_CONTENT } from "../data/page-content";
-import { PlanetsLegendTable, YamdhangsangLegendTable } from "../lib/build-legend-tables";
 import styles from "../kirat-calendar.module.css";
 import type { InfoPageKey } from "../types";
 
@@ -15,8 +14,6 @@ export function InfoPage({ pageKey, onBack }: { pageKey: InfoPageKey; onBack: ()
       <div className={styles.pageContentInner}>
         <h2>{data.title}</h2>
         <p>{data.body}</p>
-        {pageKey === "yamdhangsang" && <YamdhangsangLegendTable />}
-        {pageKey === "planets" && <PlanetsLegendTable />}
         <motion.button whileTap={{ scale: 0.96 }} className={styles.backBtn} onClick={onBack}>
           ◀ Back to Calendar
         </motion.button>

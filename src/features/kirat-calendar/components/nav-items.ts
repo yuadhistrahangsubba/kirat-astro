@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
 	ArrowLeftRight,
-	Clock,
 	Clock3,
 	Code,
 	Compass,
@@ -11,7 +10,6 @@ import {
 	Hourglass,
 	Moon,
 	Orbit,
-	PartyPopper,
 	Phone,
 	Star,
 	Telescope,
@@ -80,15 +78,13 @@ export const NAV_SECTIONS: NavSection[] = [
       { kind: "route", href: "/astro", label: "Astro", icon: Compass },
       { kind: "route", href: "/astrologer", label: "Astrologer", icon: Phone },
       { kind: "route", href: "/faq", label: "FAQ", icon: HelpCircle },
-      { kind: "route", href: "/developer", label: "Developer", icon: Code },
     ],
   },
   {
-    label: "Calendar Guide",
+    label: "Contact",
     items: [
       { kind: "info", key: "about", label: "About Us", icon: User },
-      { kind: "info", key: "yamdhangsang", label: "Yamdhangsang", icon: Clock },
-      { kind: "info", key: "festivals", label: "Festivals", icon: PartyPopper },
+      { kind: "route", href: "/developer", label: "Developer", icon: Code },
     ],
   },
 ];
