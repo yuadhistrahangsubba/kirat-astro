@@ -7,7 +7,8 @@ import styles from "../kirat-calendar.module.css";
 import { Dropdown } from "./Dropdown";
 
 const MONTH_OPTIONS = MONTHS.map((m, i) => ({ value: i, label: m }));
-const YEAR_OPTIONS = Array.from({ length: 2050 - 2000 + 1 }, (_, i) => {
+// 2000-2100 — the range the engine's Yele dataset covers
+const YEAR_OPTIONS = Array.from({ length: 2100 - 2000 + 1 }, (_, i) => {
   const y = 2000 + i;
   return { value: y, label: String(y) };
 });

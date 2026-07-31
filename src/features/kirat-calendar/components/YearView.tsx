@@ -10,20 +10,9 @@ interface YearViewProps {
   onNextYear: () => void;
   onBack: () => void;
   onJumpToDate: (year: number, month: number, day: number) => void;
-  onSaveYearPdf: () => void;
-  isExportingYearPdf: boolean;
 }
 
-export function YearView({
-  year,
-  today,
-  onPrevYear,
-  onNextYear,
-  onBack,
-  onJumpToDate,
-  onSaveYearPdf,
-  isExportingYearPdf,
-}: YearViewProps) {
+export function YearView({ year, today, onPrevYear, onNextYear, onBack, onJumpToDate }: YearViewProps) {
   return (
     <div className={styles.yearView}>
       <div className={styles.yearViewHeader}>
@@ -36,14 +25,6 @@ export function YearView({
         </motion.button>
         <motion.button whileTap={{ scale: 0.96 }} className={styles.backBtn} onClick={onBack}>
           ◀ Back to Calendar
-        </motion.button>
-        <motion.button
-          whileTap={{ scale: 0.96 }}
-          className={`${styles.actionBtn} ${styles.desktopOnly}`}
-          onClick={onSaveYearPdf}
-          disabled={isExportingYearPdf}
-        >
-          {isExportingYearPdf ? "Preparing..." : "⬇️ Save as PDF"}
         </motion.button>
       </div>
 

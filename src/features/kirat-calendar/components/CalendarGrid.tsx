@@ -2,9 +2,8 @@
 
 import { useRef } from "react";
 
-import { getKiratDate } from "../data/kirat-rules";
 import { MONTHS } from "../data/months";
-import { PANCHANGA_DATA } from "../data/panchanga-data";
+import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
 import { DayCell } from "./DayCell";
 
@@ -61,8 +60,7 @@ export function CalendarGrid({
     }
   }
 
-  const firstDayKey = `${year}-${String(month + 1).padStart(2, "0")}-01`;
-  const kiratMonth = PANCHANGA_DATA[firstDayKey]?.KiratMonthYear || "";
+  const kiratMonth = getKiratMonthHeaderText(year, month + 1);
 
   const firstWeekday = new Date(year, month, 1).getDay();
   const totalDays = new Date(year, month + 1, 0).getDate();
@@ -97,11 +95,14 @@ export function CalendarGrid({
             day === selectedDate.getDate() &&
             month === selectedDate.getMonth() &&
             year === selectedDate.getFullYear();
+          const cellInfo = computeDayCellInfo(year, month + 1, day, DEFAULT_PLACE);
           return (
             <DayCell
               key={day}
               day={day}
-              kiratDate={getKiratDate(year, month + 1, day)}
+              kiratDate={getKiratDayNumber(year, month + 1, day)}
+              mangyukName={cellInfo?.mangyukName}
+              lamikkhokName={cellInfo?.lamikkhokName}
               isToday={isToday}
               isSelected={isSelected}
               onClick={() => onDayClick(day)}

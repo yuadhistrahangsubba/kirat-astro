@@ -1,8 +1,7 @@
 import { motion } from "motion/react";
 
-import { getKiratDate } from "../data/kirat-rules";
 import { MONTHS } from "../data/months";
-import { PANCHANGA_DATA } from "../data/panchanga-data";
+import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
 
 const WEEKDAYS = [
@@ -84,8 +83,7 @@ function YearMonthCard({
 }) {
   const firstWeekday = new Date(year, month, 1).getDay();
   const totalDays = new Date(year, month + 1, 0).getDate();
-  const firstDayKey = `${year}-${String(month + 1).padStart(2, "0")}-01`;
-  const kiratMonth = PANCHANGA_DATA[firstDayKey]?.KiratMonthYear || "";
+  const kiratMonth = getKiratMonthHeaderText(year, month + 1);
 
   return (
     <div className={styles.yearMonthCard}>
@@ -108,17 +106,16 @@ function YearMonthCard({
         ))}
         {Array.from({ length: totalDays }, (_, i) => {
           const day = i + 1;
-          const kiratDate = getKiratDate(year, month + 1, day);
+          const kiratDate = getKiratDayNumber(year, month + 1, day);
           const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
-          const dayKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-          const dp = PANCHANGA_DATA[dayKey];
+          const cellInfo = computeDayCellInfo(year, month + 1, day, DEFAULT_PLACE);
           const className = [styles.yvDay, isToday && styles.yvToday].filter(Boolean).join(" ");
           const content = (
             <>
-              <span className={styles.yvMangyuk}>{dp?.nextM || ""}</span>
+              <span className={styles.yvMangyuk}>{cellInfo?.mangyukName || ""}</span>
               <span className={styles.yvAd}>{day}</span>
               <span className={styles.yvKirat}>{kiratDate}</span>
-              <span className={styles.yvLamikkhok}>{dp?.nextL || ""}</span>
+              <span className={styles.yvLamikkhok}>{cellInfo?.lamikkhokName || ""}</span>
             </>
           );
           return animate ? (

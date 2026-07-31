@@ -10,8 +10,13 @@ describe("getKiratDate", () => {
     expect(getKiratDate(2026, 7, 1)).toBe(17); // Thakmeppa 17, 5087
   });
 
-  it("returns an empty string for years outside the rule table", () => {
+  it("returns an empty string for years outside the supported range", () => {
     expect(getKiratDate(1999, 1, 1)).toBe("");
-    expect(getKiratDate(2052, 1, 1)).toBe("");
+    expect(getKiratDate(2101, 1, 1)).toBe("");
+  });
+
+  it("covers years the legacy 2000-2051 table did not", () => {
+    expect(typeof getKiratDate(2052, 1, 1)).toBe("number");
+    expect(typeof getKiratDate(2100, 12, 31)).toBe("number");
   });
 });
