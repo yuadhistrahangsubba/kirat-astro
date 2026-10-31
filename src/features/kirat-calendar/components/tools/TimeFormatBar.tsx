@@ -22,6 +22,7 @@ export function TimeFormatBar({
 				<button
 					key={mode}
 					type="button"
+					aria-pressed={value === mode}
 					onClick={() => onChange(mode)}
 					style={{
 						padding: "6px 14px",

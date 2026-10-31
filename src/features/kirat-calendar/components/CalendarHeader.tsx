@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 
 import type { InfoPageKey, ToolPageKey } from "../types";
-import { HamburgerMenu } from "./HamburgerMenu";
+import { HamburgerMenu, SITE_MENU_ID } from "./HamburgerMenu";
 
 interface CalendarHeaderProps {
   onSelectHome?: () => void;
@@ -42,6 +42,7 @@ export function CalendarHeader({ onSelectHome, onSelectInfoPage, onSelectTool }:
             onClick={() => setMenuOpen((v) => !v)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
             aria-expanded={menuOpen}
+            aria-controls={SITE_MENU_ID}
             className="text-primary-foreground/90 transition-colors hover:text-primary-foreground"
           >
             <AnimatePresence mode="wait" initial={false}>

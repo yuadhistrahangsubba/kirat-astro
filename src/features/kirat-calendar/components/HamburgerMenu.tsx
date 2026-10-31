@@ -3,6 +3,7 @@
 import { Sparkles, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 
 import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import { Button } from "@/components/ui/button";
@@ -30,13 +31,60 @@ const ITEM_RISE = {
   visible: { opacity: 1, x: 0, transition: { type: "spring" as const, stiffness: 280, damping: 26 } },
 };
 
+export const SITE_MENU_ID = "site-menu";
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, onSelectTool }: HamburgerMenuProps) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  // Callers pass an inline onClose; reading it through a ref keeps the
+  // effect below from re-running (and re-grabbing focus) on every render.
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
+  // Modal dialog behavior (ARIA APG): move focus in on open, keep Tab inside,
+  // close on Escape, and hand focus back to whatever opened the menu.
+  useEffect(() => {
+    if (!open) return;
+    const opener = document.activeElement as HTMLElement | null;
+    const focusables = () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []);
+    focusables()[0]?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0]!;
+      const last = items[items.length - 1]!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      if (opener?.isConnected) opener.focus();
+    };
+  }, [open]);
+
   return (
     <AnimatePresence>
       {open && (
         <>
-          <motion.button
-            aria-label="Close menu overlay"
+          <motion.div
+            aria-hidden="true"
             className="fixed inset-0 z-[99998] cursor-default bg-black/40 backdrop-blur-[2px]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -49,6 +97,11 @@ export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, o
               screen from its own button, which reads as a small but real
               spatial disconnect once you notice it. */}
           <motion.div
+            ref={panelRef}
+            id={SITE_MENU_ID}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site menu"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -73,6 +126,7 @@ export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, o
                 <PrayerFlagAccent className="mt-3 max-w-[140px] opacity-70" />
               </div>
               <button
+                type="button"
                 onClick={onClose}
                 aria-label="Close menu"
                 className="flex size-9 shrink-0 items-center justify-center rounded-full border border-border/60 bg-muted/40 text-foreground/80 transition-colors hover:border-gold/40 hover:text-gold"
