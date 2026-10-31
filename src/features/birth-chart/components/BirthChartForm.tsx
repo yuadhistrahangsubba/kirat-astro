@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircle, Clock, Loader2, ShieldCheck, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useForm, useWatch } from "react-hook-form";
 
 import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import { Button } from "@/components/ui/button";
@@ -47,21 +47,28 @@ export function BirthChartForm({ onResult }: BirthChartFormProps) {
     mode: "onBlur",
     reValidateMode: "onChange",
   });
-  const { setValue, watch, formState } = form;
+  const { setValue, control, formState } = form;
   const { errors } = formState;
 
-  const name = watch("name");
-  const gender = watch("gender");
-  const day = watch("day");
-  const month = watch("month");
-  const year = watch("year");
-  const birthTimeUnknown = watch("birthTimeUnknown");
-  const hour = watch("hour");
-  const minute = watch("minute");
-  const placeName = watch("placeName");
-  const latitude = watch("latitude");
-  const longitude = watch("longitude");
-  const timezone = watch("timezone");
+  // useWatch (not watch()) so the React Compiler can still memoize this form.
+  const [name, gender, day, month, year, birthTimeUnknown, hour, minute, placeName, latitude, longitude, timezone] =
+    useWatch({
+      control,
+      name: [
+        "name",
+        "gender",
+        "day",
+        "month",
+        "year",
+        "birthTimeUnknown",
+        "hour",
+        "minute",
+        "placeName",
+        "latitude",
+        "longitude",
+        "timezone",
+      ],
+    });
 
   // "Done" means present AND valid — a value like day=-2 is truthy but
   // still invalid, and shouldn't light up the chapter's checkmark.
@@ -192,21 +199,28 @@ export function BirthChartForm({ onResult }: BirthChartFormProps) {
             {engineMessage && (
               <motion.div
                 variants={RISE}
+                role="alert"
                 className="flex items-start gap-2 rounded-md border border-accent/30 bg-accent/10 p-3 text-sm text-foreground"
               >
-                <AlertCircle className="mt-0.5 size-4 shrink-0 text-accent" />
+                <AlertCircle className="mt-0.5 size-4 shrink-0 text-accent" aria-hidden="true" />
                 <span>{engineMessage}</span>
               </motion.div>
             )}
 
             <motion.div variants={RISE} className="mt-5">
-              <Button type="submit" disabled={formState.isSubmitting} breathing className="w-full">
-                {formState.isSubmitting ? <Loader2 className="animate-spin" /> : <Sparkles />}
+              <Button
+                type="submit"
+                disabled={formState.isSubmitting}
+                aria-busy={formState.isSubmitting}
+                breathing
+                className="w-full"
+              >
+                {formState.isSubmitting ? <Loader2 className="animate-spin" aria-hidden="true" /> : <Sparkles aria-hidden="true" />}
                 Show Kundli
               </Button>
               <p className="mt-3 flex items-center justify-center gap-1.5 text-center text-[11px] text-muted-foreground/80">
                 <ShieldCheck className="size-3.5 text-gold" aria-hidden="true" />
-                Calculated privately — your birth details are never shared.
+                Processed on our server only to calculate your chart — never stored or shared.
               </p>
             </motion.div>
           </motion.form>
