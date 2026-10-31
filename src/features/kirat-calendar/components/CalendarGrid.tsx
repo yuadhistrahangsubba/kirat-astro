@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 
 import { MONTHS } from "../data/months";
 import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
+import { dayLabel, handleDayGridKeys } from "../lib/grid-keys";
 import { DayCell } from "./DayCell";
 
 const WEEKDAYS = [
@@ -65,16 +66,32 @@ export function CalendarGrid({
   const firstWeekday = new Date(year, month, 1).getDay();
   const totalDays = new Date(year, month + 1, 0).getDate();
 
+  // The panchanga lookups are the expensive part of a render; recompute
+  // only when the month changes, not on every selection change.
+  const cells = useMemo(
+    () =>
+      Array.from({ length: totalDays }, (_, i) => {
+        const day = i + 1;
+        return {
+          day,
+          kiratDate: getKiratDayNumber(year, month + 1, day),
+          info: computeDayCellInfo(year, month + 1, day, DEFAULT_PLACE),
+          label: dayLabel(year, month, day),
+        };
+      }),
+    [year, month, totalDays],
+  );
+
   return (
     <div className={styles.calendar} onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
-      <div className={styles.monthTitle}>
-        <div className={styles.monthTitleMain}>
+      <div className={styles.monthTitle} aria-live="polite">
+        <h2 className={styles.monthTitleMain}>
           {MONTHS[month]} {year}
-        </div>
+        </h2>
         {kiratMonth && <div className={styles.monthTitleSub}>{kiratMonth}</div>}
       </div>
 
-      <div className={styles.weekdays}>
+      <div className={styles.weekdays} aria-hidden="true">
         {WEEKDAYS.map((wd) => (
           <div key={wd.en}>
             <span lang="lif">{wd.kirat}</span>
@@ -84,25 +101,24 @@ export function CalendarGrid({
         ))}
       </div>
 
-      <div className={styles.days}>
+      <div className={styles.days} onKeyDown={handleDayGridKeys}>
         {Array.from({ length: firstWeekday }, (_, i) => (
           <div key={`empty-${i}`} className={styles.empty} />
         ))}
-        {Array.from({ length: totalDays }, (_, i) => {
-          const day = i + 1;
+        {cells.map(({ day, kiratDate, info, label }) => {
           const isToday = day === today.getDate() && month === today.getMonth() && year === today.getFullYear();
           const isSelected =
             day === selectedDate.getDate() &&
             month === selectedDate.getMonth() &&
             year === selectedDate.getFullYear();
-          const cellInfo = computeDayCellInfo(year, month + 1, day, DEFAULT_PLACE);
           return (
             <DayCell
               key={day}
               day={day}
-              kiratDate={getKiratDayNumber(year, month + 1, day)}
-              mangyukName={cellInfo?.mangyukName}
-              lamikkhokName={cellInfo?.lamikkhokName}
+              kiratDate={kiratDate}
+              mangyukName={info?.mangyukName}
+              lamikkhokName={info?.lamikkhokName}
+              label={label}
               isToday={isToday}
               isSelected={isSelected}
               onClick={() => onDayClick(day)}

@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { MONTHS } from "../data/months";
 import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
+import { dayLabel, handleDayGridKeys } from "../lib/grid-keys";
 
 const WEEKDAYS = [
   { kirat: "ᤋᤧᤏᤧ", en: "Sun" },
@@ -100,7 +101,7 @@ function YearMonthCard({
           </span>
         ))}
       </div>
-      <div className={styles.yearMonthDays}>
+      <div className={styles.yearMonthDays} onKeyDown={handleDayGridKeys}>
         {Array.from({ length: firstWeekday }, (_, i) => (
           <span key={`empty-${i}`} className={styles.yvEmpty} />
         ))}
@@ -119,18 +120,30 @@ function YearMonthCard({
             </>
           );
           return animate ? (
-            <motion.span
+            <motion.button
               key={day}
+              type="button"
+              data-day={day}
+              aria-label={dayLabel(year, month, day)}
+              aria-current={isToday ? "date" : undefined}
               className={className}
               whileTap={{ scale: 0.88 }}
               onClick={() => onJumpToDate(year, month, day)}
             >
               {content}
-            </motion.span>
+            </motion.button>
           ) : (
-            <span key={day} className={className} onClick={() => onJumpToDate(year, month, day)}>
+            <button
+              key={day}
+              type="button"
+              data-day={day}
+              aria-label={dayLabel(year, month, day)}
+              aria-current={isToday ? "date" : undefined}
+              className={className}
+              onClick={() => onJumpToDate(year, month, day)}
+            >
               {content}
-            </span>
+            </button>
           );
         })}
       </div>
