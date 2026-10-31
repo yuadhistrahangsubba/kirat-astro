@@ -18,11 +18,12 @@ export function PlanetaryPositionsWidget({ sky, className }: { sky?: SkyNow; cla
         <SkeletonLines count={6} />
       ) : (
         <table className="w-full font-mono text-xs tabular-nums">
+          <caption className="sr-only">Current planetary positions</caption>
           <thead>
-            <tr className="text-left text-[10px] tracking-wider text-muted-foreground/60 uppercase">
-              <th className="pb-2 font-normal">Body</th>
-              <th className="pb-2 font-normal">Position</th>
-              <th className="pb-2 text-right font-normal">Nakshatra</th>
+            <tr className="text-left text-[10px] tracking-wider text-muted-foreground uppercase">
+              <th scope="col" className="pb-2 font-normal">Body</th>
+              <th scope="col" className="pb-2 font-normal">Position</th>
+              <th scope="col" className="pb-2 text-right font-normal">Nakshatra</th>
             </tr>
           </thead>
           <tbody className="text-foreground/90">

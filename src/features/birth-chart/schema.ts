@@ -10,6 +10,15 @@ function numeric<T extends z.ZodTypeAny>(schema: T) {
   );
 }
 
+export function isValidTimeZone(tz: string): boolean {
+  try {
+    new Intl.DateTimeFormat("en-US", { timeZone: tz });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 const CURRENT_YEAR = new Date().getFullYear();
 
 export const birthChartSchema = z
@@ -34,7 +43,12 @@ export const birthChartSchema = z
     // section, so the superRefine below reports on placeName instead.
     latitude: numeric(z.coerce.number().min(-90).max(90).optional()),
     longitude: numeric(z.coerce.number().min(-180).max(180).optional()),
-    timezone: z.string().optional(),
+    timezone: z
+      .string()
+      .trim()
+      .optional()
+      .transform((tz) => tz || undefined)
+      .refine((tz) => tz === undefined || isValidTimeZone(tz), "Unknown timezone — use an IANA name like Asia/Thimphu"),
   })
   .superRefine((values, ctx) => {
     // Reject impossible calendar dates (Feb 30, Apr 31…) that the
@@ -59,6 +73,27 @@ export const birthChartSchema = z
         message: "Pick a place from the list, use current location, or set coordinates under Advanced",
       });
     }
+  });
+
+/**
+ * Server-side guard for the engine input. Server Actions are public POST
+ * endpoints, so the client-side form validation can't be trusted.
+ */
+export const birthInputSchema = z
+  .object({
+    birthDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    birthTime: z
+      .string()
+      .regex(/^([01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/)
+      .optional(),
+    timezone: z.string().refine(isValidTimeZone),
+    latitude: z.number().finite().min(-90).max(90),
+    longitude: z.number().finite().min(-180).max(180),
+  })
+  .refine(({ birthDate }) => {
+    const [y, m, d] = birthDate.split("-").map(Number) as [number, number, number];
+    const date = new Date(Date.UTC(y, m - 1, d));
+    return y >= 1800 && date.getUTCMonth() === m - 1 && date.getUTCDate() === d;
   });
 
 export type BirthChartFormValues = z.infer<typeof birthChartSchema>;

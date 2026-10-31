@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import { todayInZone } from "../../lib/today";
 
 /** ‹ Previous | date label | Today | Next › — the reference app's date nav. */
 export function DateNavBar({ date, onChange }: { date: Date; onChange: (next: Date) => void }) {
@@ -34,7 +35,7 @@ export function DateNavBar({ date, onChange }: { date: Date; onChange: (next: Da
 				‹ Previous
 			</motion.button>
 			<span style={{ fontWeight: 700, fontSize: 14, minWidth: 150, textAlign: "center" }}>{label}</span>
-			<motion.button whileTap={{ scale: 0.94 }} style={btnStyle} onClick={() => onChange(new Date())}>
+			<motion.button whileTap={{ scale: 0.94 }} style={btnStyle} onClick={() => onChange(todayInZone())}>
 				Today
 			</motion.button>
 			<motion.button whileTap={{ scale: 0.94 }} style={btnStyle} onClick={() => shift(1)}>

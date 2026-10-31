@@ -1,18 +1,11 @@
 import { motion } from "motion/react";
 
 import { MONTHS } from "../data/months";
+import { WEEKDAYS } from "../data/weekdays";
 import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
+import { dayLabel, handleDayGridKeys } from "../lib/grid-keys";
 
-const WEEKDAYS = [
-  { kirat: "ᤋᤧᤏᤧ", en: "Sun" },
-  { kirat: "ᤑᤥᤖᤠ", en: "Mon" },
-  { kirat: "ᤔᤡᤰ", en: "Tue" },
-  { kirat: "ᤂᤧᤰ", en: "Wed" },
-  { kirat: "ᤁᤢᤖᤢ", en: "Thu" },
-  { kirat: "ᤑᤛᤢᤵ", en: "Fri" },
-  { kirat: "ᤛᤧᤴ", en: "Sat" },
-];
 
 interface YearGridProps {
   year: number;
@@ -95,12 +88,12 @@ function YearMonthCard({
       <div className={styles.yearMonthWeekdays}>
         {WEEKDAYS.map((wd) => (
           <span key={wd.en}>
-            <p style={{ fontFamily: "'XenoType LIF Ilam'" }}>{wd.kirat}</p>
+            <span lang="lif" className="block" style={{ fontFamily: "var(--font-kirat)" }}>{wd.kirat}</span>
             {wd.en}
           </span>
         ))}
       </div>
-      <div className={styles.yearMonthDays}>
+      <div className={styles.yearMonthDays} onKeyDown={handleDayGridKeys}>
         {Array.from({ length: firstWeekday }, (_, i) => (
           <span key={`empty-${i}`} className={styles.yvEmpty} />
         ))}
@@ -119,18 +112,30 @@ function YearMonthCard({
             </>
           );
           return animate ? (
-            <motion.span
+            <motion.button
               key={day}
+              type="button"
+              data-day={day}
+              aria-label={dayLabel(year, month, day)}
+              aria-current={isToday ? "date" : undefined}
               className={className}
               whileTap={{ scale: 0.88 }}
               onClick={() => onJumpToDate(year, month, day)}
             >
               {content}
-            </motion.span>
+            </motion.button>
           ) : (
-            <span key={day} className={className} onClick={() => onJumpToDate(year, month, day)}>
+            <button
+              key={day}
+              type="button"
+              data-day={day}
+              aria-label={dayLabel(year, month, day)}
+              aria-current={isToday ? "date" : undefined}
+              className={className}
+              onClick={() => onJumpToDate(year, month, day)}
+            >
               {content}
-            </span>
+            </button>
           );
         })}
       </div>

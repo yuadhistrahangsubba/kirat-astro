@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 
 import { searchPlaces, type Place } from "../places";
 import type { BirthChartFormValues } from "../schema";
-import { FieldError } from "./field-error";
+import { errorAria, FieldError } from "./field-error";
 
 const COMMON_TIMEZONES = ["Asia/Thimphu", "Asia/Kathmandu", "Asia/Kolkata", "Asia/Dhaka", "UTC"];
 
@@ -26,6 +26,10 @@ export function PlaceFields() {
   const [geoStatus, setGeoStatus] = useState<"idle" | "locating" | "denied">("idle");
   const listId = useId();
   const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Label of the place whose coordinates are currently filled in. Editing the
+  // text away from it must drop those coordinates, or the chart would be
+  // computed for the old place under the new name.
+  const resolvedLabel = useRef<string | null>(null);
 
   const query = watch("placeName") ?? "";
   const latitude = watch("latitude");
@@ -34,7 +38,9 @@ export function PlaceFields() {
   const suggestions = open ? searchPlaces(query) : [];
 
   function selectPlace(place: Place) {
-    setValue("placeName", `${place.name}, ${place.region}`, { shouldValidate: true });
+    const label = `${place.name}, ${place.region}`;
+    resolvedLabel.current = label;
+    setValue("placeName", label, { shouldValidate: true });
     setValue("latitude", place.latitude, { shouldValidate: true });
     setValue("longitude", place.longitude, { shouldValidate: true });
     setValue("timezone", place.timezone, { shouldValidate: true });
@@ -46,6 +52,7 @@ export function PlaceFields() {
     setGeoStatus("locating");
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        resolvedLabel.current = "My current location";
         setValue("placeName", "My current location", { shouldValidate: true });
         setValue("latitude", Number(position.coords.latitude.toFixed(4)), { shouldValidate: true });
         setValue("longitude", Number(position.coords.longitude.toFixed(4)), { shouldValidate: true });
@@ -83,11 +90,20 @@ export function PlaceFields() {
           aria-expanded={open && suggestions.length > 0}
           aria-controls={listId}
           aria-autocomplete="list"
+          aria-activedescendant={open && suggestions[highlighted] ? `${listId}-${highlighted}` : undefined}
+          aria-required="true"
+          {...errorAria("placeName", errors.placeName?.message)}
           autoComplete="off"
           placeholder="Start typing — e.g. Thimphu, Paro, Punakha"
           {...placeRegistration}
           onChange={(event) => {
             placeRegistration.onChange(event);
+            if (resolvedLabel.current !== null && event.target.value !== resolvedLabel.current) {
+              resolvedLabel.current = null;
+              setValue("latitude", undefined);
+              setValue("longitude", undefined);
+              setValue("timezone", undefined);
+            }
             setOpen(true);
             setHighlighted(0);
           }}
@@ -122,27 +138,33 @@ export function PlaceFields() {
             className="absolute top-full right-0 left-0 z-20 mt-1.5 overflow-hidden rounded-lg border border-border/70 bg-popover/95 shadow-xl shadow-black/30 backdrop-blur-xl"
           >
             {suggestions.map((place, i) => (
-              <li key={`${place.name}-${place.region}`} role="option" aria-selected={i === highlighted}>
-                <button
-                  type="button"
-                  onMouseEnter={() => setHighlighted(i)}
-                  onClick={() => {
-                    if (blurTimeout.current) clearTimeout(blurTimeout.current);
-                    selectPlace(place);
-                  }}
-                  className={`flex w-full items-center justify-between px-3.5 py-2.5 text-left text-sm transition-colors ${
-                    i === highlighted ? "bg-gold/15 text-foreground" : "text-foreground/85 hover:bg-gold/5"
-                  }`}
-                >
-                  <span>{place.name}</span>
-                  <span className="text-xs text-muted-foreground">{place.region}</span>
-                </button>
+              // Options stay non-focusable: focus remains in the input and
+              // aria-activedescendant points at the highlighted option.
+              <li
+                key={`${place.name}-${place.region}`}
+                id={`${listId}-${i}`}
+                role="option"
+                aria-selected={i === highlighted}
+                onMouseEnter={() => setHighlighted(i)}
+                // preventDefault keeps the input focused so blur doesn't close
+                // the list before the click lands.
+                onMouseDown={(event) => event.preventDefault()}
+                onClick={() => {
+                  if (blurTimeout.current) clearTimeout(blurTimeout.current);
+                  selectPlace(place);
+                }}
+                className={`flex w-full cursor-pointer items-center justify-between px-3.5 py-2.5 text-left text-sm transition-colors ${
+                  i === highlighted ? "bg-gold/15 text-foreground" : "text-foreground/85 hover:bg-gold/5"
+                }`}
+              >
+                <span>{place.name}</span>
+                <span className="text-xs text-muted-foreground">{place.region}</span>
               </li>
             ))}
           </ul>
         )}
 
-        <FieldError message={errors.placeName?.message} />
+        <FieldError field="placeName" message={errors.placeName?.message} />
         {geoStatus === "denied" && (
           <p className="text-xs text-muted-foreground">
             Location unavailable — pick a place from the list or use Advanced below.
@@ -177,7 +199,14 @@ export function PlaceFields() {
             <Label htmlFor="timezone" className="text-xs text-muted-foreground">
               Timezone (IANA)
             </Label>
-            <Input id="timezone" list="tz-suggestions" placeholder="Asia/Thimphu" {...register("timezone")} />
+            <Input
+              id="timezone"
+              list="tz-suggestions"
+              placeholder="Asia/Thimphu"
+              {...errorAria("timezone", errors.timezone?.message)}
+              {...register("timezone")}
+            />
+            <FieldError field="timezone" message={errors.timezone?.message} />
             <datalist id="tz-suggestions">
               {COMMON_TIMEZONES.map((tz) => (
                 <option key={tz} value={tz} />

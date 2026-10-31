@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Instrument_Serif, Noto_Sans_Limbu, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
+import { SITE_URL } from "@/constants/site-url";
+import { MotionProvider } from "@/providers/motion-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
@@ -30,7 +32,16 @@ const tibetan = Noto_Serif_Tibetan({
   weight: "400",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+// Limbu (Kirat Sirijanga) script for the calendar's Kirat labels. The
+// reference app relied on a locally installed XenoType font that most
+// devices don't have, so ship Noto Sans Limbu as the fallback.
+const limbu = Noto_Sans_Limbu({
+  variable: "--font-limbu",
+  subsets: ["limbu"],
+  weight: "400",
+});
+
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -48,6 +59,7 @@ export const metadata: Metadata = {
     siteName: "Kirat Astro",
     type: "website",
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -56,10 +68,20 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${display.variable} ${body.variable} ${denseUi.variable} ${tibetan.variable} font-sans antialiased`}
+        className={`${display.variable} ${body.variable} ${denseUi.variable} ${tibetan.variable} ${limbu.variable} font-sans antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <QueryProvider>{children}</QueryProvider>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100000] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
+        >
+          Skip to content
+        </a>
+        {/* Pages pick their own palette via a .light wrapper; following the OS
+            theme would put html.light over /dashboard's dark tokens. */}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <MotionProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

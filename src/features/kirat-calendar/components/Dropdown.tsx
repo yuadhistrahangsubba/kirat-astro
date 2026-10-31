@@ -29,6 +29,7 @@ export function Dropdown({ value, options, onChange, ariaLabel }: DropdownProps)
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const selected = options.find((o) => o.value === value);
 
   useEffect(() => {
@@ -40,7 +41,10 @@ export function Dropdown({ value, options, onChange, ariaLabel }: DropdownProps)
       }
     }
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key === "Escape") {
+        setOpen(false);
+        triggerRef.current?.focus();
+      }
     }
     document.addEventListener("pointerdown", handlePointerDown);
     document.addEventListener("keydown", handleKeyDown);
@@ -63,12 +67,35 @@ export function Dropdown({ value, options, onChange, ariaLabel }: DropdownProps)
     const selected = list?.querySelector<HTMLElement>('[data-selected="true"]');
     if (list && selected) {
       list.scrollTop = selected.offsetTop - list.clientHeight / 2 + selected.clientHeight / 2;
+      // Move keyboard focus onto the current value (listbox pattern).
+      selected.focus({ preventScroll: true });
     }
   }, [open]);
+
+  // ↑/↓ move between options, Home/End jump to the ends, Tab closes the
+  // list. Options use a roving tabindex so the list is a single Tab stop
+  // instead of one per year.
+  function handleListKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Tab") {
+      setOpen(false);
+      return;
+    }
+    const items = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="option"]'));
+    const current = items.indexOf(document.activeElement as HTMLButtonElement);
+    let next: number;
+    if (event.key === "ArrowDown") next = current + 1;
+    else if (event.key === "ArrowUp") next = current - 1;
+    else if (event.key === "Home") next = 0;
+    else if (event.key === "End") next = items.length - 1;
+    else return;
+    event.preventDefault();
+    items[Math.max(0, Math.min(items.length - 1, next))]?.focus();
+  }
 
   return (
     <div ref={wrapperRef} className={styles.selectWrapper}>
       <button
+        ref={triggerRef}
         type="button"
         className={styles.select}
         onClick={() => setOpen((v) => !v)}
@@ -97,6 +124,7 @@ export function Dropdown({ value, options, onChange, ariaLabel }: DropdownProps)
             exit={{ opacity: 0, y: -6, scale: 0.98 }}
             transition={{ duration: 0.15 }}
             className={styles.dropdownList}
+            onKeyDown={handleListKeyDown}
           >
             {options.map((option) => {
               const isSelected = option.value === value;
@@ -107,10 +135,12 @@ export function Dropdown({ value, options, onChange, ariaLabel }: DropdownProps)
                   role="option"
                   aria-selected={isSelected}
                   data-selected={isSelected}
+                  tabIndex={isSelected ? 0 : -1}
                   className={styles.dropdownOption}
                   onClick={() => {
                     onChange(option.value);
                     setOpen(false);
+                    triggerRef.current?.focus();
                   }}
                 >
                   {option.label}

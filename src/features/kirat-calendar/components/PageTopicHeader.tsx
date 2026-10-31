@@ -20,8 +20,9 @@ export function PageTopicHeader() {
       }}
     >
       <p
+        lang="lif"
         className="text-sm text-primary-foreground/85 sm:text-base"
-        style={{ fontFamily: "'XenoType LIF Ilam'" }}
+        style={{ fontFamily: "var(--font-kirat)" }}
       >
         ᤀᤥᤳ ᤋᤠᤃᤧᤖᤠ ᤏᤡᤱᤘᤠᤓᤢᤔᤠᤱᤅᤣ ᤛᤣᤘᤠᤖᤥ॥
       </p>

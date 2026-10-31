@@ -17,16 +17,20 @@ export function ActionBar({ view, onSelectMonth, onGoToday, onSelectYear }: Acti
 		<div className={styles.actionBar}>
 			<motion.button
 				whileTap={{ scale: 0.94 }}
+				type="button"
+				aria-pressed={view === "month"}
 				className={`${styles.viewSwitchBtn} ${view === "month" ? styles.viewSwitchActive : ""}`}
 				onClick={onSelectMonth}
 			>
 				Month
 			</motion.button>
-			<motion.button whileTap={{ scale: 0.94 }} className={styles.viewSwitchBtn} onClick={onGoToday}>
+			<motion.button type="button" whileTap={{ scale: 0.94 }} className={styles.viewSwitchBtn} onClick={onGoToday}>
 				Today
 			</motion.button>
 			<motion.button
 				whileTap={{ scale: 0.94 }}
+				type="button"
+				aria-pressed={view === "year"}
 				className={`${styles.viewSwitchBtn} ${view === "year" ? styles.viewSwitchActive : ""}`}
 				onClick={onSelectYear}
 			>

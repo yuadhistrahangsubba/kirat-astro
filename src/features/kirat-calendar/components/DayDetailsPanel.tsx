@@ -16,12 +16,13 @@ export function DayDetailsPanel({ p, year, month, day }: DayDetailsPanelProps) {
       <div className={styles.infoBox}>
         <h3
           id="slideUpMarker"
-          style={{ fontSize: 20, color: "var(--primary)", textAlign: "center", fontFamily: "'XenoType LIF Ilam'" }}
+          lang="lif"
+          style={{ fontSize: 20, color: "var(--primary)", textAlign: "center", fontFamily: "var(--font-kirat)" }}
         >
           ᤁᤡᤖᤠᤋ᤻ ᤕᤧᤴᤗᤥ
         </h3>
 
-        <table className={styles.detailsTable} style={{ fontFamily: "'XenoType LIF Ilam'" }}>
+        <table className={styles.detailsTable} style={{ fontFamily: "var(--font-kirat)" }}>
           <tbody>
             <tr>
               <th>ᤁᤡᤖᤠᤋ᤻ ᤕᤧᤴᤏᤡᤳ:</th>
@@ -75,7 +76,7 @@ export function DayDetailsPanel({ p, year, month, day }: DayDetailsPanelProps) {
             </tr>
           </tbody>
         </table>
-        <table className={styles.detailsTable} style={{ fontFamily: "'XenoType LIF Ilam'" }}>
+        <table className={styles.detailsTable} style={{ fontFamily: "var(--font-kirat)" }}>
           <tbody>
             <tr>
               <th>ᤛᤡᤱᤗᤠᤒᤠ ᤋᤡᤳᤗᤢᤶ:</th>

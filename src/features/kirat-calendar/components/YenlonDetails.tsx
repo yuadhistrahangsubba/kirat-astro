@@ -111,6 +111,7 @@ export function YenlonDetails({ year, month, day }: YenlonDetailsProps) {
 						<button
 							key={mode}
 							type="button"
+							aria-pressed={timeMode === mode}
 							onClick={() => setTimeMode(mode)}
 							style={{
 								padding: "6px 14px",

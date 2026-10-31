@@ -27,4 +27,10 @@ describe("localToUtc", () => {
     const utc = localToUtc("1998-04-12", "12:00:45", "Asia/Thimphu");
     expect(utc.toISOString()).toBe("1998-04-12T06:00:45.000Z");
   });
+
+  it("is exact just after a spring-forward transition (America/New_York, 2024-03-10)", () => {
+    // 03:30 EDT = 07:30Z. A single-pass offset lands an hour late (08:30Z).
+    const utc = localToUtc("2024-03-10", "03:30", "America/New_York");
+    expect(utc.toISOString()).toBe("2024-03-10T07:30:00.000Z");
+  });
 });

@@ -17,6 +17,7 @@ import styles from "../../kirat-calendar.module.css";
 import { DateNavBar } from "./DateNavBar";
 import { TimeFormatBar } from "./TimeFormatBar";
 import { ToolPageShell } from "./ToolPageShell";
+import { todayInZone } from "../../lib/today";
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
@@ -26,7 +27,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
  * relative to every possible Birth Titlum.
  */
 export function SinglabamukPage({ onBack }: { onBack: () => void }) {
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 
 	const baseYMD = { y: date.getFullYear(), mo: date.getMonth() + 1, d: date.getDate() };

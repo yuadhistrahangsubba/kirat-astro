@@ -77,6 +77,7 @@ export function SadesatiTimeline({ periods }: SadesatiTimelineProps) {
       {periods.length > VISIBLE_WHEN_COLLAPSED && (
         <button
           type="button"
+          aria-expanded={showAll}
           onClick={() => setShowAll((v) => !v)}
           className="mt-4 text-xs font-medium text-gold hover:underline"
         >

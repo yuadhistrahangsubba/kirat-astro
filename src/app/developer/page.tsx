@@ -5,6 +5,9 @@ import { DeveloperPageContent } from "./developer-page-content";
 
 export const metadata: Metadata = {
   title: "Developer",
+  description:
+    "Who designed and built Kirat Khaik Mundhum Paturo.",
+  alternates: { canonical: "/developer" },
 };
 
 export default function DeveloperPage() {

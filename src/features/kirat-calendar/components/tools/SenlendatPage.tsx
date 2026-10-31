@@ -15,6 +15,7 @@ import styles from "../../kirat-calendar.module.css";
 import { DateNavBar } from "./DateNavBar";
 import { TimeFormatBar } from "./TimeFormatBar";
 import { ToolPageShell } from "./ToolPageShell";
+import { todayInZone } from "../../lib/today";
 
 /**
  * Senlendat — Kirat planetary hours, ported from the reference app: a
@@ -22,7 +23,7 @@ import { ToolPageShell } from "./ToolPageShell";
  * Night slot tables with the active slot highlighted.
  */
 export function SenlendatPage({ onBack }: { onBack: () => void }) {
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 	const [nowHours, setNowHours] = useState<number>(NaN);
 

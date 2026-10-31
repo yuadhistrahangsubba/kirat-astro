@@ -12,7 +12,7 @@ export function AstroPageContent() {
   const [report, setReport] = useState<{ result: ChartResult; subject: KundliSubject } | null>(null);
 
   return (
-    <main className="relative">
+    <main id="main" className="relative">
       <div className="mx-auto grid max-w-5xl gap-14 px-6 py-28 sm:py-36 lg:grid-cols-[1fr_1fr] lg:items-center">
         <motion.div
           initial={{ opacity: 0, y: 18 }}

@@ -33,6 +33,8 @@ export function VimshottariDashaTable({ periods }: VimshottariDashaTableProps) {
           >
             <button
               type="button"
+              aria-expanded={isOpen}
+              aria-controls={`dasha-panel-${i}`}
               onClick={() => setOpenIndex(isOpen ? -1 : i)}
               className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
             >
@@ -57,6 +59,7 @@ export function VimshottariDashaTable({ periods }: VimshottariDashaTableProps) {
             <AnimatePresence initial={false}>
               {isOpen && (
                 <motion.div
+                  id={`dasha-panel-${i}`}
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}

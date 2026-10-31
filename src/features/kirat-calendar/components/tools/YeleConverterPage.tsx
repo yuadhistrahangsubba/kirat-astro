@@ -5,6 +5,7 @@ import { useState } from "react";
 import { gregorianToKirat, kiratToGregorian } from "../../engine";
 import { KIRAT_YELE_MONTHS } from "../../engine/yele";
 import { ToolPageShell } from "./ToolPageShell";
+import { todayInZone } from "../../lib/today";
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
@@ -39,7 +40,7 @@ function fmtLong(d: Date): string {
 export function YeleConverterPage({ onBack }: { onBack: () => void }) {
 	const [tab, setTab] = useState<"ad2k" | "k2ad">("ad2k");
 
-	const now = new Date();
+	const now = todayInZone();
 	const todayKirat = gregorianToKirat(now.getFullYear(), now.getMonth() + 1, now.getDate());
 
 	// Gregorian → Kirat

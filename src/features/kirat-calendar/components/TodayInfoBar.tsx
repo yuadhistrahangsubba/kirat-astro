@@ -3,6 +3,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 
 import { DEFAULT_PLACE } from "../engine";
+import { todayInZone } from "../lib/today";
 
 /**
  * The "Kirat Yenlon" header card, following the reference app's home card:
@@ -13,9 +14,11 @@ export function TodayInfoBar({ selectedDate, children }: { selectedDate: Date; c
 	const [now, setNow] = useState<Date | null>(null);
 
 	useEffect(() => {
-		const tick = () => setNow(new Date());
+		// The label only shows the date, so a once-a-minute tick is plenty to
+		// roll over at Thimphu midnight.
+		const tick = () => setNow(todayInZone());
 		tick();
-		const interval = setInterval(tick, 1000);
+		const interval = setInterval(tick, 60_000);
 		return () => clearInterval(interval);
 	}, []);
 
@@ -26,7 +29,12 @@ export function TodayInfoBar({ selectedDate, children }: { selectedDate: Date; c
 		year: "numeric",
 	});
 
-	const selectedLabel = `${selectedDate.toLocaleDateString("en-US", { weekday: "long" })}, ${selectedDate.getDate()} ${selectedDate.toLocaleDateString("en-US", { month: "long" })}, ${selectedDate.getFullYear()}`;
+	const selectedLabel = selectedDate.toLocaleDateString("en-GB", {
+		weekday: "long",
+		day: "numeric",
+		month: "long",
+		year: "numeric",
+	});
 
 	return (
 		<div className="mt-4 rounded-2xl border border-border/60 bg-card/60 px-5 pt-4 pb-5 text-center shadow-[0_8px_24px_-12px_rgba(0,0,0,.25)] backdrop-blur-xl">

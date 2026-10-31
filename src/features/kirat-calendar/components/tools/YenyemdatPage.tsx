@@ -16,6 +16,7 @@ import { DateNavBar } from "./DateNavBar";
 import { remainingLabel } from "./SenlendatPage";
 import { TimeFormatBar } from "./TimeFormatBar";
 import { ToolPageShell } from "./ToolPageShell";
+import { todayInZone } from "../../lib/today";
 
 /**
  * Yenyem — Kirat eightfold time division, ported from the reference app:
@@ -23,7 +24,7 @@ import { ToolPageShell } from "./ToolPageShell";
  * slot tables with meanings/results and the active slot highlighted.
  */
 export function YenyemdatPage({ onBack }: { onBack: () => void }) {
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 	const [nowHours, setNowHours] = useState<number>(NaN);
 

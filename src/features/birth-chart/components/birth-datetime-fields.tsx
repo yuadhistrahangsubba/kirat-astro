@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import type { BirthChartFormValues } from "../schema";
-import { FieldError } from "./field-error";
+import { errorAria, FieldError } from "./field-error";
 
 export function BirthDateTimeFields() {
   const {
@@ -25,15 +25,15 @@ export function BirthDateTimeFields() {
           <Label htmlFor="day" className="text-xs text-muted-foreground">
             Day
           </Label>
-          <Input id="day" type="number" inputMode="numeric" min={1} max={31} placeholder="15" {...register("day")} />
-          <FieldError message={errors.day?.message} />
+          <Input id="day" type="number" inputMode="numeric" min={1} max={31} placeholder="15" autoComplete="bday-day" aria-required="true" {...errorAria("day", errors.day?.message)} {...register("day")} />
+          <FieldError field="day" message={errors.day?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="month" className="text-xs text-muted-foreground">
             Month
           </Label>
-          <Input id="month" type="number" inputMode="numeric" min={1} max={12} placeholder="8" {...register("month")} />
-          <FieldError message={errors.month?.message} />
+          <Input id="month" type="number" inputMode="numeric" min={1} max={12} placeholder="8" autoComplete="bday-month" aria-required="true" {...errorAria("month", errors.month?.message)} {...register("month")} />
+          <FieldError field="month" message={errors.month?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="year" className="text-xs text-muted-foreground">
@@ -46,9 +46,9 @@ export function BirthDateTimeFields() {
             min={1800}
             max={new Date().getFullYear()}
             placeholder="1995"
-            {...register("year")}
+            autoComplete="bday-year" aria-required="true" {...errorAria("year", errors.year?.message)} {...register("year")}
           />
-          <FieldError message={errors.year?.message} />
+          <FieldError field="year" message={errors.year?.message} />
         </div>
       </div>
 
@@ -65,9 +65,9 @@ export function BirthDateTimeFields() {
             max={23}
             placeholder="08"
             disabled={timeUnknown}
-            {...register("hour")}
+            {...errorAria("hour", errors.hour?.message)} {...register("hour")}
           />
-          <FieldError message={errors.hour?.message} />
+          <FieldError field="hour" message={errors.hour?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="minute" className="text-xs text-muted-foreground">
@@ -81,9 +81,9 @@ export function BirthDateTimeFields() {
             max={59}
             placeholder="30"
             disabled={timeUnknown}
-            {...register("minute")}
+            {...errorAria("minute", errors.minute?.message)} {...register("minute")}
           />
-          <FieldError message={errors.minute?.message} />
+          <FieldError field="minute" message={errors.minute?.message} />
         </div>
         <div className="grid gap-1.5">
           <Label htmlFor="second" className="text-xs text-muted-foreground">
@@ -97,9 +97,9 @@ export function BirthDateTimeFields() {
             max={59}
             placeholder="00"
             disabled={timeUnknown}
-            {...register("second")}
+            {...errorAria("second", errors.second?.message)} {...register("second")}
           />
-          <FieldError message={errors.second?.message} />
+          <FieldError field="second" message={errors.second?.message} />
         </div>
       </div>
 
