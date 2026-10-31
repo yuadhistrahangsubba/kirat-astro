@@ -163,6 +163,15 @@
   .light {
     color-scheme: light;
   }
+  /* Public pages paint a .light wrapper over a dark-token <body>. Give the
+     body the same vellum so it never shows through during a route change
+     or on overscroll (rubber-band) scrolling. */
+  html:has(.light) {
+    color-scheme: light;
+  }
+  html:has(.light) body {
+    background-color: oklch(0.97 0.008 85);
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
