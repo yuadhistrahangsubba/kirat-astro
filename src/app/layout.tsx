@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Instrument_Serif, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Instrument_Serif, Noto_Sans_Limbu, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
@@ -30,6 +30,15 @@ const tibetan = Noto_Serif_Tibetan({
   weight: "400",
 });
 
+// Limbu (Kirat Sirijanga) script for the calendar's Kirat labels. The
+// reference app relied on a locally installed XenoType font that most
+// devices don't have, so ship Noto Sans Limbu as the fallback.
+const limbu = Noto_Sans_Limbu({
+  variable: "--font-limbu",
+  subsets: ["limbu"],
+  weight: "400",
+});
+
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
@@ -56,7 +65,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${display.variable} ${body.variable} ${denseUi.variable} ${tibetan.variable} font-sans antialiased`}
+        className={`${display.variable} ${body.variable} ${denseUi.variable} ${tibetan.variable} ${limbu.variable} font-sans antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <QueryProvider>{children}</QueryProvider>

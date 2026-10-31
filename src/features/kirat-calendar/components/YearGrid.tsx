@@ -95,7 +95,7 @@ function YearMonthCard({
       <div className={styles.yearMonthWeekdays}>
         {WEEKDAYS.map((wd) => (
           <span key={wd.en}>
-            <p style={{ fontFamily: "'XenoType LIF Ilam'" }}>{wd.kirat}</p>
+            <span lang="lif" className="block" style={{ fontFamily: "var(--font-kirat)" }}>{wd.kirat}</span>
             {wd.en}
           </span>
         ))}

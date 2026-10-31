@@ -77,7 +77,7 @@ export function CalendarGrid({
       <div className={styles.weekdays}>
         {WEEKDAYS.map((wd) => (
           <div key={wd.en}>
-            {wd.kirat}
+            <span lang="lif">{wd.kirat}</span>
             <br />
             {wd.en}
           </div>

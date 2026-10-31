@@ -55,6 +55,8 @@
 /* ── Dark: default identity — the cosmos ──────────────────── */
 :root {
   --radius: 0.875rem;
+  /* Limbu script: a locally installed XenoType wins, else the shipped Noto. */
+  --font-kirat: "XenoType LIF Ilam", var(--font-limbu), sans-serif;
 
   --background:            oklch(0.08 0.025 285);
   --foreground:            oklch(0.95 0.01 90);
