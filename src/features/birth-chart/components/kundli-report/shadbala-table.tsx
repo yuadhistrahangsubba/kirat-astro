@@ -16,13 +16,14 @@ export function ShadbalaTable({ basicShadbala }: ShadbalaTableProps) {
   return (
     <div className="overflow-x-auto rounded-2xl border border-border/60 bg-card/50">
       <table className="w-full min-w-[440px] text-sm">
+        <caption className="sr-only">Planetary strength (Shadbala) by graha</caption>
         <thead>
           <tr className="border-b border-border/60 text-left text-[11px] tracking-wide text-muted-foreground uppercase">
-            <th className="px-4 py-3 font-medium">Graha</th>
-            <th className="px-4 py-3 font-medium">Uccha</th>
-            <th className="px-4 py-3 font-medium">Dig</th>
-            <th className="px-4 py-3 font-medium">Naisargika</th>
-            <th className="px-4 py-3 font-medium">Total</th>
+            <th scope="col" className="px-4 py-3 font-medium">Graha</th>
+            <th scope="col" className="px-4 py-3 font-medium">Uccha</th>
+            <th scope="col" className="px-4 py-3 font-medium">Dig</th>
+            <th scope="col" className="px-4 py-3 font-medium">Naisargika</th>
+            <th scope="col" className="px-4 py-3 font-medium">Total</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border/40">

@@ -67,7 +67,7 @@ export function DeveloperPageContent() {
               <Mail className="size-4 text-gold" aria-hidden="true" />
               {DEVELOPER.email}
             </a>
-            <a href={`tel:${DEVELOPER.phone}`} className="flex items-center justify-center gap-2 transition-colors hover:text-foreground">
+            <a href={`tel:+975${DEVELOPER.phone}`} className="flex items-center justify-center gap-2 transition-colors hover:text-foreground">
               <Phone className="size-4 text-gold" aria-hidden="true" />
               {DEVELOPER.phone}
             </a>
