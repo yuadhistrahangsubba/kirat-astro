@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif, Noto_Sans_Limbu, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
+import { SITE_URL } from "@/constants/site-url";
 import { MotionProvider } from "@/providers/motion-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -40,7 +41,7 @@ const limbu = Noto_Sans_Limbu({
   weight: "400",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+const siteUrl = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -58,6 +59,7 @@ export const metadata: Metadata = {
     siteName: "Kirat Astro",
     type: "website",
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
