@@ -16,17 +16,10 @@ import {
 	User,
 } from "lucide-react";
 
-import type { InfoPageKey, ToolPageKey } from "../types";
+import type { ToolPageKey } from "../types";
 
 interface HomeNavItem {
   kind: "home";
-  label: string;
-  icon: LucideIcon;
-}
-
-interface InfoNavItem {
-  kind: "info";
-  key: InfoPageKey;
   label: string;
   icon: LucideIcon;
 }
@@ -45,7 +38,7 @@ interface RouteNavItem {
   icon: LucideIcon;
 }
 
-export type NavItem = HomeNavItem | InfoNavItem | ToolNavItem | RouteNavItem;
+export type NavItem = HomeNavItem | ToolNavItem | RouteNavItem;
 
 export interface NavSection {
   label: string | null;
@@ -53,7 +46,7 @@ export interface NavSection {
 }
 
 /**
- * The drawer's full nav, grouped for scannability. `home`/`info`/`tool`
+ * The drawer's full nav, grouped for scannability. `home`/`tool`
  * items switch local view state when the calendar's own callbacks are given
  * (see HamburgerMenu); everywhere else they fall back to real routes.
  */
@@ -83,7 +76,7 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     label: "Contact",
     items: [
-      { kind: "info", key: "about", label: "About Us", icon: User },
+      { kind: "route", href: "/about", label: "About Us", icon: User },
       { kind: "route", href: "/developer", label: "Developer", icon: Code },
     ],
   },

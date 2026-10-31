@@ -9,8 +9,6 @@ export interface PanchangaDay {
   [key: string]: string | undefined;
 }
 
-export type InfoPageKey = "about";
-
 /** Tool sections ported from the reference Kirat Calendar app. */
 export type ToolPageKey =
 	| "senlendat"
@@ -22,6 +20,6 @@ export type ToolPageKey =
 	| "ayanamsha"
 	| "yeleconverter";
 
-export type ViewMode = "calendar" | "year" | InfoPageKey | ToolPageKey;
+export type ViewMode = "calendar" | "year" | ToolPageKey;
 
 export type CalendarTheme = "day" | "night";

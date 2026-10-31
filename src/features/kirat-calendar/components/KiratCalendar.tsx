@@ -1,16 +1,15 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { SunlitBackground } from "@/components/marketing/sunlit-background";
 import styles from "../kirat-calendar.module.css";
-import type { InfoPageKey, ToolPageKey, ViewMode } from "../types";
+import type { ToolPageKey, ViewMode } from "../types";
 import { ActionBar } from "./ActionBar";
 import { CalendarGrid } from "./CalendarGrid";
 import { CalendarHeader } from "./CalendarHeader";
-import { InfoPage } from "./InfoPage";
 import { MonthYearControls } from "./MonthYearControls";
 import { TodayInfoBar } from "./TodayInfoBar";
 import { AyanamshaPage } from "./tools/AyanamshaPage";
@@ -25,7 +24,6 @@ import { YearView } from "./YearView";
 import { YenlonDetails } from "./YenlonDetails";
 import { todayInZone } from "../lib/today";
 
-const INFO_PAGE_KEYS: InfoPageKey[] = ["about"];
 const TOOL_PAGE_KEYS: ToolPageKey[] = [
   "senlendat",
   "yenyemdat",
@@ -39,6 +37,7 @@ const TOOL_PAGE_KEYS: ToolPageKey[] = [
 
 export function KiratCalendar() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [today, setToday] = useState(() => todayInZone());
   const [viewMode, setViewMode] = useState<ViewMode>("calendar");
@@ -63,8 +62,9 @@ export function KiratCalendar() {
       const panel = searchParams.get("panel");
       if (TOOL_PAGE_KEYS.includes(panel as ToolPageKey)) {
         setViewMode(panel as ToolPageKey);
-      } else if (INFO_PAGE_KEYS.includes(panel as InfoPageKey)) {
-        setViewMode(panel as InfoPageKey);
+      } else if (panel === "about") {
+        // About used to be an in-calendar panel; old links now go to /about.
+        router.replace("/about");
       }
     }
     init();
@@ -104,10 +104,6 @@ export function KiratCalendar() {
     setViewMode("calendar");
   }
 
-  function handleSelectInfoPage(key: InfoPageKey) {
-    setViewMode(key);
-  }
-
   const selectedKey = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, "0")}-${String(
     selectedDate.getDate(),
   ).padStart(2, "0")}`;
@@ -126,7 +122,6 @@ export function KiratCalendar() {
 
       <CalendarHeader
         onSelectHome={() => setViewMode("calendar")}
-        onSelectInfoPage={handleSelectInfoPage}
         onSelectTool={(key) => setViewMode(key)}
       />
 
@@ -245,12 +240,6 @@ export function KiratCalendar() {
           {viewMode === "yeleconverter" && (
             <motion.div key="yeleconverter" {...viewTransition}>
               <YeleConverterPage onBack={() => setViewMode("calendar")} />
-            </motion.div>
-          )}
-
-          {viewMode === "about" && (
-            <motion.div key={viewMode} {...viewTransition}>
-              <InfoPage pageKey={viewMode} onBack={() => setViewMode("calendar")} />
             </motion.div>
           )}
         </AnimatePresence>
