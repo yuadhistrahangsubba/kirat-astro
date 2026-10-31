@@ -147,6 +147,11 @@
     padding:4px;
 }
 
+.dropdownOption:focus-visible{
+    outline:2px solid var(--primary);
+    outline-offset:-2px;
+}
+
 .dropdownOption{
     display:flex;
     align-items:center;
