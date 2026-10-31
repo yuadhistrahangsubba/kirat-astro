@@ -11,18 +11,12 @@ export const DEVELOPER = {
   // Drawn from the real stacks across this site and the EMIS (edu-admin-dashboard)
   // production project: microservices consumption, real-time pub/sub, and
   // container CI/CD, not just the frontend layer.
-  skills: [
-    "React",
-    "Next.js",
-    "TypeScript",
-    "Node.js",
-    "Tailwind CSS",
-    "Microservices Architecture",
-    "Docker & Kubernetes",
-    "NATS / Real-time Systems",
-    "Auth.js & WebAuthn",
-    "PostgreSQL & Prisma",
-    "Supabase",
-    "Framer Motion",
+  skillGroups: [
+    { title: "Frontend", skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion"] },
+    { title: "Backend & data", skills: ["Node.js", "PostgreSQL & Prisma", "Supabase", "Auth.js & WebAuthn"] },
+    {
+      title: "Infrastructure",
+      skills: ["Microservices Architecture", "Docker & Kubernetes", "NATS / Real-time Systems"],
+    },
   ],
-};
+} as const;
