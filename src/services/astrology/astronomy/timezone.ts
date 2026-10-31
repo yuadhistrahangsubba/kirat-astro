@@ -7,9 +7,11 @@
  * in the target zone. The difference between the two is the zone's
  * offset at that instant, which we subtract from the guess.
  *
- * Limitation: within the ~1-2 hour window of a DST transition, this
- * single-pass correction can be off by the transition's delta. Not a
- * concern for birth-chart-grade precision.
+ * The offset is measured twice: once at the first guess, then again at the
+ * corrected instant. A single pass is off by the DST delta when the guess
+ * and the true instant fall on opposite sides of a transition. Wall-clock
+ * times that don't exist (skipped spring-forward hour) resolve to the
+ * post-transition offset.
  */
 export function localToUtc(dateISO: string, time: string, timeZone: string): Date {
   const [year, month, day] = dateISO.split("-").map(Number) as [number, number, number];
@@ -31,11 +33,15 @@ export function localToUtc(dateISO: string, time: string, timeZone: string): Dat
     hourCycle: "h23",
   });
 
-  const parts = formatter.formatToParts(guessUtc);
-  const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+  const offsetAt = (instant: Date) => {
+    const parts = formatter.formatToParts(instant);
+    const get = (type: string) => Number(parts.find((p) => p.type === type)?.value ?? 0);
+    const zonedAsUtc = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"), get("second"));
+    return zonedAsUtc - instant.getTime();
+  };
 
-  const zonedAsUtc = Date.UTC(get("year"), get("month") - 1, get("day"), get("hour"), get("minute"), get("second"));
-  const offsetMs = zonedAsUtc - guessUtc.getTime();
+  const firstOffset = offsetAt(guessUtc);
+  const secondOffset = offsetAt(new Date(guessUtc.getTime() - firstOffset));
 
-  return new Date(guessUtc.getTime() - offsetMs);
+  return new Date(guessUtc.getTime() - secondOffset);
 }

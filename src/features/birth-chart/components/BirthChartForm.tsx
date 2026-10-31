@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import type { ChartResult } from "@/services/astrology";
 
 import { computeChartAction } from "../actions";
-import { birthChartSchema, toBirthInput, type BirthChartFormValues } from "../schema";
+import { birthChartSchema, isValidTimeZone, toBirthInput, type BirthChartFormValues } from "../schema";
 import { useBirthChartWizard } from "../store";
 import { BirthDateTimeFields } from "./birth-datetime-fields";
 import { FormChapter } from "./form-chapter";
@@ -82,14 +82,27 @@ export function BirthChartForm({ onResult }: BirthChartFormProps) {
     Boolean(timezone);
 
   function fillNow() {
-    const now = new Date();
-    setValue("day", now.getDate(), { shouldValidate: true });
-    setValue("month", now.getMonth() + 1, { shouldValidate: true });
-    setValue("year", now.getFullYear(), { shouldValidate: true });
+    // Wall-clock "now" in the birth place's zone, not the browser's — the
+    // form's time is interpreted in `timezone`.
+    const zone = timezone && isValidTimeZone(timezone) ? timezone : undefined;
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: zone,
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hourCycle: "h23",
+    }).formatToParts(new Date());
+    const get = (type: Intl.DateTimeFormatPartTypes) => Number(parts.find((p) => p.type === type)?.value);
+    setValue("day", get("day"), { shouldValidate: true });
+    setValue("month", get("month"), { shouldValidate: true });
+    setValue("year", get("year"), { shouldValidate: true });
     setValue("birthTimeUnknown", false);
-    setValue("hour", now.getHours(), { shouldValidate: true });
-    setValue("minute", now.getMinutes(), { shouldValidate: true });
-    setValue("second", now.getSeconds(), { shouldValidate: true });
+    setValue("hour", get("hour"), { shouldValidate: true });
+    setValue("minute", get("minute"), { shouldValidate: true });
+    setValue("second", get("second"), { shouldValidate: true });
   }
 
   async function onSubmit(values: BirthChartFormValues) {

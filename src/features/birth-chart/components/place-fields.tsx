@@ -26,6 +26,10 @@ export function PlaceFields() {
   const [geoStatus, setGeoStatus] = useState<"idle" | "locating" | "denied">("idle");
   const listId = useId();
   const blurTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Label of the place whose coordinates are currently filled in. Editing the
+  // text away from it must drop those coordinates, or the chart would be
+  // computed for the old place under the new name.
+  const resolvedLabel = useRef<string | null>(null);
 
   const query = watch("placeName") ?? "";
   const latitude = watch("latitude");
@@ -34,7 +38,9 @@ export function PlaceFields() {
   const suggestions = open ? searchPlaces(query) : [];
 
   function selectPlace(place: Place) {
-    setValue("placeName", `${place.name}, ${place.region}`, { shouldValidate: true });
+    const label = `${place.name}, ${place.region}`;
+    resolvedLabel.current = label;
+    setValue("placeName", label, { shouldValidate: true });
     setValue("latitude", place.latitude, { shouldValidate: true });
     setValue("longitude", place.longitude, { shouldValidate: true });
     setValue("timezone", place.timezone, { shouldValidate: true });
@@ -46,6 +52,7 @@ export function PlaceFields() {
     setGeoStatus("locating");
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        resolvedLabel.current = "My current location";
         setValue("placeName", "My current location", { shouldValidate: true });
         setValue("latitude", Number(position.coords.latitude.toFixed(4)), { shouldValidate: true });
         setValue("longitude", Number(position.coords.longitude.toFixed(4)), { shouldValidate: true });
@@ -88,6 +95,12 @@ export function PlaceFields() {
           {...placeRegistration}
           onChange={(event) => {
             placeRegistration.onChange(event);
+            if (resolvedLabel.current !== null && event.target.value !== resolvedLabel.current) {
+              resolvedLabel.current = null;
+              setValue("latitude", undefined);
+              setValue("longitude", undefined);
+              setValue("timezone", undefined);
+            }
             setOpen(true);
             setHighlighted(0);
           }}
