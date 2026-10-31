@@ -23,6 +23,7 @@ import { YeleConverterPage } from "./tools/YeleConverterPage";
 import { YenyemdatPage } from "./tools/YenyemdatPage";
 import { YearView } from "./YearView";
 import { YenlonDetails } from "./YenlonDetails";
+import { todayInZone } from "../lib/today";
 
 const INFO_PAGE_KEYS: InfoPageKey[] = ["about"];
 const TOOL_PAGE_KEYS: ToolPageKey[] = [
@@ -39,11 +40,11 @@ const TOOL_PAGE_KEYS: ToolPageKey[] = [
 export function KiratCalendar() {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
-  const [today, setToday] = useState(new Date());
+  const [today, setToday] = useState(() => todayInZone());
   const [viewMode, setViewMode] = useState<ViewMode>("calendar");
   const [currentMonth, setCurrentMonth] = useState(0);
   const [currentYear, setCurrentYear] = useState(2000);
-  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(() => todayInZone());
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +52,7 @@ export function KiratCalendar() {
   // any risk of a server/client hydration mismatch across a day boundary.
   useEffect(() => {
     function init() {
-      const now = new Date();
+      const now = todayInZone();
       setToday(now);
       setCurrentMonth(now.getMonth());
       setCurrentYear(now.getFullYear());

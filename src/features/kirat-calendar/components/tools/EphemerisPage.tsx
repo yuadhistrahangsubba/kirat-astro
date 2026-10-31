@@ -14,6 +14,7 @@ import {
 import styles from "../../kirat-calendar.module.css";
 import { DateNavBar } from "./DateNavBar";
 import { ToolPageShell } from "./ToolPageShell";
+import { todayInZone } from "../../lib/today";
 
 const selectStyle: React.CSSProperties = {
 	padding: "8px 12px",
@@ -41,7 +42,7 @@ function formatLatSigned(deg: number): string {
  * reference app's Ephemeris section.
  */
 export function EphemerisPage({ onBack }: { onBack: () => void }) {
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(() => todayInZone());
 	const [ayanamshaKey, setAyanamshaKey] = useState<AyanamshaKey>("lahiri");
 
 	const rows = useMemo(() => {
