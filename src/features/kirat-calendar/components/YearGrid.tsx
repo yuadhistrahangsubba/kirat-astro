@@ -1,19 +1,11 @@
 import { motion } from "motion/react";
 
 import { MONTHS } from "../data/months";
+import { WEEKDAYS } from "../data/weekdays";
 import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
 import { dayLabel, handleDayGridKeys } from "../lib/grid-keys";
 
-const WEEKDAYS = [
-  { kirat: "ᤋᤧᤏᤧ", en: "Sun" },
-  { kirat: "ᤑᤥᤖᤠ", en: "Mon" },
-  { kirat: "ᤔᤡᤰ", en: "Tue" },
-  { kirat: "ᤂᤧᤰ", en: "Wed" },
-  { kirat: "ᤁᤢᤖᤢ", en: "Thu" },
-  { kirat: "ᤑᤛᤢᤵ", en: "Fri" },
-  { kirat: "ᤛᤧᤴ", en: "Sat" },
-];
 
 interface YearGridProps {
   year: number;

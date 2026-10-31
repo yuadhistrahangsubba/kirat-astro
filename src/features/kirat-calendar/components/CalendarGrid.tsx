@@ -3,20 +3,12 @@
 import { useMemo, useRef } from "react";
 
 import { MONTHS } from "../data/months";
+import { WEEKDAYS } from "../data/weekdays";
 import { computeDayCellInfo, DEFAULT_PLACE, getKiratDayNumber, getKiratMonthHeaderText } from "../engine";
 import styles from "../kirat-calendar.module.css";
 import { dayLabel, handleDayGridKeys } from "../lib/grid-keys";
 import { DayCell } from "./DayCell";
 
-const WEEKDAYS = [
-  { kirat: "ᤋᤧᤏᤧ", en: "Sun" },
-  { kirat: "ᤑᤥᤖᤠᤠ", en: "Mon" },
-  { kirat: "ᤔᤡᤰ", en: "Tue" },
-  { kirat: "ᤂᤧᤰ", en: "Wed" },
-  { kirat: "ᤁᤢᤖᤢᤵ", en: "Thu" },
-  { kirat: "ᤑᤛᤢᤵ", en: "Fri" },
-  { kirat: "ᤛᤧᤴ", en: "Sat" },
-];
 
 interface CalendarGridProps {
   month: number;
