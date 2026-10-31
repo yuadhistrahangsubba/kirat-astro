@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Instrument_Serif, Noto_Sans_Limbu, Noto_Serif_Tibetan, Plus_Jakarta_Sans } from "next/font/google";
+import { MotionProvider } from "@/providers/motion-provider";
 import { QueryProvider } from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "./globals.css";
@@ -67,8 +68,18 @@ export default function RootLayout({
       <body
         className={`${display.variable} ${body.variable} ${denseUi.variable} ${tibetan.variable} ${limbu.variable} font-sans antialiased`}
       >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <QueryProvider>{children}</QueryProvider>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100000] focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:shadow-lg"
+        >
+          Skip to content
+        </a>
+        {/* Pages pick their own palette via a .light wrapper; following the OS
+            theme would put html.light over /dashboard's dark tokens. */}
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <MotionProvider>
+            <QueryProvider>{children}</QueryProvider>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>

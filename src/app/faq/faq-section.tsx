@@ -85,7 +85,7 @@ function FaqItem({ question, answer, index }: { question: string; answer: string
 export function Faq() {
   return (
     <section className="relative mx-auto max-w-2xl px-6 py-28 sm:py-36">
-      <motion.h2
+      <motion.h1
         initial={{ opacity: 0, y: 14 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-100px" }}
@@ -93,7 +93,7 @@ export function Faq() {
         className="text-center font-sans text-3xl font-bold tracking-wide sm:text-4xl"
       >
         Questions, answered
-      </motion.h2>
+      </motion.h1>
 
       <div className="mt-12">
         {FAQS.map((faq, index) => (

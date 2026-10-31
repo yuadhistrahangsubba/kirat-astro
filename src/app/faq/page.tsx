@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function FaqPage() {
   return (
     <CalendarThemedShell>
-      <main>
+      <main id="main">
         <Faq />
       </main>
     </CalendarThemedShell>

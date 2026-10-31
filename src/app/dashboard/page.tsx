@@ -25,7 +25,8 @@ export default function DashboardPage() {
   const { data: sky } = useSkyNow();
 
   return (
-    <main className="mx-auto max-w-360 px-5 pt-6 pb-16">
+    <main id="main" className="mx-auto max-w-360 px-5 pt-6 pb-16">
+      <h1 className="sr-only">Dashboard</h1>
       <motion.div
         variants={container}
         initial="hidden"

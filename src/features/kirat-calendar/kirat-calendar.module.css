@@ -113,7 +113,11 @@
 .select:hover,
 .select:focus-visible{
     border-color:var(--color-gold);
-    outline:none;
+}
+
+.select:focus-visible{
+    outline:2px solid var(--primary);
+    outline-offset:2px;
 }
 
 .selectIcon{
