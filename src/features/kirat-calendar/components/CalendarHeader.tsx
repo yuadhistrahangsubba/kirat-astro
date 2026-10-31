@@ -25,12 +25,9 @@ export function CalendarHeader({ onSelectHome, onSelectTool }: CalendarHeaderPro
 
   return (
     <>
-      <motion.header
-        initial={{ opacity: 0, y: -16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: "easeOut" }}
-        className="relative z-[10000] bg-primary/80 py-4 backdrop-blur-xl"
-      >
+      {/* No entrance animation: every page mounts its own header, so a fade-in
+          here replays on each navigation and reads as the header flickering. */}
+      <header className="relative z-[10000] bg-primary/80 py-4 backdrop-blur-xl">
         <div className="mx-auto flex w-full max-w-[1600px] items-center justify-between px-5 sm:px-8 lg:px-12 xl:px-16">
           <span className="font-sans text-base font-bold tracking-[0.03em] text-primary-foreground sm:text-lg md:text-xl">
             Kirat Khaik Mundhum Paturo
@@ -58,7 +55,7 @@ export function CalendarHeader({ onSelectHome, onSelectTool }: CalendarHeaderPro
             </AnimatePresence>
           </motion.button>
         </div>
-      </motion.header>
+      </header>
 
       {/* Rendered as a sibling, not a header child — motion.header carries an
           inline transform once animated, which would otherwise become the
