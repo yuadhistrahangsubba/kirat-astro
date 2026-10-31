@@ -9,15 +9,14 @@ import { PrayerFlagAccent } from "@/components/marketing/prayer-flag-accent";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-import type { InfoPageKey, ToolPageKey } from "../types";
+import type { ToolPageKey } from "../types";
 import { NAV_SECTIONS, type NavItem } from "./nav-items";
 
 interface HamburgerMenuProps {
   open: boolean;
   onClose: () => void;
-  /** Omit on pages outside the calendar — Home/info/tool items then navigate via real links instead of switching local view state. */
+  /** Omit on pages outside the calendar — Home/tool items then navigate via real links instead of switching local view state. */
   onSelectHome?: () => void;
-  onSelectInfoPage?: (key: InfoPageKey) => void;
   onSelectTool?: (key: ToolPageKey) => void;
 }
 
@@ -35,7 +34,7 @@ export const SITE_MENU_ID = "site-menu";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, onSelectTool }: HamburgerMenuProps) {
+export function HamburgerMenu({ open, onClose, onSelectHome, onSelectTool }: HamburgerMenuProps) {
   const panelRef = useRef<HTMLDivElement>(null);
   // Callers pass an inline onClose; reading it through a ref keeps the
   // effect below from re-running (and re-grabbing focus) on every render.
@@ -155,7 +154,6 @@ export function HamburgerMenu({ open, onClose, onSelectHome, onSelectInfoPage, o
                         item={item}
                         onClose={onClose}
                         onSelectHome={onSelectHome}
-                        onSelectInfoPage={onSelectInfoPage}
                         onSelectTool={onSelectTool}
                       />
                     ))}
@@ -183,13 +181,11 @@ function NavRow({
   item,
   onClose,
   onSelectHome,
-  onSelectInfoPage,
   onSelectTool,
 }: {
   item: NavItem;
   onClose: () => void;
   onSelectHome?: () => void;
-  onSelectInfoPage?: (key: InfoPageKey) => void;
   onSelectTool?: (key: ToolPageKey) => void;
 }) {
   const Icon = item.icon;
@@ -230,28 +226,6 @@ function NavRow({
     );
   }
 
-  if (item.kind === "info") {
-    return (
-      <motion.div variants={ITEM_RISE}>
-        {onSelectInfoPage ? (
-          <button
-            type="button"
-            className={cn(rowClassName, "w-full")}
-            onClick={() => {
-              onSelectInfoPage(item.key);
-              onClose();
-            }}
-          >
-            {content}
-          </button>
-        ) : (
-          <Link href={`/?panel=${item.key}`} className={rowClassName} onClick={onClose}>
-            {content}
-          </Link>
-        )}
-      </motion.div>
-    );
-  }
 
   if (item.kind === "tool") {
     return (

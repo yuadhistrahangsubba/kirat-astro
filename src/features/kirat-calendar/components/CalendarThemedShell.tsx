@@ -10,8 +10,8 @@ import { CalendarHeader } from "./CalendarHeader";
  * The calendar's own chrome (gold header + hamburger menu + footer),
  * reused as-is on non-calendar pages (Astro, FAQ) so they read as part of
  * the same site instead of a separate marketing sub-site. `CalendarHeader`
- * renders its Home/info-panel menu items as real links when it isn't
- * given onSelectHome/onSelectInfoPage — see HamburgerMenu.
+ * renders its Home/tool menu items as real links when it isn't
+ * given onSelectHome/onSelectTool — see HamburgerMenu.
  */
 export function CalendarThemedShell({ children }: { children: ReactNode }) {
   return (
