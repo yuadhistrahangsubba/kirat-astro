@@ -21,6 +21,16 @@ import { DEVELOPER } from "@/features/developer/data/developer";
 const PHONE_E164 = `+975${DEVELOPER.phone}`;
 const PHONE_DISPLAY = `+975 ${DEVELOPER.phone.replace(/(\d{2})(\d{2})(\d{2})(\d{2})/, "$1 $2 $3 $4")}`;
 
+// Offer a line break before the "@" so long addresses wrap at a sensible
+// point instead of mid-word on narrow phones.
+const [EMAIL_USER, EMAIL_DOMAIN] = DEVELOPER.email.split("@");
+const EMAIL_DISPLAY = (
+  <>
+    {EMAIL_USER}
+    <wbr />@{EMAIL_DOMAIN}
+  </>
+);
+
 const BUILT_HERE: { icon: LucideIcon; title: string; body: string }[] = [
   {
     icon: CalendarDays,
@@ -44,7 +54,7 @@ function initials(name: string): string {
   return ((parts[0]?.[0] ?? "") + (parts[parts.length - 1]?.[0] ?? "")).toUpperCase();
 }
 
-function ContactRow({ href, icon: Icon, label, value }: { href: string; icon: LucideIcon; label: string; value: string }) {
+function ContactRow({ href, icon: Icon, label, value }: { href: string; icon: LucideIcon; label: string; value: React.ReactNode }) {
   return (
     <a
       href={href}
@@ -55,7 +65,7 @@ function ContactRow({ href, icon: Icon, label, value }: { href: string; icon: Lu
       </span>
       <span className="min-w-0">
         <span className="block text-xs text-muted-foreground">{label}</span>
-        <span className="block text-sm font-medium break-all text-foreground">{value}</span>
+        <span className="block text-sm font-medium wrap-anywhere text-foreground">{value}</span>
       </span>
     </a>
   );
@@ -100,7 +110,7 @@ export function DeveloperPageContent() {
         {/* Profile card — sticks beside the details on wide screens. */}
         <section
           aria-labelledby="profile-name"
-          className="relative rounded-2xl border border-border/60 bg-card/90 p-6 shadow-[0_30px_80px_-30px_rgba(0,0,0,.3)] backdrop-blur-xl sm:p-8 lg:sticky lg:top-6"
+          className="relative rounded-2xl border border-border/60 bg-card/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,.3)] backdrop-blur-xl sm:p-8 lg:sticky lg:top-6"
         >
           <div className="flex flex-col items-center text-center">
             <div
@@ -120,7 +130,7 @@ export function DeveloperPageContent() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-2.5">
-            <ContactRow href={`mailto:${DEVELOPER.email}`} icon={Mail} label="Email" value={DEVELOPER.email} />
+            <ContactRow href={`mailto:${DEVELOPER.email}`} icon={Mail} label="Email" value={EMAIL_DISPLAY} />
             <ContactRow href={`tel:${PHONE_E164}`} icon={Phone} label="Phone" value={PHONE_DISPLAY} />
           </div>
 
@@ -133,12 +143,12 @@ export function DeveloperPageContent() {
         <div className="grid min-w-0 grid-cols-1 gap-6">
           <section
             aria-labelledby="built-here"
-            className="rounded-2xl border border-border/60 bg-card/80 p-6 backdrop-blur-xl sm:p-8"
+            className="rounded-2xl border border-border/60 bg-card/80 p-5 backdrop-blur-xl sm:p-8"
           >
             <SectionHeading id="built-here">Built on this site</SectionHeading>
             <ul className="mt-5 grid gap-3">
               {BUILT_HERE.map(({ icon: Icon, title, body }) => (
-                <li key={title} className="flex gap-4 rounded-xl border border-border/50 bg-background/50 p-4">
+                <li key={title} className="flex gap-3 rounded-xl border border-border/50 bg-background/50 p-3 sm:gap-4 sm:p-4">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Icon className="size-5" aria-hidden="true" />
                   </span>
@@ -153,7 +163,7 @@ export function DeveloperPageContent() {
 
           <section
             aria-labelledby="skills"
-            className="rounded-2xl border border-border/60 bg-card/80 p-6 backdrop-blur-xl sm:p-8"
+            className="rounded-2xl border border-border/60 bg-card/80 p-5 backdrop-blur-xl sm:p-8"
           >
             <SectionHeading id="skills">Skills</SectionHeading>
             <dl className="mt-5 grid gap-5">
@@ -179,7 +189,7 @@ export function DeveloperPageContent() {
 
           <section
             aria-labelledby="education"
-            className="rounded-2xl border border-border/60 bg-card/80 p-6 backdrop-blur-xl sm:p-8"
+            className="rounded-2xl border border-border/60 bg-card/80 p-5 backdrop-blur-xl sm:p-8"
           >
             <SectionHeading id="education">Education</SectionHeading>
             <div className="mt-5 flex items-start gap-3">
@@ -195,7 +205,7 @@ export function DeveloperPageContent() {
 
           <section
             aria-labelledby="contact-cta"
-            className="flex flex-col items-start gap-4 rounded-2xl border border-primary/30 bg-linear-to-br from-primary/10 to-gold/5 p-6 sm:flex-row sm:items-center sm:justify-between sm:p-8"
+            className="flex flex-col items-start gap-4 rounded-2xl border border-primary/30 bg-linear-to-br from-primary/10 to-gold/5 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-8"
           >
             <div>
               <h2 id="contact-cta" className="font-sans text-lg font-bold">
