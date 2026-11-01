@@ -67,7 +67,7 @@ function SocialLink({ href, icon: Icon, label }: { href: string; icon: LucideIco
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex min-h-11 flex-1 items-center justify-center gap-2 rounded-xl border border-border/60 px-4 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5"
+      className="flex min-h-11 min-w-0 flex-[1_1_8rem] items-center justify-center gap-2 rounded-xl border border-border/60 px-4 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/5"
     >
       <Icon className="size-4 text-primary" aria-hidden="true" />
       {label}
@@ -96,7 +96,7 @@ export function DeveloperPageContent() {
         <PrayerFlagAccent className="mx-auto mt-6 max-w-xs" />
       </header>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start">
+      <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start">
         {/* Profile card — sticks beside the details on wide screens. */}
         <section
           aria-labelledby="profile-name"
@@ -124,13 +124,13 @@ export function DeveloperPageContent() {
             <ContactRow href={`tel:${PHONE_E164}`} icon={Phone} label="Phone" value={PHONE_DISPLAY} />
           </div>
 
-          <div className="mt-3 flex gap-2.5">
+          <div className="mt-3 flex flex-wrap gap-2.5">
             <SocialLink href={DEVELOPER.facebook} icon={Facebook} label="Facebook" />
             <SocialLink href={DEVELOPER.instagram} icon={Instagram} label="Instagram" />
           </div>
         </section>
 
-        <div className="grid gap-6">
+        <div className="grid min-w-0 grid-cols-1 gap-6">
           <section
             aria-labelledby="built-here"
             className="rounded-2xl border border-border/60 bg-card/80 p-6 backdrop-blur-xl sm:p-8"
