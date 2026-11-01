@@ -107,10 +107,10 @@ export function DeveloperPageContent() {
       </header>
 
       <div className="mt-12 grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:items-start">
-        {/* Profile card — sticks beside the details on wide screens. */}
+        {/* Profile card — identity beside contacts on tablets, sticks beside the details on wide screens. */}
         <section
           aria-labelledby="profile-name"
-          className="relative rounded-2xl border border-border/60 bg-card/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,.3)] backdrop-blur-xl sm:p-8 lg:sticky lg:top-6"
+          className="relative grid grid-cols-1 gap-6 rounded-2xl border border-border/60 bg-card/90 p-5 shadow-[0_30px_80px_-30px_rgba(0,0,0,.3)] backdrop-blur-xl sm:p-8 md:grid-cols-2 md:items-center md:gap-8 lg:sticky lg:top-6 lg:grid-cols-1 lg:gap-6"
         >
           <div className="flex flex-col items-center text-center">
             <div
@@ -129,14 +129,16 @@ export function DeveloperPageContent() {
             </p>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 gap-2.5">
-            <ContactRow href={`mailto:${DEVELOPER.email}`} icon={Mail} label="Email" value={EMAIL_DISPLAY} />
-            <ContactRow href={`tel:${PHONE_E164}`} icon={Phone} label="Phone" value={PHONE_DISPLAY} />
-          </div>
+          <div className="min-w-0">
+            <div className="grid grid-cols-1 gap-2.5">
+              <ContactRow href={`mailto:${DEVELOPER.email}`} icon={Mail} label="Email" value={EMAIL_DISPLAY} />
+              <ContactRow href={`tel:${PHONE_E164}`} icon={Phone} label="Phone" value={PHONE_DISPLAY} />
+            </div>
 
-          <div className="mt-3 flex flex-wrap gap-2.5">
-            <SocialLink href={DEVELOPER.facebook} icon={Facebook} label="Facebook" />
-            <SocialLink href={DEVELOPER.instagram} icon={Instagram} label="Instagram" />
+            <div className="mt-3 flex flex-wrap gap-2.5">
+              <SocialLink href={DEVELOPER.facebook} icon={Facebook} label="Facebook" />
+              <SocialLink href={DEVELOPER.instagram} icon={Instagram} label="Instagram" />
+            </div>
           </div>
         </section>
 
