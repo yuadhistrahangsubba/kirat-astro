@@ -18,6 +18,8 @@ interface CalendarGridProps {
   onDayClick: (day: number) => void;
   onPrevMonth: () => void;
   onNextMonth: () => void;
+  todayPulse: number;
+  onTodayPulseEnd: () => void;
 }
 
 /** Only treat a touch gesture as a month-swipe if horizontal movement
@@ -33,6 +35,8 @@ export function CalendarGrid({
   onDayClick,
   onPrevMonth,
   onNextMonth,
+  todayPulse,
+  onTodayPulseEnd,
 }: CalendarGridProps) {
   const touchStart = useRef({ x: 0, y: 0 });
 
@@ -114,6 +118,8 @@ export function CalendarGrid({
               isToday={isToday}
               isSelected={isSelected}
               onClick={() => onDayClick(day)}
+              pulseKey={isToday ? todayPulse : 0}
+              onPulseEnd={isToday ? onTodayPulseEnd : undefined}
             />
           );
         })}
