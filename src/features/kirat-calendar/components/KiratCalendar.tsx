@@ -44,6 +44,7 @@ export function KiratCalendar() {
   const [currentMonth, setCurrentMonth] = useState(0);
   const [currentYear, setCurrentYear] = useState(2000);
   const [selectedDate, setSelectedDate] = useState(() => todayInZone());
+  const [todayPulse, setTodayPulse] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -76,6 +77,7 @@ export function KiratCalendar() {
   function goToMonth(month: number, year: number) {
     setCurrentMonth(month);
     setCurrentYear(year);
+    setTodayPulse(0);
   }
 
   function handlePrevMonth() {
@@ -93,9 +95,11 @@ export function KiratCalendar() {
   }
 
   function handleGoToday() {
-    goToMonth(today.getMonth(), today.getFullYear());
+    // Not goToMonth: its pulse reset would cancel this click's increment.
+    setCurrentMonth(today.getMonth());
+    setCurrentYear(today.getFullYear());
     setSelectedDate(today);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTodayPulse((n) => n + 1);
   }
 
   function handleJumpToDate(year: number, month: number, day: number) {
@@ -162,6 +166,8 @@ export function KiratCalendar() {
                       onDayClick={handleDayClick}
                       onPrevMonth={handlePrevMonth}
                       onNextMonth={handleNextMonth}
+                      todayPulse={todayPulse}
+                      onTodayPulseEnd={() => setTodayPulse(0)}
                     />
                   </motion.div>
                 </AnimatePresence>

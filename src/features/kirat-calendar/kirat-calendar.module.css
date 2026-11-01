@@ -352,6 +352,15 @@
     color:var(--primary);
 }
 
+/* One-off flash on today's cell when the Today button is pressed. */
+.dayPulse{
+    position:absolute;
+    inset:0;
+    border-radius:inherit;
+    background:color-mix(in oklch, var(--color-gold) 40%, transparent);
+    pointer-events:none;
+}
+
 .kiratDate{
     position:absolute;
     left:8px;
