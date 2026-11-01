@@ -8,11 +8,10 @@ interface YearViewProps {
   today: Date;
   onPrevYear: () => void;
   onNextYear: () => void;
-  onBack: () => void;
   onJumpToDate: (year: number, month: number, day: number) => void;
 }
 
-export function YearView({ year, today, onPrevYear, onNextYear, onBack, onJumpToDate }: YearViewProps) {
+export function YearView({ year, today, onPrevYear, onNextYear, onJumpToDate }: YearViewProps) {
   return (
     <div className={styles.yearView}>
       <div className={styles.yearViewHeader}>
@@ -22,9 +21,6 @@ export function YearView({ year, today, onPrevYear, onNextYear, onBack, onJumpTo
         <h2>{year}</h2>
         <motion.button whileTap={{ scale: 0.9 }} onClick={onNextYear} aria-label="Next year">
           ▶
-        </motion.button>
-        <motion.button whileTap={{ scale: 0.96 }} className={styles.backBtn} onClick={onBack}>
-          ◀ Back to Calendar
         </motion.button>
       </div>
 

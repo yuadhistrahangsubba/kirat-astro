@@ -10,7 +10,7 @@ import { ToolPageShell } from "./ToolPageShell";
  * Ayanamsha — the major sidereal-zodiac reference systems and their
  * current values, ported from the reference app's Ayanamsha section.
  */
-export function AyanamshaPage({ onBack }: { onBack: () => void }) {
+export function AyanamshaPage() {
 	const rows = useMemo(() => {
 		const now = new Date();
 		const jd =
@@ -26,7 +26,6 @@ export function AyanamshaPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Ayanamsha — Sidereal Zodiac Reference"
 			note="The major Ayanamsha systems calculated in this app, and their current value in plain degrees, minutes and seconds."
-			onBack={onBack}
 		>
 			<table
 				className={styles.senlendatDetailsTable}

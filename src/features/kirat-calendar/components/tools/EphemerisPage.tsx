@@ -41,7 +41,7 @@ function formatLatSigned(deg: number): string {
  * ten bodies at 00:00 Universal Time on the selected date, ported from the
  * reference app's Ephemeris section.
  */
-export function EphemerisPage({ onBack }: { onBack: () => void }) {
+export function EphemerisPage() {
 	const [date, setDate] = useState(() => todayInZone());
 	const [ayanamshaKey, setAyanamshaKey] = useState<AyanamshaKey>("lahiri");
 
@@ -59,7 +59,6 @@ export function EphemerisPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Kirat Ephemeris"
 			note="Sidereal longitude of the ten bodies, calculated for 00:00 Universal Time (UT) on the selected date — tropical apparent geocentric coordinates, converted to sidereal via the Ayanamsha below."
-			onBack={onBack}
 		>
 			<div style={{ display: "flex", justifyContent: "center", marginBottom: 4 }}>
 				<label style={{ fontSize: 13 }}>

@@ -23,7 +23,7 @@ import { todayInZone } from "../../lib/today";
  * a Current Yenyem card (live), date navigation, and the 8 Day + 8 Night
  * slot tables with meanings/results and the active slot highlighted.
  */
-export function YenyemdatPage({ onBack }: { onBack: () => void }) {
+export function YenyemdatPage() {
 	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 	const [nowHours, setNowHours] = useState<number>(NaN);
@@ -97,7 +97,6 @@ export function YenyemdatPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Yenyem — Kirat Time Division"
 			note="8 Day Yenyems (sunrise → sunset) and 8 Night Yenyems (sunset → next sunrise), cycling Mudo, Membupek, Labo, Mangghu, Siya, Pano, Tung."
-			onBack={onBack}
 		>
 			<div className={styles.infoBox} style={{ textAlign: "center", padding: 16 }}>
 				<p style={{ fontWeight: 700, color: "var(--primary)" }}>Current Yenyem</p>

@@ -26,7 +26,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
  * Moon's current Titlum (Kirat zodiac sign, ~2.5 days each) and its result
  * relative to every possible Birth Titlum.
  */
-export function SinglabamukPage({ onBack }: { onBack: () => void }) {
+export function SinglabamukPage() {
 	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 
@@ -42,7 +42,7 @@ export function SinglabamukPage({ onBack }: { onBack: () => void }) {
 
 	if (!detail) {
 		return (
-			<ToolPageShell title="Singlabamuk — Moon Titlum Evaluation" onBack={onBack}>
+			<ToolPageShell title="Singlabamuk — Moon Titlum Evaluation">
 				<p style={{ textAlign: "center" }}>Not available for this date.</p>
 			</ToolPageShell>
 		);
@@ -58,7 +58,6 @@ export function SinglabamukPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Singlabamuk — Moon Titlum Evaluation"
 			note="The Moon's current Titlum (Kirat zodiac sign) — changes roughly every 2.5 days — and its Singlabamuk result relative to every possible Birth Titlum."
-			onBack={onBack}
 		>
 			<div className={styles.infoBox} style={{ textAlign: "center", padding: 16 }}>
 				<p style={{ fontWeight: 700, color: "var(--primary)" }}>Current Titlum</p>

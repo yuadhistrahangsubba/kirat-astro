@@ -37,7 +37,7 @@ function fmtLong(d: Date): string {
  * Kirat Yele — Gregorian ⇄ Kirat solar-calendar date converter, ported
  * from the reference app. Dataset covers AD 2000–2100.
  */
-export function YeleConverterPage({ onBack }: { onBack: () => void }) {
+export function YeleConverterPage() {
 	const [tab, setTab] = useState<"ad2k" | "k2ad">("ad2k");
 
 	const now = todayInZone();
@@ -59,7 +59,6 @@ export function YeleConverterPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Kirat Yele — Date Converter"
 			note="Convert between the Gregorian (AD) calendar and the Kirat Yele Solar calendar — the twelve-month reckoning that begins each year at Makara Saṅkrānti (mid-January). Dataset covers AD 2000–2100."
-			onBack={onBack}
 		>
 			{todayKirat && (
 				<p style={{ textAlign: "center", fontSize: 14, marginBottom: 12 }}>
