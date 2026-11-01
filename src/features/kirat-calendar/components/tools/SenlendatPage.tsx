@@ -22,7 +22,7 @@ import { todayInZone } from "../../lib/today";
  * Current Senlendat card (live), date navigation, and the 12 Day + 12
  * Night slot tables with the active slot highlighted.
  */
-export function SenlendatPage({ onBack }: { onBack: () => void }) {
+export function SenlendatPage() {
 	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 	const [nowHours, setNowHours] = useState<number>(NaN);
@@ -91,7 +91,6 @@ export function SenlendatPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Senlendat — Kirat Planetary Hours"
 			note="12 Day Senlendats (sunrise → sunset) and 12 Night Senlendats (sunset → next sunrise), cycling Thung, Tung, Saya, Singla, Pung, Payang, Khawa."
-			onBack={onBack}
 		>
 			<div className={styles.infoBox} style={{ textAlign: "center", padding: 16 }}>
 				<p style={{ fontWeight: 700, color: "var(--primary)" }}>Current Senlendat</p>

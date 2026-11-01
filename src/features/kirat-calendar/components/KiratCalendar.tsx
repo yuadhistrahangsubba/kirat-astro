@@ -196,7 +196,6 @@ export function KiratCalendar() {
                 today={today}
                 onPrevYear={() => setCurrentYear((y) => y - 1)}
                 onNextYear={() => setCurrentYear((y) => y + 1)}
-                onBack={() => setViewMode("calendar")}
                 onJumpToDate={handleJumpToDate}
               />
             </motion.div>
@@ -204,42 +203,42 @@ export function KiratCalendar() {
 
           {viewMode === "senlendat" && (
             <motion.div key="senlendat" {...viewTransition}>
-              <SenlendatPage onBack={() => setViewMode("calendar")} />
+              <SenlendatPage />
             </motion.div>
           )}
           {viewMode === "yenyemdat" && (
             <motion.div key="yenyemdat" {...viewTransition}>
-              <YenyemdatPage onBack={() => setViewMode("calendar")} />
+              <YenyemdatPage />
             </motion.div>
           )}
           {viewMode === "khesemuk" && (
             <motion.div key="khesemuk" {...viewTransition}>
-              <KhesemukPage onBack={() => setViewMode("calendar")} />
+              <KhesemukPage />
             </motion.div>
           )}
           {viewMode === "singlabamuk" && (
             <motion.div key="singlabamuk" {...viewTransition}>
-              <SinglabamukPage onBack={() => setViewMode("calendar")} />
+              <SinglabamukPage />
             </motion.div>
           )}
           {viewMode === "planets" && (
             <motion.div key="planets" {...viewTransition}>
-              <PlanetsPage onBack={() => setViewMode("calendar")} />
+              <PlanetsPage />
             </motion.div>
           )}
           {viewMode === "ephemeris" && (
             <motion.div key="ephemeris" {...viewTransition}>
-              <EphemerisPage onBack={() => setViewMode("calendar")} />
+              <EphemerisPage />
             </motion.div>
           )}
           {viewMode === "ayanamsha" && (
             <motion.div key="ayanamsha" {...viewTransition}>
-              <AyanamshaPage onBack={() => setViewMode("calendar")} />
+              <AyanamshaPage />
             </motion.div>
           )}
           {viewMode === "yeleconverter" && (
             <motion.div key="yeleconverter" {...viewTransition}>
-              <YeleConverterPage onBack={() => setViewMode("calendar")} />
+              <YeleConverterPage />
             </motion.div>
           )}
         </AnimatePresence>

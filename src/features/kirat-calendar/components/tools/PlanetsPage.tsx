@@ -31,7 +31,7 @@ const inputStyle: React.CSSProperties = {
  * bodies at any local date & time, ported from the reference app's
  * "Astronomical Data" section.
  */
-export function PlanetsPage({ onBack }: { onBack: () => void }) {
+export function PlanetsPage() {
 	const now = new Date();
 	const [dateStr, setDateStr] = useState(
 		`${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`,
@@ -64,7 +64,6 @@ export function PlanetsPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Planets — Astronomical Data"
 			note={`Sidereal longitude, Mangyuk (Nakshatra) and Mangyuk Pada for all ten bodies at the selected local date & time (${DEFAULT_PLACE.name}).`}
-			onBack={onBack}
 		>
 			<div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap", marginBottom: 14 }}>
 				<label style={{ fontSize: 13 }}>

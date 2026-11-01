@@ -25,7 +25,7 @@ const pad2 = (n: number) => String(n).padStart(2, "0");
  * app: the current Moon Mangyuk (reused straight from the Panchanga) and
  * its Khesemuk result relative to every possible Birth Mangyuk.
  */
-export function KhesemukPage({ onBack }: { onBack: () => void }) {
+export function KhesemukPage() {
 	const [date, setDate] = useState(() => todayInZone());
 	const [timeMode, setTimeMode] = useState<TimeFormatMode>("12h");
 
@@ -41,7 +41,7 @@ export function KhesemukPage({ onBack }: { onBack: () => void }) {
 
 	if (!detail) {
 		return (
-			<ToolPageShell title="Khesemuk — Moon Mangyuk Strength (Tarabala)" onBack={onBack}>
+			<ToolPageShell title="Khesemuk — Moon Mangyuk Strength (Tarabala)">
 				<p style={{ textAlign: "center" }}>Not available for this date.</p>
 			</ToolPageShell>
 		);
@@ -58,7 +58,6 @@ export function KhesemukPage({ onBack }: { onBack: () => void }) {
 		<ToolPageShell
 			title="Khesemuk — Moon Mangyuk Strength (Tarabala)"
 			note="The Moon's current Mangyuk (Kirat Nakshatra) — reused directly from the Panchanga — and its Khesemuk (Tarabala) result relative to every possible Birth Mangyuk."
-			onBack={onBack}
 		>
 			<div className={styles.infoBox} style={{ textAlign: "center", padding: 16 }}>
 				<p style={{ fontWeight: 700, color: "var(--primary)" }}>Current Mangyuk</p>
